@@ -1,2 +1,61 @@
+import '../enum/ImSignalingListener.dart';
+import '../enum/offlinePushInfo.dart';
+import '../models/im_callback.dart';
+import '../models/im_value_callback.dart';
+
 /// 信令管理器
-abstract class IMSignalingManager {}
+class IMSignalingManager {
+  /// 添加信令监听器
+  Future<void> addSignalingListener({required ImSignalingListener listener}) async {
+    // TODO: implement addSignalingListener
+    throw UnimplementedError();
+  }
+
+  /// 移除信令监听器
+  Future<void> removeSignalingListener({ImSignalingListener? listener}) async {
+    // TODO: implement removeSignalingListener
+    throw UnimplementedError();
+  }
+
+  /// 邀请个人
+  Future<ImValueCallback<String>> invite({
+    required String invitee,
+    required String data,
+    int timeout = 30,
+    bool onlineUserOnly = false,
+    OfflinePushInfo? offlinePushInfo,
+  }) async {
+    // TODO: implement invite
+    throw UnimplementedError();
+  }
+
+  /// 邀请群组
+  Future<ImValueCallback<String>> inviteInGroup({
+    required String groupID,
+    required List<String> inviteeList,
+    required String data,
+    int timeout = 30,
+    bool onlineUserOnly = false,
+  }) async {
+    // TODO: implement inviteInGroup
+    throw UnimplementedError();
+  }
+
+  /// 取消邀请
+  Future<ImCallback> cancel({required String inviteID, String? data}) async {
+    // TODO: implement cancel
+    throw UnimplementedError();
+  }
+
+  /// 接受邀请
+  Future<ImCallback> accept({required String inviteID, String? data}) async {
+    // TODO: implement accept
+    throw UnimplementedError();
+  }
+
+  /// 拒绝邀请
+  Future<ImCallback> reject({required String inviteID, String? data}) async {
+    // TODO: implement reject
+    throw UnimplementedError();
+  }
+}
