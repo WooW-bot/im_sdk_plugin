@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 
+import '../enum/ImGroupListener.dart';
 import '../enum/ImSDKListener.dart';
 import '../enum/log_level_enum.dart';
 import '../models/im_callback.dart';
@@ -67,4 +68,23 @@ abstract class IMManager {
 
   /// 获取离线推送管理器
   IMOfflinePushManager getOfflinePushManager();
+
+  /// 添加群组监听器
+  Future<void> addGroupListener({required ImGroupListener listener});
+
+  /// 移除群组监听器
+  Future<void> removeGroupListener({ImGroupListener? listener});
+
+  /// 加入群组
+  Future<ImCallback> joinGroup({
+    required String groupID,
+    required String message,
+    String? groupType,
+  });
+
+  /// 退出群组
+  Future<ImCallback> quitGroup({required String groupID});
+
+  /// 解散群组
+  Future<ImCallback> dismissGroup({required String groupID});
 }

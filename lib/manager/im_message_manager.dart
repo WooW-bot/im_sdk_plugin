@@ -25,9 +25,7 @@ abstract class IMMessageManager {
   }
 
   /// 创建文本消息
-  Future<ImValueCallback<ImMsgCreateInfoResult>> createTextMessage({
-    required String text,
-  });
+  Future<ImValueCallback<ImMsgCreateInfoResult>> createTextMessage({required String text});
 
   /// 创建自定义消息
   Future<ImValueCallback<ImMsgCreateInfoResult>> createCustomMessage({
@@ -111,9 +109,7 @@ abstract class IMMessageManager {
   });
 
   /// 添加高级消息监听器
-  Future<void> addAdvancedMsgListener({
-    required ImAdvancedMsgListener listener,
-  });
+  Future<void> addAdvancedMsgListener({required ImAdvancedMsgListener listener});
 
   /// 移除高级消息监听器
   Future<void> removeAdvancedMsgListener({ImAdvancedMsgListener? listener});
@@ -127,8 +123,7 @@ abstract class IMMessageManager {
 
   /// 获取历史消息列表
   Future<ImValueCallback<List<ImMessage>>> getHistoryMessageList({
-    HistoryMsgGetTypeEnum? getType =
-        HistoryMsgGetTypeEnum.IM_GET_LOCAL_OLDER_MSG,
+    HistoryMsgGetTypeEnum? getType = HistoryMsgGetTypeEnum.IM_GET_LOCAL_OLDER_MSG,
     String? userID,
     String? groupID,
     int lastMsgSeq = -1,
@@ -201,27 +196,16 @@ abstract class IMMessageManager {
   });
 
   /// 设置本地自定义数据
-  Future<ImCallback> setLocalCustomData({
-    required String msgID,
-    required String localCustomData,
-  });
+  Future<ImCallback> setLocalCustomData({required String msgID, required String localCustomData});
 
   /// 设置本地自定义整数
-  Future<ImCallback> setLocalCustomInt({
-    required String msgID,
-    required int localCustomInt,
-  });
+  Future<ImCallback> setLocalCustomInt({required String msgID, required int localCustomInt});
 
   /// 撤回消息
-  Future<ImCallback> revokeMessage({
-    required String msgID,
-    Object? webMessageInstatnce,
-  });
+  Future<ImCallback> revokeMessage({required String msgID, Object? webMessageInstatnce});
 
   /// 修改消息
-  Future<ImValueCallback<ImMessageChangeInfo>> modifyMessage({
-    required ImMessage message,
-  });
+  Future<ImValueCallback<ImMessageChangeInfo>> modifyMessage({required ImMessage message});
 
   /// 发送消息
   Future<ImValueCallback<ImMessage>> sendMessage({
@@ -245,9 +229,7 @@ abstract class IMMessageManager {
   });
 
   /// 发送消息已读回执
-  Future<ImCallback> sendMessageReadReceipts({
-    required List<String> messageIDList,
-  });
+  Future<ImCallback> sendMessageReadReceipts({required List<String> messageIDList});
 
   /// 获取消息已读回执
   Future<ImValueCallback<List<ImMessageReceipt>>> getMessageReadReceipts({
@@ -255,8 +237,7 @@ abstract class IMMessageManager {
   });
 
   /// 获取群消息已读成员列表
-  Future<ImValueCallback<ImGroupMessageReadMemberList>>
-  getGroupMessageReadMemberList({
+  Future<ImValueCallback<ImGroupMessageReadMemberList>> getGroupMessageReadMemberList({
     required String messageID,
     required GetGroupMessageReadMemberListFilter filter,
     int nextSeq = 0,
