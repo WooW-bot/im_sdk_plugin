@@ -5,16 +5,33 @@ import '../models/im_message_receipt.dart';
 import 'callbacks.dart';
 
 class ImAdvancedMsgListener {
+  /// 收到新消息回调
   OnRecvNewMessageCallback onRecvNewMessage = (ImMessage message) {};
+
+  /// 收到消息被修改回调
   OnRecvMessageModified onRecvMessageModified = (ImMessage message) {};
+
+  /// 消息发送进度回调
   OnSendMessageProgressCallback onSendMessageProgress = (ImMessage message, int progress) {};
+
+  /// 收到 C2C 消息已读回执回调
   OnRecvC2CReadReceiptCallback onRecvC2CReadReceipt = (List<ImMessageReceipt> receiptList) {};
+
+  /// 收到消息撤回回调
   OnRecvMessageRevokedCallback onRecvMessageRevoked = (String msgID) {};
+
+  /// 收到消息已读回执回调
   OnRecvMessageReadReceipts onRecvMessageReadReceipts = (List<ImMessageReceipt> receiptList) {};
+
+  /// 收到消息扩展修改回调
   OnRecvMessageExtensionsChanged onRecvMessageExtensionsChanged =
       (String msgID, List<ImMessageExtension> extensions) {};
+
+  /// 收到消息扩展删除回调
   OnRecvMessageExtensionsDeleted onRecvMessageExtensionsDeleted =
       (String msgID, List<String> extensionKeys) {};
+
+  /// 消息下载进度回调
   OnMessageDownloadProgressCallback onMessageDownloadProgressCallback =
       (ImMessageDownloadProgress messageDownloadProgress) {};
 
