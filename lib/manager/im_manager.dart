@@ -4,6 +4,8 @@ import '../enum/ImGroupListener.dart';
 import '../enum/ImSDKListener.dart';
 import '../enum/log_level_enum.dart';
 import '../models/im_callback.dart';
+import '../models/im_user_full_info.dart';
+import '../models/im_user_status.dart';
 import '../models/im_value_callback.dart';
 import 'im_conversation_manager.dart';
 import 'im_friendship_manager.dart';
@@ -87,4 +89,19 @@ abstract class IMManager {
 
   /// 解散群组
   Future<ImCallback> dismissGroup({required String groupID});
+
+  /// 获取用户资料
+  Future<ImValueCallback<List<ImUserFullInfo>>> getUsersInfo({required List<String> userIDList});
+
+  /// 获取用户状态
+  Future<ImValueCallback<List<ImUserStatus>>> getUserStatus({required List<String> userIDList});
+
+  /// 设置当前用户资料
+  Future<ImCallback> setSelfInfo({required ImUserFullInfo userFullInfo});
+
+  /// 设置当前用户状态
+  Future<ImCallback> setSelfStatus({required String status});
+
+  /// 设置 APNS 监听器
+  Future setAPNSListener();
 }
