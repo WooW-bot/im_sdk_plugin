@@ -1,9 +1,6 @@
 import 'im_message.dart';
 
-/// V2TimConversationResult
-///
-/// {@category Models}
-///
+/// 消息列表获取结果
 class ImMessageListResult {
   /// 是否拉取完成
   bool isFinished = false;

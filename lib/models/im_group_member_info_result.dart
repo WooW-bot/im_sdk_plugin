@@ -1,5 +1,6 @@
 import 'im_group_member_full_info.dart';
 
+/// 群组成员信息结果
 class ImGroupMemberInfoResult {
   /// 下一次拉取的序列号
   late String? nextSeq;

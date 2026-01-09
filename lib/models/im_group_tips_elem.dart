@@ -2,6 +2,7 @@ import 'im_group_change_info.dart';
 import 'im_group_member_change_info.dart';
 import 'im_group_member_info.dart';
 
+/// 群提示消息元素
 class ImGroupTipsElem {
   /// 群组 ID
   late String groupID;
@@ -19,9 +20,7 @@ class ImGroupTipsElem {
   List<ImGroupChangeInfo?>? groupChangeInfoList = List.empty(growable: true);
 
   /// 群成员变更列表
-  List<ImGroupMemberChangeInfo?>? memberChangeInfoList = List.empty(
-    growable: true,
-  );
+  List<ImGroupMemberChangeInfo?>? memberChangeInfoList = List.empty(growable: true);
 
   /// 成员数量
   late int? memberCount;
@@ -70,14 +69,10 @@ class ImGroupTipsElem {
       data['memberList'] = memberList!.map((v) => v!.toJson()).toList();
     }
     if (groupChangeInfoList != null) {
-      data['groupChangeInfoList'] = groupChangeInfoList!
-          .map((v) => v!.toJson())
-          .toList();
+      data['groupChangeInfoList'] = groupChangeInfoList!.map((v) => v!.toJson()).toList();
     }
     if (memberChangeInfoList != null) {
-      data['memberChangeInfoList'] = memberChangeInfoList!
-          .map((v) => v!.toJson())
-          .toList();
+      data['memberChangeInfoList'] = memberChangeInfoList!.map((v) => v!.toJson()).toList();
     }
     data['memberCount'] = memberCount;
     return data;

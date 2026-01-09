@@ -1,3 +1,4 @@
+/// 好友操作结果
 class ImFriendOperationResult {
   /// 用户 ID
   late String? userID;
@@ -8,11 +9,7 @@ class ImFriendOperationResult {
   /// 结果信息
   late String? resultInfo;
 
-  ImFriendOperationResult({
-    required this.userID,
-    this.resultCode,
-    this.resultInfo,
-  });
+  ImFriendOperationResult({required this.userID, this.resultCode, this.resultInfo});
 
   ImFriendOperationResult.fromJson(Map<String, dynamic> json) {
     userID = json['userID'];

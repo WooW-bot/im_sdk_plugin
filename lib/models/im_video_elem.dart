@@ -1,5 +1,6 @@
 import 'im_elem.dart';
 
+/// 视频消息元素
 class ImVideoElem extends IMElem {
   /// 视频路径
   late String? videoPath;

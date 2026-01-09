@@ -1,6 +1,7 @@
 import '../models/im_conversation.dart';
 import 'callbacks.dart';
 
+/// 会话监听器
 class ImConversationListener {
   /// 同步服务器开始回调
   VoidCallback onSyncServerStart = () {};

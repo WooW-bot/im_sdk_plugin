@@ -1,3 +1,4 @@
+/// 消息搜索参数
 class ImMessageSearchParam {
   /// 会话 ID
   String? conversationID;

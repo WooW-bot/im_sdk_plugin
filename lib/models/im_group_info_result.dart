@@ -1,5 +1,6 @@
 import 'im_group_info.dart';
 
+/// 群组信息结果
 class ImGroupInfoResult {
   /// 结果码
   late int? resultCode;

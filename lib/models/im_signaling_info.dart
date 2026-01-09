@@ -1,5 +1,6 @@
 import '../enum/offlinePushInfo.dart';
 
+/// 信令信息
 class ImSignalingInfo {
   /// 邀请 ID
   late String inviteID;
@@ -30,6 +31,7 @@ class ImSignalingInfo {
 
   /// 离线推送信息 (iOS 不会返回)
   late OfflinePushInfo? offlinePushInfo;
+
   ImSignalingInfo({
     required this.inviteID,
     required this.inviter,

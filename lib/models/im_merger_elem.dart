@@ -1,5 +1,6 @@
 import 'im_elem.dart';
 
+/// 合并消息元素
 class ImMergerElem extends IMElem {
   /// 是否超过最大层数
   late bool? isLayersOverLimit;

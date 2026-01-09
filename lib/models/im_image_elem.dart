@@ -1,6 +1,7 @@
 import 'im_elem.dart';
 import 'im_image.dart';
 
+/// 图片消息元素
 class ImImageElem extends IMElem {
   /// 图片路径
   late String? path;

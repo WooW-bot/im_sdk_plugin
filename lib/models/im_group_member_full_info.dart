@@ -1,3 +1,4 @@
+/// 群成员详细信息
 class ImGroupMemberFullInfo {
   /// 用户 ID
   late String userID;

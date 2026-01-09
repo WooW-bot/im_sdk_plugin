@@ -4,6 +4,7 @@ import '../models/im_group_member_info.dart';
 import '../models/im_topic_info.dart';
 import 'callbacks.dart';
 
+/// 群组监听器
 class ImGroupListener {
   /// 成员进入群组回调
   OnMemberEnterCallback onMemberEnter = (String groupID, List<ImGroupMemberInfo> memberList) {};

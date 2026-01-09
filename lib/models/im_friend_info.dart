@@ -1,5 +1,6 @@
 import 'im_user_full_info.dart';
 
+/// 好友信息
 class ImFriendInfo {
   /// 用户 ID
   late String userID;
@@ -31,9 +32,7 @@ class ImFriendInfo {
     friendCustomInfo = json['friendCustomInfo'] == null
         ? <String, String>{}
         : Map<String, String>.from(json['friendCustomInfo']);
-    userProfile = json['userProfile'] != null
-        ? ImUserFullInfo.fromJson(json['userProfile'])
-        : null;
+    userProfile = json['userProfile'] != null ? ImUserFullInfo.fromJson(json['userProfile']) : null;
   }
 
   Map<String, dynamic> toJson() {

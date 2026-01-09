@@ -1,3 +1,4 @@
+/// 用户基本信息
 class ImUserInfo {
   /// 用户 ID
   late String userID;

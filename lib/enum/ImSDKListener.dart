@@ -23,8 +23,7 @@ class ImSDKListener {
   ImUserFullInfoCallback onSelfInfoUpdated = (ImUserFullInfo info) {};
 
   /// 用户状态变更回调
-  OnUserStatusChanged onUserStatusChanged =
-      (List<ImUserStatus> userStatusList) {};
+  OnUserStatusChanged onUserStatusChanged = (List<ImUserStatus> userStatusList) {};
 
   /// 日志回调
   OnLog onLog = (int logLevel, String logContent) {};

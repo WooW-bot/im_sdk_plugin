@@ -1,5 +1,6 @@
 import 'im_friend_info.dart';
 
+/// 好友信息结果
 class ImFriendInfoResult {
   /// 结果码
   late int resultCode;
@@ -13,20 +14,13 @@ class ImFriendInfoResult {
   /// 好友信息
   ImFriendInfo? friendInfo;
 
-  ImFriendInfoResult({
-    required this.resultCode,
-    this.resultInfo,
-    this.relation,
-    this.friendInfo,
-  });
+  ImFriendInfoResult({required this.resultCode, this.resultInfo, this.relation, this.friendInfo});
 
   ImFriendInfoResult.fromJson(Map<String, dynamic> json) {
     resultCode = json['resultCode'];
     resultInfo = json['resultInfo'];
     relation = json['relation'];
-    friendInfo = json['friendInfo'] != null
-        ? ImFriendInfo.fromJson(json['friendInfo'])
-        : null;
+    friendInfo = json['friendInfo'] != null ? ImFriendInfo.fromJson(json['friendInfo']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -45,5 +39,5 @@ class ImFriendInfoResult {
 //   "resultCode":0,
 //   "resultInfo":"",
 //   "relation":0,
-//   "friendInfo":"_$V2TimFriendInfo"
+//   "friendInfo":"_$ImFriendInfo"
 // }

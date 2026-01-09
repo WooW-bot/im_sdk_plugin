@@ -1,3 +1,4 @@
+/// 会话操作结果
 class ImConversationOperationResult {
   /// 会话 ID
   String? conversationID;
@@ -8,11 +9,7 @@ class ImConversationOperationResult {
   /// 结果信息
   String? resultInfo;
 
-  ImConversationOperationResult({
-    this.conversationID,
-    this.resultCode,
-    this.resultInfo,
-  });
+  ImConversationOperationResult({this.conversationID, this.resultCode, this.resultInfo});
 
   ImConversationOperationResult.fromJson(Map<String, dynamic> json) {
     conversationID = json['conversationID'];

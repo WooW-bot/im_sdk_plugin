@@ -1,3 +1,4 @@
+/// 好友申请
 class ImFriendApplication {
   /// 用户 ID
   late String userID;

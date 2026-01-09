@@ -1,5 +1,6 @@
 import 'im_elem.dart';
 
+/// 位置消息元素
 class ImLocationElem extends IMElem {
   /// 地理位置描述
   late String? desc;

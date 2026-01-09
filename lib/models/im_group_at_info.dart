@@ -1,3 +1,4 @@
+/// 群 @ 信息
 class ImGroupAtInfo {
   /// 消息序列号
   late String seq;

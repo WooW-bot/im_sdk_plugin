@@ -1,3 +1,4 @@
+/// 群成员基本信息
 class ImGroupMemberInfo {
   /// 用户 ID
   String? userID;
@@ -14,13 +15,7 @@ class ImGroupMemberInfo {
   /// 头像 URL
   String? faceUrl;
 
-  ImGroupMemberInfo({
-    this.userID,
-    this.nickName,
-    this.nameCard,
-    this.friendRemark,
-    this.faceUrl,
-  });
+  ImGroupMemberInfo({this.userID, this.nickName, this.nameCard, this.friendRemark, this.faceUrl});
 
   ImGroupMemberInfo.fromJson(Map<String, dynamic> json) {
     userID = json['userID'];

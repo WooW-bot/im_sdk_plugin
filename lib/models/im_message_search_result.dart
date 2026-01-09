@@ -1,5 +1,6 @@
 import 'im_message_search_result_item.dart';
 
+/// 消息搜索结果
 class ImMessageSearchResult {
   /// 总数量
   int? totalCount;
@@ -23,9 +24,7 @@ class ImMessageSearchResult {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['totalCount'] = totalCount;
     if (messageSearchResultItems != null) {
-      data['messageSearchResultItems'] = messageSearchResultItems!
-          .map((v) => v.toJson())
-          .toList();
+      data['messageSearchResultItems'] = messageSearchResultItems!.map((v) => v.toJson()).toList();
     }
     return data;
   }

@@ -1,3 +1,4 @@
+/// 话题操作结果
 class ImTopicOperationResult {
   /// 错误码
   int? errorCode;

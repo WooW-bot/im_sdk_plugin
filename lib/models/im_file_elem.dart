@@ -1,5 +1,6 @@
 import 'im_elem.dart';
 
+/// 文件消息元素
 class ImFileElem extends IMElem {
   /// 文件路径
   late String? path;

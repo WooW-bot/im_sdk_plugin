@@ -3,6 +3,7 @@ import 'im_image_elem.dart';
 import 'im_sound_elem.dart';
 import 'im_video_elem.dart';
 
+/// 消息在线 URL
 class ImMessageOnlineUrl {
   /// 图片元素
   ImImageElem? imageElem;
@@ -16,26 +17,13 @@ class ImMessageOnlineUrl {
   /// 文件元素
   ImFileElem? fileElem;
 
-  ImMessageOnlineUrl({
-    this.imageElem,
-    this.soundElem,
-    this.videoElem,
-    this.fileElem,
-  });
+  ImMessageOnlineUrl({this.imageElem, this.soundElem, this.videoElem, this.fileElem});
 
   ImMessageOnlineUrl.fromJson(Map<String, dynamic> json) {
-    imageElem = json['imageElem'] != null
-        ? ImImageElem.fromJson(json['imageElem'])
-        : null;
-    soundElem = json['soundElem'] != null
-        ? ImSoundElem.fromJson(json['soundElem'])
-        : null;
-    videoElem = json['videoElem'] != null
-        ? ImVideoElem.fromJson(json['videoElem'])
-        : null;
-    fileElem = json['fileElem'] != null
-        ? ImFileElem.fromJson(json['fileElem'])
-        : null;
+    imageElem = json['imageElem'] != null ? ImImageElem.fromJson(json['imageElem']) : null;
+    soundElem = json['soundElem'] != null ? ImSoundElem.fromJson(json['soundElem']) : null;
+    videoElem = json['videoElem'] != null ? ImVideoElem.fromJson(json['videoElem']) : null;
+    fileElem = json['fileElem'] != null ? ImFileElem.fromJson(json['fileElem']) : null;
   }
 
   Map<String, dynamic> toJson() {

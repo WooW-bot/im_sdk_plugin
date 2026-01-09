@@ -1,7 +1,4 @@
-/// V2TimFriendSearchParam
-///
-/// {@category Models}
-///
+/// 好友搜索参数
 class ImFriendSearchParam {
   /// 关键字列表
   late List<String> keywordList;

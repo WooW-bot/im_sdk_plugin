@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'im_elem.dart';
 
+/// 文本消息元素
 class ImTextElem extends IMElem {
   /// 文本内容
   late String? text;

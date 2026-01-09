@@ -2,6 +2,7 @@ import '../enum/ImSignalingListener.dart';
 import '../enum/offlinePushInfo.dart';
 import '../models/im_callback.dart';
 import '../models/im_value_callback.dart';
+import '../models/im_signaling_info.dart';
 
 /// 信令管理器
 class IMSignalingManager {
@@ -56,6 +57,20 @@ class IMSignalingManager {
   /// 拒绝邀请
   Future<ImCallback> reject({required String inviteID, String? data}) async {
     // TODO: implement reject
+    throw UnimplementedError();
+  }
+
+  /// 添加邀请信令
+  Future<ImValueCallback<ImSignalingInfo>> addInvitedSignaling({
+    required ImSignalingInfo info,
+  }) async {
+    // TODO: implement addInvitedSignaling
+    throw UnimplementedError();
+  }
+
+  /// 获取信令信息
+  Future<ImValueCallback<ImSignalingInfo>> getSignalingInfo({required String msgID}) async {
+    // TODO: implement getSignalingInfo
     throw UnimplementedError();
   }
 }

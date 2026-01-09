@@ -1,3 +1,4 @@
+/// 回调默认返回值
 class ImCallback {
   /// 错误码
   late int code;

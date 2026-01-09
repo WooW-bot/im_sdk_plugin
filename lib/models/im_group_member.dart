@@ -1,6 +1,7 @@
 import '../enum/group_member_role_enum.dart';
 import '../enum/utils.dart';
 
+/// 群成员
 class ImGroupMember {
   /// 用户 ID
   late String userID;

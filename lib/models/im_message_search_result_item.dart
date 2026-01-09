@@ -1,5 +1,6 @@
 import 'im_message.dart';
 
+/// 消息搜索结果项
 class ImMessageSearchResultItem {
   /// 会话 ID
   String? conversationID;
@@ -10,11 +11,7 @@ class ImMessageSearchResultItem {
   /// 消息列表
   List<ImMessage>? messageList;
 
-  ImMessageSearchResultItem({
-    this.conversationID,
-    this.messageCount,
-    this.messageList,
-  });
+  ImMessageSearchResultItem({this.conversationID, this.messageCount, this.messageList});
 
   ImMessageSearchResultItem.fromJson(Map<String, dynamic> json) {
     conversationID = json['conversationID'];

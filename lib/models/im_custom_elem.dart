@@ -1,5 +1,6 @@
 import 'im_elem.dart';
 
+/// 自定义消息元素
 class ImCustomElem extends IMElem {
   /// 自定义数据
   late String? data;

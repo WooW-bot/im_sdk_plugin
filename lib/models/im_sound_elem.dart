@@ -1,5 +1,6 @@
 import 'im_elem.dart';
 
+/// 语音消息元素
 class ImSoundElem extends IMElem {
   /// 语音路径
   late String? path;

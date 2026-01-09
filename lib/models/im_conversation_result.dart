@@ -1,5 +1,6 @@
 import 'im_conversation.dart';
 
+/// 会话结果
 class ImConversationResult {
   /// 下一次拉取的序列号
   late String? nextSeq;
@@ -28,9 +29,7 @@ class ImConversationResult {
     data['nextSeq'] = nextSeq;
     data['isFinished'] = isFinished;
     if (conversationList != null) {
-      data['conversationList'] = conversationList!
-          .map((v) => v!.toJson())
-          .toList();
+      data['conversationList'] = conversationList!.map((v) => v!.toJson()).toList();
     }
     return data;
   }

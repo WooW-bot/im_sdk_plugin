@@ -1,6 +1,7 @@
 import 'im_group_at_info.dart';
 import 'im_message.dart';
 
+/// 会话信息
 class ImConversation {
   /// 会话 ID
   late String conversationID;
@@ -89,9 +90,7 @@ class ImConversation {
     isPinned = json['isPinned'];
     recvOpt = json['recvOpt'];
     orderkey = json['orderkey'];
-    lastMessage = json['lastMessage'] != null
-        ? ImMessage.fromJson(json['lastMessage'])
-        : null;
+    lastMessage = json['lastMessage'] != null ? ImMessage.fromJson(json['lastMessage']) : null;
     draftText = json['draftText'];
     customData = json['customData'];
     draftTimestamp = json['draftTimestamp'];
@@ -136,14 +135,10 @@ class ImConversation {
     data['draftText'] = draftText;
     data['draftTimestamp'] = draftTimestamp;
     if (groupAtInfoList != null) {
-      data['groupAtInfoList'] = groupAtInfoList!
-          .map((v) => v!.toJson())
-          .toList();
+      data['groupAtInfoList'] = groupAtInfoList!.map((v) => v!.toJson()).toList();
     }
     if (conversationGroupList != null) {
-      data['conversationGroupList'] = conversationGroupList!
-          .map((v) => v)
-          .toList();
+      data['conversationGroupList'] = conversationGroupList!.map((v) => v).toList();
     }
     if (markList != null) {
       data['markList'] = markList!.map((v) => v).toList();

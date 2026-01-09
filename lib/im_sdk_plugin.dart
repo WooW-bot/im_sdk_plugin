@@ -18,5 +18,5 @@ class ImSDKPlugin {
   }
 
   /// 公开的静态访问点，用于获取 IMManager
-  static IMManager v2TIMManager = ImSDKPlugin.managerInstance();
+  static IMManager imManager = ImSDKPlugin.managerInstance();
 }

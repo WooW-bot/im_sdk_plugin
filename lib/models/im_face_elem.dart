@@ -1,5 +1,6 @@
 import 'im_elem.dart';
 
+/// 表情消息元素
 class ImFaceElem extends IMElem {
   /// 表情索引
   late int? index;

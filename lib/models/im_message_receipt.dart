@@ -1,3 +1,4 @@
+/// 消息已读回执
 class ImMessageReceipt {
   /// 用户 ID
   late String userID;

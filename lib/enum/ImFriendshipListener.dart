@@ -2,6 +2,7 @@ import '../models/im_friend_application.dart';
 import '../models/im_friend_info.dart';
 import 'callbacks.dart';
 
+/// 关系链监听器
 class ImFriendshipListener {
   /// 好友申请列表添加回调
   OnFriendApplicationListAddedCallback onFriendApplicationListAdded =

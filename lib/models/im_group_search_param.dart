@@ -1,10 +1,12 @@
-/// V2TimGroupSearchParam
-///
-/// {@category Models}
-///
+/// 群组搜索参数
 class ImGroupSearchParam {
+  /// 搜索关键字列表
   late List<String> keywordList;
+
+  /// 是否搜索群 ID
   bool isSearchGroupID = true;
+
+  /// 是否搜索群名称
   bool isSearchGroupName = true;
 
   ImGroupSearchParam({

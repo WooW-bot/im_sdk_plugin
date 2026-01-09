@@ -1,3 +1,4 @@
+/// 群申请信息
 class ImGroupApplication {
   /// 群组 ID
   late String groupID;

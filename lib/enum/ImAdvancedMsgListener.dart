@@ -4,6 +4,7 @@ import '../models/im_message_extension.dart';
 import '../models/im_message_receipt.dart';
 import 'callbacks.dart';
 
+/// 高级消息监听器
 class ImAdvancedMsgListener {
   /// 收到新消息回调
   OnRecvNewMessageCallback onRecvNewMessage = (ImMessage message) {};

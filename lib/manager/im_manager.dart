@@ -8,10 +8,12 @@ import '../models/im_user_full_info.dart';
 import '../models/im_user_status.dart';
 import '../models/im_value_callback.dart';
 import 'im_conversation_manager.dart';
+import 'im_offline_push_manager.dart';
+import 'im_signaling_manager.dart';
 import 'im_friendship_manager.dart';
 import 'im_group_manager.dart';
 import 'im_message_manager.dart';
-import 'im_offline_push_manager.dart';
+import '../models/im_message.dart';
 
 /// IM SDK 主核心管理类
 class IMManager {
@@ -45,10 +47,7 @@ class IMManager {
   ///
   /// [userID] 用户 ID
   /// [userSig] 用户签名
-  Future<ImCallback> login({
-    required String userID,
-    required String userSig,
-  }) async {
+  Future<ImCallback> login({required String userID, required String userSig}) async {
     // TODO: implement login
     throw UnimplementedError();
   }
@@ -178,6 +177,58 @@ class IMManager {
   /// 设置 APNS 监听器
   Future setAPNSListener() async {
     // TODO: implement setAPNSListener
+    throw UnimplementedError();
+  }
+
+  /// 实验性接口
+  Future<ImValueCallback<dynamic>> callExperimentalAPI({
+    required String api,
+    required Object param,
+  }) async {
+    // TODO: implement callExperimentalAPI
+    throw UnimplementedError();
+  }
+
+  /// 发送 C2C 文本消息（已弃用）
+  Future<ImValueCallback<ImMessage>> sendC2CTextMessage({
+    required String text,
+    required String userID,
+  }) async {
+    // TODO: implement sendC2CTextMessage
+    throw UnimplementedError();
+  }
+
+  /// 发送群组文本消息（已弃用）
+  Future<ImValueCallback<ImMessage>> sendGroupTextMessage({
+    required String text,
+    required String groupID,
+    dynamic priority,
+  }) async {
+    // TODO: implement sendGroupTextMessage
+    throw UnimplementedError();
+  }
+
+  /// 获取信令管理器
+  IMSignalingManager getSignalingManager() {
+    // TODO: implement getSignalingManager
+    throw UnimplementedError();
+  }
+
+  /// 检查能力位
+  Future<ImValueCallback<int>> checkAbility() async {
+    // TODO: implement checkAbility
+    throw UnimplementedError();
+  }
+
+  /// 移除简单消息监听器
+  Future<void> removeSimpleMsgListener({dynamic listener}) async {
+    // TODO: implement removeSimpleMsgListener
+    throw UnimplementedError();
+  }
+
+  /// 添加简单消息监听器
+  Future<void> addSimpleMsgListener({dynamic listener}) async {
+    // TODO: implement addSimpleMsgListener
     throw UnimplementedError();
   }
 }

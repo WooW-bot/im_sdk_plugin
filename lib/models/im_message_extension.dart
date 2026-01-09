@@ -1,3 +1,4 @@
+/// 消息扩展
 class ImMessageExtension {
   /// 扩展键
   String extensionKey = "";
@@ -5,10 +6,7 @@ class ImMessageExtension {
   /// 扩展值
   String extensionValue = "";
 
-  ImMessageExtension({
-    required this.extensionKey,
-    required this.extensionValue,
-  });
+  ImMessageExtension({required this.extensionKey, required this.extensionValue});
 
   ImMessageExtension.fromJson(Map<String, dynamic> json) {
     extensionKey = json["extensionKey"] ?? "";

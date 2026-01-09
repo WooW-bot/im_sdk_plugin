@@ -1,5 +1,6 @@
 import 'im_group_application.dart';
 
+/// 群组申请结果
 class ImGroupApplicationResult {
   /// 未读数
   late int? unreadCount = 0;
@@ -23,9 +24,7 @@ class ImGroupApplicationResult {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['unreadCount'] = unreadCount;
     if (groupApplicationList != null) {
-      data['groupApplicationList'] = groupApplicationList!
-          .map((v) => v!.toJson())
-          .toList();
+      data['groupApplicationList'] = groupApplicationList!.map((v) => v!.toJson()).toList();
     }
     return data;
   }

@@ -1,16 +1,65 @@
-# im_sdk_plugin_example
+# IM SDK Plugin Example
 
-Demonstrates how to use the im_sdk_plugin plugin.
+这是一个展示 `im_sdk_plugin` 功能的完整示例应用程序。
 
-## Getting Started
+## 功能演示
 
-This project is a starting point for a Flutter application.
+本示例应用包含以下核心模块的演示：
 
-A few resources to get you started if this is your first Flutter project:
+### 1. 基础功能
+- **初始化与登录**：演示 SDK 的初始化流程及用户登录 (`login`)。
+- **用户信息**：查看和修改当前登录用户的个人资料 (`getSelfUserInfo`, `setSelfInfo`).
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 2. 消息系统
+- **会话列表**：展示本地会话历史，支持未读计数。
+- **聊天界面**：
+    - **文本消息**：发送和接收普通文本。
+    - **多媒体消息**：
+        - **图片**：从相册选择或拍照发送。
+        - **语音**：录制并发送语音消息 (依赖 `record` 插件)。
+        - **视频**：发送视频文件。
+    - **自定义消息**：发送自定义结构的数据。
+    - **消息操作**：撤回、删除消息。
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 3. 群组功能
+- **创建群组**：支持创建不同类型的群组（工作群、会议群等）。
+- **群成员管理**：邀请成员、踢人、禁言。
+- **群资料管理**：修改群名称、公告等。
+
+### 4. 关系链
+- **好友管理**：添加好友、黑名单管理。
+- **好友列表**：展示好友列表及搜索功能。
+
+## 运行环境与依赖
+
+本示例应用依赖于父目录中的 `im_sdk_plugin`。
+
+### 依赖项
+- `im_sdk_plugin`: 本地路径依赖。
+- `provider`: 状态管理。
+- `permission_handler`: 权限请求。
+- `image_picker`: 图片/视频选择。
+- `record`: 语音录制 (已适配 v5.x/v6.x API)。
+- `audioplayers`: 语音播放。
+
+### 运行步骤
+
+1. 进入 example 目录：
+   ```bash
+   cd example
+   ```
+
+2. 获取依赖：
+   ```bash
+   flutter pub get
+   ```
+
+3. 运行应用：
+   ```bash
+   flutter run
+   ```
+
+## 注意事项
+
+- **模拟实现**：由于原生侧 (Android/iOS) 的 SDK 桥接正在开发中，部分 API 当前可能仅返回桩数据或抛出 `UnimplementedError`。
+- **权限**：在真机运行时，请确保授予应用 麦克风 (录音)、相册/存储 (发送图片/视频) 等权限。

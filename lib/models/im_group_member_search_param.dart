@@ -1,7 +1,4 @@
-/// V2TimGroupMemberSearchParam
-///
-/// {@category Models}
-///
+/// 群成员搜索参数
 class ImGroupMemberSearchParam {
   /// 搜索关键字列表，最多支持5个
   late List<String> keywordList;
