@@ -1,5 +1,5 @@
-import '../enum/ImSignalingListener.dart';
-import '../enum/offlinePushInfo.dart';
+import '../listener/im_signaling_listener.dart';
+import '../models/offline_push_info.dart';
 import '../models/im_callback.dart';
 import '../models/im_value_callback.dart';
 import '../models/im_signaling_info.dart';
@@ -7,7 +7,9 @@ import '../models/im_signaling_info.dart';
 /// 信令管理器
 class IMSignalingManager {
   /// 添加信令监听器
-  Future<void> addSignalingListener({required ImSignalingListener listener}) async {
+  Future<void> addSignalingListener({
+    required ImSignalingListener listener,
+  }) async {
     // TODO: implement addSignalingListener
     throw UnimplementedError();
   }
@@ -69,7 +71,9 @@ class IMSignalingManager {
   }
 
   /// 获取信令信息
-  Future<ImValueCallback<ImSignalingInfo>> getSignalingInfo({required String msgID}) async {
+  Future<ImValueCallback<ImSignalingInfo>> getSignalingInfo({
+    required String msgID,
+  }) async {
     // TODO: implement getSignalingInfo
     throw UnimplementedError();
   }

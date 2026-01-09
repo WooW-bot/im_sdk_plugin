@@ -1,4 +1,4 @@
-import '../enum/offlinePushInfo.dart';
+import 'offline_push_info.dart';
 import 'im_custom_elem.dart';
 import 'im_face_elem.dart';
 import 'im_file_elem.dart';

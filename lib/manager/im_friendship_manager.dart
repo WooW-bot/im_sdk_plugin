@@ -1,7 +1,7 @@
-import '../enum/ImFriendshipListener.dart';
-import '../enum/friend_application_type_enum.dart';
-import '../enum/friend_response_type_enum.dart';
-import '../enum/friend_type_enum.dart';
+import '../listener/im_friendship_listener.dart';
+import '../enums/friend_application_type_enum.dart';
+import '../enums/friend_response_type_enum.dart';
+import '../enums/friend_type_enum.dart';
 import '../models/im_callback.dart';
 import '../models/im_friend_application_result.dart';
 import '../models/im_friend_check_result.dart';
@@ -37,7 +37,9 @@ class IMFriendshipManager {
   }
 
   /// 添加关系链监听器
-  Future<void> addFriendListener({required ImFriendshipListener listener}) async {
+  Future<void> addFriendListener({
+    required ImFriendshipListener listener,
+  }) async {
     // TODO: implement addFriendListener
     throw UnimplementedError();
   }
@@ -104,7 +106,8 @@ class IMFriendshipManager {
   }
 
   /// 获取好友申请列表
-  Future<ImValueCallback<ImFriendApplicationResult>> getFriendApplicationList() async {
+  Future<ImValueCallback<ImFriendApplicationResult>>
+  getFriendApplicationList() async {
     // TODO: implement getFriendApplicationList
     throw UnimplementedError();
   }
@@ -161,19 +164,25 @@ class IMFriendshipManager {
   }
 
   /// 删除好友分组
-  Future<ImCallback> deleteFriendGroup({required List<String> groupNameList}) async {
+  Future<ImCallback> deleteFriendGroup({
+    required List<String> groupNameList,
+  }) async {
     // TODO: implement deleteFriendGroup
     throw UnimplementedError();
   }
 
   /// 重命名好友分组
-  Future<ImCallback> renameFriendGroup({required String oldName, required String newName}) async {
+  Future<ImCallback> renameFriendGroup({
+    required String oldName,
+    required String newName,
+  }) async {
     // TODO: implement renameFriendGroup
     throw UnimplementedError();
   }
 
   /// 添加好友到分组
-  Future<ImValueCallback<List<ImFriendOperationResult>>> addFriendsToFriendGroup({
+  Future<ImValueCallback<List<ImFriendOperationResult>>>
+  addFriendsToFriendGroup({
     required String groupName,
     required List<String> userIDList,
   }) async {
@@ -182,7 +191,8 @@ class IMFriendshipManager {
   }
 
   /// 从分组中删除好友
-  Future<ImValueCallback<List<ImFriendOperationResult>>> deleteFriendsFromFriendGroup({
+  Future<ImValueCallback<List<ImFriendOperationResult>>>
+  deleteFriendsFromFriendGroup({
     required String groupName,
     required List<String> userIDList,
   }) async {

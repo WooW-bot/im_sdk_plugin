@@ -1,8 +1,8 @@
 import 'package:flutter/services.dart';
 
-import '../enum/ImGroupListener.dart';
-import '../enum/ImSDKListener.dart';
-import '../enum/log_level_enum.dart';
+import '../listener/im_group_listener.dart';
+import '../listener/im_sdk_listener.dart';
+import '../enums/log_level_enum.dart';
 import '../models/im_callback.dart';
 import '../models/im_user_full_info.dart';
 import '../models/im_user_status.dart';
@@ -47,7 +47,10 @@ class IMManager {
   ///
   /// [userID] 用户 ID
   /// [userSig] 用户签名
-  Future<ImCallback> login({required String userID, required String userSig}) async {
+  Future<ImCallback> login({
+    required String userID,
+    required String userSig,
+  }) async {
     // TODO: implement login
     throw UnimplementedError();
   }

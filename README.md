@@ -51,7 +51,7 @@
 
 - [x] **阶段 1：接口设计**
     - 定义所有模型类 (`lib/models/`)。
-    - 定义所有枚举类 (`lib/enum/`)。
+    - 定义所有枚举类及监听器 (`lib/enums/`, `lib/listener/`)。
     - 定义抽象管理器类 (`lib/manager/`)。
     - 为公共 API 添加文档注释。
 

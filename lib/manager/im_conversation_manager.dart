@@ -1,12 +1,12 @@
 import 'package:flutter/services.dart';
 
-import '../enum/ImConversationListener.dart';
+import '../listener/im_conversation_listener.dart';
 import '../models/im_callback.dart';
 import '../models/im_conversation.dart';
 import '../models/im_conversation_result.dart';
 import '../models/im_value_callback.dart';
 import '../models/im_conversation_operation_result.dart';
-import '../models/im_conversationList_filter.dart';
+import '../models/im_conversation_list_filter.dart';
 
 /// 会话管理器
 class IMConversationManager {
@@ -17,13 +17,17 @@ class IMConversationManager {
   }
 
   /// 添加会话监听器
-  Future<void> addConversationListener({required ImConversationListener listener}) async {
+  Future<void> addConversationListener({
+    required ImConversationListener listener,
+  }) async {
     // TODO: implement addConversationListener
     throw UnimplementedError();
   }
 
   /// 移除会话监听器
-  Future<void> removeConversationListener({ImConversationListener? listener}) async {
+  Future<void> removeConversationListener({
+    ImConversationListener? listener,
+  }) async {
     // TODO: implement removeConversationListener
     throw UnimplementedError();
   }
@@ -38,7 +42,8 @@ class IMConversationManager {
   }
 
   /// 获取指定会话列表
-  Future<ImValueCallback<List<ImConversation>>> getConversationListByConversationIds({
+  Future<ImValueCallback<List<ImConversation>>>
+  getConversationListByConversationIds({
     required List<String> conversationIDList,
   }) async {
     // TODO: implement getConversationListByConversationIds
@@ -61,13 +66,17 @@ class IMConversationManager {
   }
 
   /// 获取单个会话
-  Future<ImValueCallback<ImConversation>> getConversation({required String conversationID}) async {
+  Future<ImValueCallback<ImConversation>> getConversation({
+    required String conversationID,
+  }) async {
     // TODO: implement getConversation
     throw UnimplementedError();
   }
 
   /// 删除会话
-  Future<ImCallback> deleteConversation({required String conversationID}) async {
+  Future<ImCallback> deleteConversation({
+    required String conversationID,
+  }) async {
     // TODO: implement deleteConversation
     throw UnimplementedError();
   }
@@ -82,7 +91,8 @@ class IMConversationManager {
   }
 
   /// 创建会话分组
-  Future<ImValueCallback<List<ImConversationOperationResult>>> createConversationGroup({
+  Future<ImValueCallback<List<ImConversationOperationResult>>>
+  createConversationGroup({
     required String groupName,
     required List<String> conversationIDList,
   }) async {
@@ -106,7 +116,8 @@ class IMConversationManager {
   }
 
   /// 添加会话到分组
-  Future<ImValueCallback<List<ImConversationOperationResult>>> addConversationsToGroup({
+  Future<ImValueCallback<List<ImConversationOperationResult>>>
+  addConversationsToGroup({
     required String groupName,
     required List<String> conversationIDList,
   }) async {
@@ -115,7 +126,8 @@ class IMConversationManager {
   }
 
   /// 从分组删除会话
-  Future<ImValueCallback<List<ImConversationOperationResult>>> deleteConversationsFromGroup({
+  Future<ImValueCallback<List<ImConversationOperationResult>>>
+  deleteConversationsFromGroup({
     required String groupName,
     required List<String> conversationIDList,
   }) async {
@@ -124,13 +136,16 @@ class IMConversationManager {
   }
 
   /// 删除会话分组
-  Future<ImCallback> deleteConversationGroup({required String groupName}) async {
+  Future<ImCallback> deleteConversationGroup({
+    required String groupName,
+  }) async {
     // TODO: implement deleteConversationGroup
     throw UnimplementedError();
   }
 
   /// 设置会话自定义数据
-  Future<ImValueCallback<List<ImConversationOperationResult>>> setConversationCustomData({
+  Future<ImValueCallback<List<ImConversationOperationResult>>>
+  setConversationCustomData({
     required String customData,
     required List<String> conversationIDList,
   }) async {
@@ -139,7 +154,8 @@ class IMConversationManager {
   }
 
   /// 标记会话
-  Future<ImValueCallback<List<ImConversationOperationResult>>> markConversation({
+  Future<ImValueCallback<List<ImConversationOperationResult>>>
+  markConversation({
     required List<String> conversationIDList,
     required int markType,
     required bool enableMark,

@@ -1,7 +1,7 @@
-import '../enum/group_add_opt_enum.dart';
-import '../enum/group_application_type_enum.dart';
-import '../enum/group_member_filter_enum.dart';
-import '../enum/group_member_role_enum.dart';
+import '../enums/group_add_opt_enum.dart';
+import '../enums/group_application_type_enum.dart';
+import '../enums/group_member_filter_enum.dart';
+import '../enums/group_member_role_enum.dart';
 import '../models/im_callback.dart';
 import '../models/im_group_application_result.dart';
 import '../models/im_group_info.dart';
@@ -84,7 +84,9 @@ class IMGroupManager {
   }
 
   /// 获取群组在线成员数量
-  Future<ImValueCallback<int>> getGroupOnlineMemberCount({required String groupID}) async {
+  Future<ImValueCallback<int>> getGroupOnlineMemberCount({
+    required String groupID,
+  }) async {
     // TODO: implement getGroupOnlineMemberCount
     throw UnimplementedError();
   }
@@ -160,13 +162,17 @@ class IMGroupManager {
   }
 
   /// 转让群主
-  Future<ImCallback> transferGroupOwner({required String groupID, required String userID}) async {
+  Future<ImCallback> transferGroupOwner({
+    required String groupID,
+    required String userID,
+  }) async {
     // TODO: implement transferGroupOwner
     throw UnimplementedError();
   }
 
   /// 邀请用户加入群组
-  Future<ImValueCallback<List<ImGroupMemberOperationResult>>> inviteUserToGroup({
+  Future<ImValueCallback<List<ImGroupMemberOperationResult>>>
+  inviteUserToGroup({
     required String groupID,
     required List<String> userList,
   }) async {
@@ -175,7 +181,8 @@ class IMGroupManager {
   }
 
   /// 获取群组申请列表
-  Future<ImValueCallback<ImGroupApplicationResult>> getGroupApplicationList() async {
+  Future<ImValueCallback<ImGroupApplicationResult>>
+  getGroupApplicationList() async {
     // TODO: implement getGroupApplicationList
     throw UnimplementedError();
   }
@@ -187,7 +194,8 @@ class IMGroupManager {
     required String fromUser,
     required String toUser,
     int? addTime,
-    GroupApplicationTypeEnum? type = GroupApplicationTypeEnum.IM_GROUP_APPLICATION_GET_TYPE_INVITE,
+    GroupApplicationTypeEnum? type =
+        GroupApplicationTypeEnum.IM_GROUP_APPLICATION_GET_TYPE_INVITE,
     String? webMessageInstance,
   }) async {
     // TODO: implement acceptGroupApplication
@@ -230,7 +238,8 @@ class IMGroupManager {
   }
 
   /// 从社区中删除话题
-  Future<ImValueCallback<List<ImTopicOperationResult>>> deleteTopicFromCommunity({
+  Future<ImValueCallback<List<ImTopicOperationResult>>>
+  deleteTopicFromCommunity({
     required String groupID,
     required List<String> topicIDList,
   }) async {
@@ -239,7 +248,10 @@ class IMGroupManager {
   }
 
   /// 设置话题信息
-  Future<ImCallback> setTopicInfo({required String groupID, required ImTopicInfo topicInfo}) async {
+  Future<ImCallback> setTopicInfo({
+    required String groupID,
+    required ImTopicInfo topicInfo,
+  }) async {
     // TODO: implement setTopicInfo
     throw UnimplementedError();
   }

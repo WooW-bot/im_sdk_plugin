@@ -1,4 +1,4 @@
-import '../enum/offlinePushInfo.dart';
+import 'offline_push_info.dart';
 
 /// 信令信息
 class ImSignalingInfo {

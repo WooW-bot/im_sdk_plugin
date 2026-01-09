@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:im_sdk_plugin_example/utils/GenerateTestUserSig.dart';
-import 'package:im_sdk_plugin_example/utils/sdkResponse.dart';
+import 'package:im_sdk_plugin_example/utils/generate_test_user_sig.dart';
+import 'package:im_sdk_plugin_example/utils/sdk_response.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:im_sdk_plugin/models/im_callback.dart';
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';

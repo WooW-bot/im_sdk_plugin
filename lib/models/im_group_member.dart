@@ -1,5 +1,5 @@
-import '../enum/group_member_role_enum.dart';
-import '../enum/utils.dart';
+import '../enums/group_member_role_enum.dart';
+import '../utils/utils.dart';
 
 /// 群成员
 class ImGroupMember {
@@ -17,6 +17,9 @@ class ImGroupMember {
   }
 
   Map<dynamic, dynamic> toJson() {
-    return {"userID": userID, "role": EnumUtils.convertGroupMemberRoleTypeEnum(role)};
+    return {
+      "userID": userID,
+      "role": EnumUtils.convertGroupMemberRoleTypeEnum(role),
+    };
   }
 }

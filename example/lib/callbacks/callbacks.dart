@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
 import 'package:im_sdk_plugin_example/provider/event.dart';
-import 'package:im_sdk_plugin_example/utils/sdkResponse.dart';
+import 'package:im_sdk_plugin_example/utils/sdk_response.dart';
 import 'package:provider/provider.dart';
 
 class Callbacks extends StatefulWidget {

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 import 'package:im_sdk_plugin_example/callbacks/callbacks.dart';
 import 'package:im_sdk_plugin_example/config/config.dart';
-import 'package:im_sdk_plugin_example/setting/userSetting.dart';
+import 'package:im_sdk_plugin_example/setting/user_setting.dart';
 
-import 'exampleList.dart';
+import 'example_list.dart';
 
 class Index extends StatelessWidget {
   const Index({Key? key}) : super(key: key);

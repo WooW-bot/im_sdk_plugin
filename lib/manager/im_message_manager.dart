@@ -1,11 +1,11 @@
 import 'package:flutter/services.dart';
 
-import '../enum/ImAdvancedMsgListener.dart';
-import '../enum/get_group_message_read_member_list_filter.dart';
-import '../enum/history_msg_get_type_enum.dart';
-import '../enum/message_priority_enum.dart';
-import '../enum/offlinePushInfo.dart';
-import '../enum/receive_message_opt_enum.dart';
+import '../listener/im_advanced_msg_listener.dart';
+import '../enums/get_group_message_read_member_list_filter.dart';
+import '../enums/history_msg_get_type_enum.dart';
+import '../enums/message_priority_enum.dart';
+import '../models/offline_push_info.dart';
+import '../enums/receive_message_opt_enum.dart';
 import '../models/im_callback.dart';
 import '../models/im_group_message_read_member_list.dart';
 import '../models/im_message.dart';
@@ -30,7 +30,9 @@ class IMMessageManager {
   }
 
   /// 创建文本消息
-  Future<ImValueCallback<ImMsgCreateInfoResult>> createTextMessage({required String text}) async {
+  Future<ImValueCallback<ImMsgCreateInfoResult>> createTextMessage({
+    required String text,
+  }) async {
     // TODO: implement createTextMessage
     throw UnimplementedError();
   }
@@ -153,13 +155,17 @@ class IMMessageManager {
   }
 
   /// 添加高级消息监听器
-  Future<void> addAdvancedMsgListener({required ImAdvancedMsgListener listener}) async {
+  Future<void> addAdvancedMsgListener({
+    required ImAdvancedMsgListener listener,
+  }) async {
     // TODO: implement addAdvancedMsgListener
     throw UnimplementedError();
   }
 
   /// 移除高级消息监听器
-  Future<void> removeAdvancedMsgListener({ImAdvancedMsgListener? listener}) async {
+  Future<void> removeAdvancedMsgListener({
+    ImAdvancedMsgListener? listener,
+  }) async {
     // TODO: implement removeAdvancedMsgListener
     throw UnimplementedError();
   }
@@ -176,7 +182,8 @@ class IMMessageManager {
 
   /// 获取历史消息列表
   Future<ImValueCallback<List<ImMessage>>> getHistoryMessageList({
-    HistoryMsgGetTypeEnum? getType = HistoryMsgGetTypeEnum.IM_GET_LOCAL_OLDER_MSG,
+    HistoryMsgGetTypeEnum? getType =
+        HistoryMsgGetTypeEnum.IM_GET_LOCAL_OLDER_MSG,
     String? userID,
     String? groupID,
     int lastMsgSeq = -1,
@@ -217,7 +224,9 @@ class IMMessageManager {
   }
 
   /// 从本地存储中删除消息
-  Future<ImCallback> deleteMessageFromLocalStorage({required String msgID}) async {
+  Future<ImCallback> deleteMessageFromLocalStorage({
+    required String msgID,
+  }) async {
     // TODO: implement deleteMessageFromLocalStorage
     throw UnimplementedError();
   }
@@ -300,19 +309,27 @@ class IMMessageManager {
   }
 
   /// 设置本地自定义整数
-  Future<ImCallback> setLocalCustomInt({required String msgID, required int localCustomInt}) async {
+  Future<ImCallback> setLocalCustomInt({
+    required String msgID,
+    required int localCustomInt,
+  }) async {
     // TODO: implement setLocalCustomInt
     throw UnimplementedError();
   }
 
   /// 撤回消息
-  Future<ImCallback> revokeMessage({required String msgID, Object? webMessageInstatnce}) async {
+  Future<ImCallback> revokeMessage({
+    required String msgID,
+    Object? webMessageInstatnce,
+  }) async {
     // TODO: implement revokeMessage
     throw UnimplementedError();
   }
 
   /// 修改消息
-  Future<ImValueCallback<ImMessageChangeInfo>> modifyMessage({required ImMessage message}) async {
+  Future<ImValueCallback<ImMessageChangeInfo>> modifyMessage({
+    required ImMessage message,
+  }) async {
     // TODO: implement modifyMessage
     throw UnimplementedError();
   }
@@ -345,7 +362,9 @@ class IMMessageManager {
   }
 
   /// 发送消息已读回执
-  Future<ImCallback> sendMessageReadReceipts({required List<String> messageIDList}) async {
+  Future<ImCallback> sendMessageReadReceipts({
+    required List<String> messageIDList,
+  }) async {
     // TODO: implement sendMessageReadReceipts
     throw UnimplementedError();
   }
@@ -359,7 +378,8 @@ class IMMessageManager {
   }
 
   /// 获取群消息已读成员列表
-  Future<ImValueCallback<ImGroupMessageReadMemberList>> getGroupMessageReadMemberList({
+  Future<ImValueCallback<ImGroupMessageReadMemberList>>
+  getGroupMessageReadMemberList({
     required String messageID,
     required GetGroupMessageReadMemberListFilter filter,
     int nextSeq = 0,
@@ -381,7 +401,9 @@ class IMMessageManager {
   }
 
   /// 获取消息在线 URL
-  Future<ImValueCallback<ImMessageOnlineUrl>> getMessageOnlineUrl({required String msgID}) async {
+  Future<ImValueCallback<ImMessageOnlineUrl>> getMessageOnlineUrl({
+    required String msgID,
+  }) async {
     // TODO: implement getMessageOnlineUrl
     throw UnimplementedError();
   }
@@ -404,7 +426,8 @@ class IMMessageManager {
   }
 
   /// 删除消息扩展
-  Future<ImValueCallback<List<ImMessageExtensionResult>>> deleteMessageExtensions({
+  Future<ImValueCallback<List<ImMessageExtensionResult>>>
+  deleteMessageExtensions({
     required String msgID,
     required List<String> keys,
   }) async {
@@ -413,7 +436,10 @@ class IMMessageManager {
   }
 
   /// 设置云端自定义数据
-  Future<ImCallback> setCloudCustomData({required String msgID, required String data}) async {
+  Future<ImCallback> setCloudCustomData({
+    required String msgID,
+    required String data,
+  }) async {
     // TODO: implement setCloudCustomData
     throw UnimplementedError();
   }
