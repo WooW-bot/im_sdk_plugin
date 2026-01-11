@@ -17,6 +17,9 @@
     *   [群组相关通知 (Group)](#22-群组相关通知-group)
     *   [用户相关通知 (User)](#23-用户相关通知-user)
     *   [消息相关通知 (Message)](#24-消息相关通知-message)
+3.  [客户端主动请求 (Client Request via WebSocket)](#3-客户端主动请求-client-request-via-websocket)
+    *   [消息同步 (Sync)](#31-消息同步-sync)
+    *   [状态信令 (Signaling)](#32-状态信令-signaling)
 
 ---
 
@@ -217,3 +220,29 @@
 | 2001 | `CmdPushMsg` | Wait for Decode (普通消息体) | 收到新聊天消息 |
 | 2101 | `RevokeNotification` | RevokeMsgTips (撤回者、ClientMsgID) | 对方撤回消息时 |
 | 2200 | `HasReadReceipt` | MarkAsReadTips (已读Seqs) | 对方标记消息已读时 |
+
+---
+
+## 3. 客户端主动请求 (Client Request via WebSocket)
+
+虽然绝大多数业务操作使用 HTTP，但在以下**特殊场景**（例外情况），客户端会直接通过 WebSocket 向服务端发送请求：
+
+### 3.1 消息同步 (Sync)
+客户端重连或收到新消息通知时，为了减少 HTTP 开销并保证实时性，会通过 WS 主动拉取数据。
+
+*   **GET_NEWEST_SEQ (1001)**: 获取服务端最新的消息 Sequence ID。
+*   **PULL_MSG_BY_SEQ (1002)**: 根据 Sequence 范围拉取消息历史。
+
+### 3.2 状态信令 (Signaling)
+为了实时体验和减少对业务服务器的压力，部分“瞬态”或“长连接强相关”的状态会走 WS。
+
+*   **SEND_MSG (1003)** - **仅限 "Typing" 状态**:  
+    当用户“正在输入”时，SDK 会发送一条特殊的即时消息，内容类型为 `Typing`。这类消息不存库，仅用于实时推送到对方客户端显示“对方正在输入...”。
+*   **SET_BACKGROUND_STATUS**:
+    App 切换到后台/前台时，通知服务端更新在线状态（例如是否需要离线推送）。
+*   **LOGOUT_MSG**:
+    用户在客户端点击登出时，发送此信令断开长连接并清理服务端 Session。
+
+**总结**: 
+*   **业务状态变更**（如加好友、发普通消息）：必走 **HTTP**。
+*   **数据层同步**（拉取消息）和 **瞬态信令**（输入状态、心跳）：走 **WebSocket**。
