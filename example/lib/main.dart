@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'provider/event.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
@@ -14,7 +16,12 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // 1. 初始化，根据设备语言自动选择，如果是 Web 或测试，这也很有用
   LocaleSettings.useDeviceLocale();
-  runApp(TranslationProvider(child: const APIExampleApp())); // 2. 包裹 App
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => Event())],
+      child: TranslationProvider(child: const APIExampleApp()),
+    ),
+  );
 }
 
 class APIExampleApp extends StatelessWidget {
@@ -29,10 +36,10 @@ class APIExampleApp extends StatelessWidget {
       // 监听语言变化
       supportedLocales: AppLocaleUtils.supportedLocales,
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      showPerformanceOverlay: true,
+      //showPerformanceOverlay: true,
       home: const Index(),
       title: Config.appName,
-      builder:   EasyLoading.init(),
+      builder: EasyLoading.init(),
     );
   }
 }

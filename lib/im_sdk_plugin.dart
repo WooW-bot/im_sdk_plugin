@@ -13,7 +13,7 @@ class ImSDKPlugin {
   ///
   /// 如果实例为空，则创建一个新的实例
   static IMManager managerInstance() {
-    manager ??= IMManager(_channel);
+    manager ??= IMManager();
     return manager!;
   }
 

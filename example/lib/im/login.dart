@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:im_sdk_plugin_example/config/config.dart';
 import 'package:im_sdk_plugin_example/utils/generate_test_user_sig.dart';
 import 'package:im_sdk_plugin_example/utils/sdk_response.dart';
 import 'package:localstorage/localstorage.dart';
@@ -18,8 +19,8 @@ class LoginState extends State<Login> {
     String userID = storage.getItem("userID");
     // 正式环境请在服务端计算userSIg
     String userSig = new GenerateTestUserSig(
-      sdkappid: int.parse(storage.getItem("sdkappid")),
-      key: storage.getItem("secret"),
+      sdkappid: Config.sdkappid,
+      key: Config.key,
     ).genSig(
       identifier: userID,
       expire: 7 * 24 * 60 * 1000, // userSIg有效期

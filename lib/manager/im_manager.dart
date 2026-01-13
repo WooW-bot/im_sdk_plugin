@@ -1,4 +1,8 @@
-import 'package:flutter/services.dart';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
+import 'package:im_sdk_plugin/models/im_client_config.dart';
+import 'package:uuid/uuid.dart';
 
 import '../listener/im_group_listener.dart';
 import '../listener/im_sdk_listener.dart';
@@ -17,9 +21,7 @@ import '../models/im_message.dart';
 
 /// IM SDK 主核心管理类
 class IMManager {
-  late MethodChannel _channel;
-
-  IMManager(MethodChannel channel);
+  late Map<String, ImSDKListener> initSDKListenerList = {};
 
   /// 初始化 SDK
   ///
@@ -29,12 +31,54 @@ class IMManager {
   /// [showImLog] 是否显示 IM 日志
   Future<ImValueCallback<bool>> initSDK({
     required int appID,
-    required LogLevelEnum loglevel,
+    required LogLevelEnum logLevel,
     required ImSDKListener listener,
     bool? showImLog = false,
   }) async {
-    // TODO: implement initSDK
-    throw UnimplementedError();
+    final String uuid = Uuid().v4();
+    int platform = _getPlatform();
+    initSDKListenerList[uuid] = listener;
+    // 1. Initialize Configuration
+    final config = IMClientConfig(
+      appID: appID,
+      logLevel: logLevel.index,
+      listenerUuid: uuid,
+      uiPlatform: platform,
+      showImLog: showImLog ?? false,
+    );
+
+    // 2. Initialize Logging (Stub)
+    if (config.showImLog) {
+      print("IMSDK: [Init] Logger initialized. Level: ${config.logLevel}");
+    }
+
+    // 3. Register Listener
+    initSDKListenerList[uuid] = listener;
+
+    // 4. Initialize Database (Simulated)
+    if (config.showImLog) {
+      print("IMSDK: [Init] Preparing local database...");
+    }
+    await Future.delayed(const Duration(milliseconds: 50));
+    if (config.showImLog) {
+      print("IMSDK: [Init] Database ready (Simulated SQLite).");
+    }
+
+    // 5. Initialize Network (Pending in login)
+    // As per server architecture, actual connection happens after login returns the route.
+    // initSDK only prepares local resources.
+
+    return ImValueCallback<bool>(code: 0, desc: "Success", data: true);
+  }
+
+  int _getPlatform() {
+    if (kIsWeb) return 0;
+    if (Platform.isAndroid) return 1;
+    if (Platform.isIOS) return 2;
+    if (Platform.isMacOS) return 3;
+    if (Platform.isWindows) return 4;
+    if (Platform.isLinux) return 5;
+    return 6;
   }
 
   /// 反初始化 SDK
@@ -47,10 +91,7 @@ class IMManager {
   ///
   /// [userID] 用户 ID
   /// [userSig] 用户签名
-  Future<ImCallback> login({
-    required String userID,
-    required String userSig,
-  }) async {
+  Future<ImCallback> login({required String userID, required String userSig}) async {
     // TODO: implement login
     throw UnimplementedError();
   }
@@ -233,5 +274,29 @@ class IMManager {
   Future<void> addSimpleMsgListener({dynamic listener}) async {
     // TODO: implement addSimpleMsgListener
     throw UnimplementedError();
+  }
+
+  /// Internal helper to simulate native event callback
+  void _triggerNativeEvent(String listenerUuid, String type, [dynamic data]) {
+    final listener = initSDKListenerList[listenerUuid];
+    if (listener != null) {
+      switch (type) {
+        case 'onConnecting':
+          listener.onConnecting();
+          break;
+        case 'onConnectSuccess':
+          listener.onConnectSuccess();
+          break;
+        case 'onConnectFailed':
+          listener.onConnectFailed(data?['code'] ?? -1, data?['desc'] ?? "Unknown Error");
+          break;
+        case 'onKickedOffline':
+          listener.onKickedOffline();
+          break;
+        case 'onUserSigExpired':
+          listener.onUserSigExpired();
+          break;
+      }
+    }
   }
 }

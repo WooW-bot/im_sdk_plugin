@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:im_sdk_plugin_example/config/config.dart';
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
@@ -31,8 +32,8 @@ class UserSettingState extends State<UserSettingPage> {
     String? skt = storage.getItem("secret");
     String? usd = storage.getItem("userID");
     setState(() {
-      sdkappid = skd ?? "";
-      secret = skt ?? "";
+      sdkappid = skd ?? (Config.sdkappid > 0 ? Config.sdkappid.toString() : "");
+      secret = skt ?? (Config.key != "" ? Config.key : "");
       userID = usd ?? "";
     });
     sdkappidc = TextEditingController(text: sdkappid);

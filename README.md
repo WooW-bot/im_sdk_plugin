@@ -57,6 +57,8 @@
 
 - [ ] **阶段 2：平台通道实现**
     - [x] 在 Dart 管理器中实现 `MethodChannel` 逻辑 (已完成接口定义和存根)。
+    - [x] 实现 Dart 侧 `initSDK` 核心逻辑（本地初始化配置、日志、DB预备）。
+    - [ ] 完善 `login` 逻辑（网络路由与 TCP 连接）。
     - [ ] 处理方法调用和事件流。
     - [ ] 实现 Dart 模型与 JSON 之间的映射，用于平台通信。
 
@@ -86,6 +88,55 @@ cd example
 flutter pub get
 flutter run
 ```
+
+
+## 使用指南
+
+### 1. 初始化 SDK
+
+在调用任何其他接口之前，必须先初始化 SDK。`initSDK` 方法负责加载配置、初始化日志系统和准备本地数据库。
+
+```dart
+import 'package:im_sdk_plugin/im_sdk_plugin.dart';
+import 'package:im_sdk_plugin/models/im_value_callback.dart';
+import 'package:im_sdk_plugin/enums/log_level_enum.dart';
+import 'package:im_sdk_plugin/listener/im_sdk_listener.dart';
+
+// 定义 SDK 监听器
+final listener = ImSDKListener(
+  onConnectSuccess: () {
+    print("连接成功");
+  },
+  onConnecting: () {
+    print("连接中...");
+  },
+  onConnectFailed: (code, error) {
+    print("连接失败: $code - $error");
+  },
+  onKickedOffline: () {
+    print("被踢下线");
+  },
+  onUserSigExpired: () {
+    print("UserSig 过期");
+  },
+);
+
+// 调用初始化
+ImValueCallback<bool> res = await ImSDKPlugin.imManager.initSDK(
+  appID: 1234567890, // 您的 SDK AppID
+  logLevel: LogLevelEnum.IM_LOG_ALL, // 日志等级
+  showImLog: true, // 是否在控制台输出日志
+  listener: listener, // 传入监听器
+);
+
+if (res.code == 0) {
+  print("初始化成功");
+} else {
+  print("初始化失败: ${res.desc}");
+}
+```
+
+**注意**：`initSDK` 仅进行本地环境初始化。实际的网络连接（TCP/WebSocket）将在调用 `login` 成功获取服务器路由后自动建立。
 
 ## 快速开始
 

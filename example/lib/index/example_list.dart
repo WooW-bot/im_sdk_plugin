@@ -92,7 +92,12 @@ class Apis extends StatelessWidget {
     String? secret = storage.getItem("secret");
     String? userID = storage.getItem("userID");
     print("sdkappid $sdkappid secret $secret userID $userID");
-    if (sdkappid == null && secret == null && userID == null) {
+
+    if (Config.sdkappid == 0 &&
+        Config.key == "" &&
+        sdkappid == null &&
+        secret == null &&
+        userID == null) {
       OkCancelResult res = await showOkAlertDialog(
         context: context,
         title: imt("提示"),
