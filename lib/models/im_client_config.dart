@@ -22,11 +22,15 @@ class IMClientConfig {
   /// UI Platform identifier (e.g., Flutter, Unity, Unreal).
   final int uiPlatform;
 
+  /// The API Host URL (e.g., "http://127.0.0.1:8080").
+  final String apiHost;
+
   IMClientConfig({
     required this.appID,
     required this.logLevel,
     required this.listenerUuid,
     required this.uiPlatform,
+    required this.apiHost,
     this.showImLog = false,
     this.dataDir,
   });

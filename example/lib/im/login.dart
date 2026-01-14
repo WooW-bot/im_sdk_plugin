@@ -3,7 +3,7 @@ import 'package:im_sdk_plugin_example/config/config.dart';
 import 'package:im_sdk_plugin_example/utils/generate_test_user_sig.dart';
 import 'package:im_sdk_plugin_example/utils/sdk_response.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:im_sdk_plugin/models/im_callback.dart';
+import 'package:im_sdk_plugin/models/im_value_callback.dart';
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
 
@@ -13,19 +13,22 @@ class Login extends StatefulWidget {
 }
 
 class LoginState extends State<Login> {
-  final LocalStorage storage = new LocalStorage('package:im_sdk_plugin_example_user_info');
+  final LocalStorage storage = new LocalStorage(
+    'package:im_sdk_plugin_example_user_info',
+  );
   Map<String, dynamic>? resData;
   login() async {
     String userID = storage.getItem("userID");
     // 正式环境请在服务端计算userSIg
-    String userSig = new GenerateTestUserSig(
-      sdkappid: Config.sdkappid,
-      key: Config.key,
-    ).genSig(
-      identifier: userID,
-      expire: 7 * 24 * 60 * 1000, // userSIg有效期
-    );
-    ImCallback res = await ImSDKPlugin.imManager.login(
+    String userSig =
+        new GenerateTestUserSig(
+          sdkappid: Config.sdkappid,
+          key: Config.key,
+        ).genSig(
+          identifier: userID,
+          expire: 7 * 24 * 60 * 1000, // userSIg有效期
+        );
+    ImValueCallback res = await ImSDKPlugin.imManager.login(
       userID: userID,
       userSig: userSig,
     );
@@ -46,11 +49,8 @@ class LoginState extends State<Login> {
           Row(
             children: [
               Expanded(
-                child: ElevatedButton(
-                  onPressed: login,
-                  child: Text(imt("登录")),
-                ),
-              )
+                child: ElevatedButton(onPressed: login, child: Text(imt("登录"))),
+              ),
             ],
           ),
           SDKResponse(resData),
