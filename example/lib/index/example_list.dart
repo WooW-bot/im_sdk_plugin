@@ -88,9 +88,9 @@ class Apis extends StatelessWidget {
   }
 
   Future<bool> isSetUser(context) async {
-    String? sdkappid = storage.getItem("sdkappid");
-    String? secret = storage.getItem("secret");
-    String? userID = storage.getItem("userID");
+    String? sdkappid = Config.sdkappid.toString();
+    String? secret = Config.key;
+    String? userID = Config.userID;
     print("sdkappid $sdkappid secret $secret userID $userID");
 
     if (Config.sdkappid == 0 &&

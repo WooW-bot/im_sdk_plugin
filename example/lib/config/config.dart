@@ -126,6 +126,7 @@ import 'package:flutter/material.dart';
 class Config {
   static const String appName = "API Example For Flutter";
   static const int sdkappid = 10001;
+  static const String userID = "10001";
 
   // 【重要】 生产环境userSig请放在服务端生产。
   static const String key = "3e4cd0e12b2535fd968a96a2b3aeebf76ee8a76b5aa3f7ae6ed3b09df607cbb2";

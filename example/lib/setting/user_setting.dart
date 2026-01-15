@@ -28,9 +28,9 @@ class UserSettingState extends State<UserSettingPage> {
   @override
   void initState() {
     super.initState();
-    String? skd = storage.getItem("sdkappid");
-    String? skt = storage.getItem("secret");
-    String? usd = storage.getItem("userID");
+    String? skd = Config.sdkappid.toString();
+    String? skt = Config.key;
+    String? usd = Config.userID;
     setState(() {
       sdkappid = skd ?? (Config.sdkappid > 0 ? Config.sdkappid.toString() : "");
       secret = skt ?? (Config.key != "" ? Config.key : "");

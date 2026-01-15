@@ -143,3 +143,182 @@ if (res.code == 0) {
 本项目是 Flutter [插件包](https://flutter.dev/to/develop-plugins) 的起点，插件包是一种包含 Android 和/或 iOS 平台特定实现代码的专用包。
 
 如需获得 Flutter 开发入门方面的帮助，请查看 [在线文档](https://docs.flutter.dev)，其中提供了教程、示例、移动开发指南以及完整的 API 参考。
+
+## API 接口实现状态 (API Implementation Status)
+
+**总体进度**: 6 / 160 (3.75%)
+
+### 1. IMManager (6/30)
+- [x] initSDK
+- [ ] unInitSDK
+- [x] login
+- [x] logout
+- [x] getLoginUser
+- [x] getLoginStatus
+- [ ] getServerTime
+- [ ] getVersion
+- [ ] getConversationManager
+- [ ] getFriendshipManager
+- [ ] getGroupManager
+- [ ] getMessageManager
+- [ ] getOfflinePushManager
+- [ ] addGroupListener
+- [ ] removeGroupListener
+- [ ] joinGroup
+- [ ] quitGroup
+- [ ] dismissGroup
+- [x] getUsersInfo
+- [ ] getUserStatus
+- [ ] setSelfInfo
+- [ ] setSelfStatus
+- [ ] setAPNSListener
+- [ ] callExperimentalAPI
+- [ ] sendC2CTextMessage
+- [ ] sendGroupTextMessage
+- [ ] getSignalingManager
+- [ ] checkAbility
+- [ ] removeSimpleMsgListener
+- [ ] addSimpleMsgListener
+
+### 2. IMConversationManager (0/18)
+- [ ] addConversationListener
+- [ ] removeConversationListener
+- [ ] getConversationList
+- [ ] getConversationListByConversationIds
+- [ ] pinConversation
+- [ ] getTotalUnreadMessageCount
+- [ ] getConversation
+- [ ] deleteConversation
+- [ ] setConversationDraft
+- [ ] createConversationGroup
+- [ ] renameConversationGroup
+- [ ] getConversationGroupList
+- [ ] addConversationsToGroup
+- [ ] deleteConversationsFromGroup
+- [ ] deleteConversationGroup
+- [ ] setConversationCustomData
+- [ ] markConversation
+- [ ] getConversationListByFilter
+
+### 3. IMFriendshipManager (0/23)
+- [ ] addToBlackList
+- [ ] deleteFromBlackList
+- [ ] getBlackList
+- [ ] addFriendListener
+- [ ] removeFriendListener
+- [ ] getFriendList
+- [ ] getFriendsInfo
+- [ ] setFriendInfo
+- [ ] addFriend
+- [ ] deleteFromFriendList
+- [ ] checkFriend
+- [ ] getFriendApplicationList
+- [ ] acceptFriendApplication
+- [ ] refuseFriendApplication
+- [ ] deleteFriendApplication
+- [ ] setFriendApplicationRead
+- [ ] createFriendGroup
+- [ ] getFriendGroups
+- [ ] deleteFriendGroup
+- [ ] renameFriendGroup
+- [ ] addFriendsToFriendGroup
+- [ ] deleteFriendsFromFriendGroup
+- [ ] searchFriends
+
+### 4. IMGroupManager (0/26)
+- [ ] createGroup
+- [ ] getJoinedGroupList
+- [ ] getGroupsInfo
+- [ ] setGroupInfo
+- [ ] deleteGroupAttributes
+- [ ] getGroupAttributes
+- [ ] searchGroups
+- [ ] getGroupOnlineMemberCount
+- [ ] getGroupMemberList
+- [ ] getGroupMembersInfo
+- [ ] setGroupMemberInfo
+- [ ] searchGroupMembers
+- [ ] muteGroupMember
+- [ ] kickGroupMember
+- [ ] setGroupMemberRole
+- [ ] transferGroupOwner
+- [ ] inviteUserToGroup
+- [ ] getGroupApplicationList
+- [ ] acceptGroupApplication
+- [ ] refuseGroupApplication
+- [ ] setGroupApplicationRead
+- [ ] getJoinedCommunityList
+- [ ] createTopicInCommunity
+- [ ] deleteTopicFromCommunity
+- [ ] setTopicInfo
+- [ ] getTopicInfoList
+
+### 5. IMMessageManager (0/51)
+- [ ] createTextMessage
+- [ ] createCustomMessage
+- [ ] createImageMessage
+- [ ] createSoundMessage
+- [ ] createVideoMessage
+- [ ] createTextAtMessage
+- [ ] createFileMessage
+- [ ] createLocationMessage
+- [ ] createFaceMessage
+- [ ] createMergerMessage
+- [ ] createForwardMessage
+- [ ] createTargetedGroupMessage
+- [ ] appendMessage
+- [ ] addAdvancedMsgListener
+- [ ] removeAdvancedMsgListener
+- [ ] getC2CHistoryMessageList
+- [ ] getHistoryMessageList
+- [ ] getGroupHistoryMessageList
+- [ ] markC2CMessageAsRead
+- [ ] markGroupMessageAsRead
+- [ ] markAllMessageAsRead
+- [ ] deleteMessageFromLocalStorage
+- [ ] deleteMessages
+- [ ] insertGroupMessageToLocalStorage
+- [ ] insertC2CMessageToLocalStorage
+- [ ] clearC2CHistoryMessage
+- [ ] clearGroupHistoryMessage
+- [ ] downloadMergerMessage
+- [ ] setC2CReceiveMessageOpt
+- [ ] setGroupReceiveMessageOpt
+- [ ] setLocalCustomData
+- [ ] setLocalCustomInt
+- [ ] revokeMessage
+- [ ] modifyMessage
+- [ ] sendMessage
+- [ ] searchLocalMessages
+- [ ] sendMessageReadReceipts
+- [ ] getMessageReadReceipts
+- [ ] getGroupMessageReadMemberList
+- [ ] downloadMessage
+- [ ] getMessageOnlineUrl
+- [ ] setMessageExtensions
+- [ ] getMessageExtensions
+- [ ] deleteMessageExtensions
+- [ ] setCloudCustomData
+- [ ] findMessages
+- [ ] getC2CReceiveMessageOpt
+- [ ] reSendMessage
+- [ ] sendCustomMessage
+- [ ] getHistoryMessageListV2
+- [ ] getHistoryMessageListWithoutFormat
+
+### 6. IMOfflinePushManager (0/3)
+- [ ] doBackground
+- [ ] doForeground
+- [ ] setOfflinePushConfig
+
+### 7. IMSignalingManager (0/9)
+- [ ] addSignalingListener
+- [ ] removeSignalingListener
+- [ ] invite
+- [ ] inviteInGroup
+- [ ] cancel
+- [ ] accept
+- [ ] reject
+- [ ] addInvitedSignaling
+- [ ] getSignalingInfo
+

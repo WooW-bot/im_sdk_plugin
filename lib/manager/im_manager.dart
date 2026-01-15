@@ -9,6 +9,7 @@ import 'package:uuid/uuid.dart';
 import '../listener/im_group_listener.dart';
 import '../listener/im_sdk_listener.dart';
 import '../enums/log_level_enum.dart';
+import '../enums/login_status_enum.dart';
 import '../models/im_callback.dart';
 import '../models/im_user_full_info.dart';
 import '../models/im_user_status.dart';
@@ -26,6 +27,7 @@ class IMManager {
   late Map<String, ImSDKListener> initSDKListenerList = {};
   IMClientConfig? _config;
   String? _currentUserID;
+  int _loginStatus = LoginStatusEnum.limit.index;
 
   /// 初始化 SDK
   ///
@@ -38,10 +40,13 @@ class IMManager {
     required LogLevelEnum logLevel,
     required ImSDKListener listener,
     bool? showImLog = false,
-    String apiHost = "http://127.0.0.1:8080",
+    String apiHost = "http://172.16.100.112:8000",
   }) async {
     final String uuid = Uuid().v4();
     int platform = _getPlatform();
+    // Reset to logout status on init
+    _loginStatus = LoginStatusEnum.logout.index;
+
     initSDKListenerList[uuid] = listener;
     // 1. Initialize Configuration
     _config = IMClientConfig(
@@ -111,6 +116,12 @@ class IMManager {
         );
       }
 
+      if (_loginStatus == LoginStatusEnum.logged.index) {
+        return ImValueCallback(code: -1, desc: "Already logged in", data: null);
+      }
+
+      _loginStatus = LoginStatusEnum.logging.index;
+
       // 1. HTTP Request to get RouteInfo from Backend
       final String apiHost = _config!.apiHost;
       final dio = Dio();
@@ -162,6 +173,7 @@ class IMManager {
 
         _triggerNativeEvent(_config!.listenerUuid, 'onConnectSuccess');
         _currentUserID = userID;
+        _loginStatus = LoginStatusEnum.logged.index;
         return ImValueCallback(
           code: 0,
           desc: "Login Success",
@@ -179,6 +191,7 @@ class IMManager {
         );
       }
     } catch (e) {
+      _loginStatus = LoginStatusEnum.logout.index;
       _triggerNativeEvent(_config!.listenerUuid, 'onConnectFailed', {
         'code': -1,
         'desc': e.toString(),
@@ -189,8 +202,9 @@ class IMManager {
 
   /// 登出
   Future<ImCallback> logout() async {
-    // TODO: implement logout
-    throw UnimplementedError();
+    _loginStatus = LoginStatusEnum.logout.index;
+    _currentUserID = null;
+    return ImCallback(code: 0, desc: "Logout Success");
   }
 
   /// 获取当前登录用户
@@ -203,8 +217,7 @@ class IMManager {
 
   /// 获取登录状态
   Future<ImValueCallback<int>> getLoginStatus() async {
-    // TODO: implement getLoginStatus
-    throw UnimplementedError();
+    return ImValueCallback(code: 0, desc: "Success", data: _loginStatus);
   }
 
   /// 获取服务器时间

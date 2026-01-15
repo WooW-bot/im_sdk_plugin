@@ -13,29 +13,18 @@ class Login extends StatefulWidget {
 }
 
 class LoginState extends State<Login> {
-  final LocalStorage storage = new LocalStorage(
-    'package:im_sdk_plugin_example_user_info',
-  );
+  final LocalStorage storage = new LocalStorage('package:im_sdk_plugin_example_user_info');
   Map<String, dynamic>? resData;
+
   login() async {
-    String userID = storage.getItem("userID");
+    String userID = /*storage.getItem("userID")*/ Config.userID;
     // 正式环境请在服务端计算userSIg
-    String userSig =
-        new GenerateTestUserSig(
-          sdkappid: Config.sdkappid,
-          key: Config.key,
-        ).genSig(
-          identifier: userID,
-          expire: 7 * 24 * 60 * 1000, // userSIg有效期
-        );
-    ImValueCallback res = await ImSDKPlugin.imManager.login(
-      userID: userID,
-      userSig: userSig,
+    String userSig = new GenerateTestUserSig(sdkappid: Config.sdkappid, key: Config.key).genSig(
+      identifier: userID,
+      expire: 7 * 24 * 60 * 1000, // userSIg有效期
     );
-    await ImSDKPlugin.imManager.callExperimentalAPI(
-      api: "disableBadgeNumber",
-      param: true,
-    );
+    ImValueCallback res = await ImSDKPlugin.imManager.login(userID: userID, userSig: userSig);
+    await ImSDKPlugin.imManager.callExperimentalAPI(api: "disableBadgeNumber", param: true);
     setState(() {
       resData = res.toJson();
     });
