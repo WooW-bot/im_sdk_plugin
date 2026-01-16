@@ -24,7 +24,7 @@ class LoginState extends State<Login> {
       expire: 7 * 24 * 60 * 1000, // userSIg有效期
     );
     ImValueCallback res = await ImSDKPlugin.imManager.login(userID: userID, userSig: userSig);
-    await ImSDKPlugin.imManager.callExperimentalAPI(api: "disableBadgeNumber", param: true);
+    // await ImSDKPlugin.imManager.callExperimentalAPI(api: "disableBadgeNumber", param: true);
     setState(() {
       resData = res.toJson();
     });

@@ -23,11 +23,6 @@ import '../models/im_message_online_url.dart';
 
 /// 消息管理器
 class IMMessageManager {
-  late MethodChannel _channel;
-
-  IMMessageManager(channel) {
-    _channel = channel;
-  }
 
   /// 创建文本消息
   Future<ImValueCallback<ImMsgCreateInfoResult>> createTextMessage({

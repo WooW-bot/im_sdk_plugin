@@ -10,11 +10,6 @@ import '../models/im_conversation_list_filter.dart';
 
 /// 会话管理器
 class IMConversationManager {
-  late MethodChannel _channel;
-
-  IMConversationManager(channel) {
-    _channel = channel;
-  }
 
   /// 添加会话监听器
   Future<void> addConversationListener({

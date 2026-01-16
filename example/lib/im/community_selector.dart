@@ -31,7 +31,12 @@ class GroupItem extends StatefulWidget {
   final ImGroupInfo info;
   final List<String> selected;
 
-  GroupItem(this.switchSelectType, this.info, this.selected, {required this.onSelectItemChange});
+  GroupItem(
+    this.switchSelectType,
+    this.info,
+    this.selected, {
+    required this.onSelectItemChange,
+  });
 
   @override
   State<StatefulWidget> createState() => GroupItemState();
@@ -88,7 +93,11 @@ class GroupItemState extends State<GroupItem> {
                 onItemTap(widget.info.groupID, data);
               },
             ),
-            Expanded(child: Text("GroupID：${widget.info.groupType} ${widget.info.groupID}")),
+            Expanded(
+              child: Text(
+                "GroupID：${widget.info.groupType} ${widget.info.groupID}",
+              ),
+            ),
           ],
         ),
       ),
@@ -159,12 +168,16 @@ class GroupSelectorState extends State<CommunityGroupSelector> {
   List<ImGroupInfo> groupList = List.empty();
 
   Future<List<ImGroupInfo>?> getJoinedCommunityList() async {
-    await EasyLoading.show(status: 'loading...', maskType: EasyLoadingMaskType.black);
-    ImValueCallback<List<ImGroupInfo>> res = await ImSDKPlugin.imManager.getGroupManager()
+    await EasyLoading.show(
+      status: 'loading...',
+      maskType: EasyLoadingMaskType.black,
+    );
+    ImValueCallback<List<ImGroupInfo>> res = await ImSDKPlugin.imManager
+        .getGroupManager()
         .getJoinedCommunityList();
     EasyLoading.dismiss();
-    if (res.code != 0) {
-      Utils.toastError(res.code, res.desc);
+    if (!res.isSuccess) {
+      Utils.toastError(res.code, res.msg);
     } else {
       setState(() {
         groupList = res.data!;
@@ -175,7 +188,9 @@ class GroupSelectorState extends State<CommunityGroupSelector> {
   }
 
   AlertDialog dialogShow(context) {
-    String chooseType = (widget.switchSelectType ? imt(imt("单选")) : imt(imt("多选")));
+    String chooseType = (widget.switchSelectType
+        ? imt(imt("单选"))
+        : imt(imt("多选")));
     AlertDialog dialog = AlertDialog(
       title: Text("群组选择（$chooseType）"),
       contentPadding: EdgeInsets.zero,
@@ -210,7 +225,10 @@ class GroupSelectorState extends State<CommunityGroupSelector> {
         List<ImGroupInfo>? fl = await getJoinedCommunityList();
         if (fl != null) {
           if (fl.length > 0) {
-            showDialog<void>(context: context, builder: (context) => dialogShow(context));
+            showDialog<void>(
+              context: context,
+              builder: (context) => dialogShow(context),
+            );
           } else {
             Utils.toast(imt("请先加入群组"));
           }

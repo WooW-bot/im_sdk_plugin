@@ -18,10 +18,11 @@ class FriendGroupSelector extends StatefulWidget {
   final OnSelect onSelect;
   final bool switchSelectType;
   final List<String> value;
-  FriendGroupSelector(
-      {required this.onSelect,
-      this.switchSelectType = true,
-      required this.value});
+  FriendGroupSelector({
+    required this.onSelect,
+    this.switchSelectType = true,
+    required this.value,
+  });
 
   @override
   State<StatefulWidget> createState() => FriendGroupSelectorState();
@@ -93,9 +94,7 @@ class FriendItemState extends State<FriendItem> {
                 onItemTap(widget.info.name!, data);
               },
             ),
-            Expanded(
-              child: Text("name：${widget.info.name}"),
-            )
+            Expanded(child: Text("name：${widget.info.name}")),
           ],
         ),
       ),
@@ -166,13 +165,12 @@ class FriendGroupSelectorState extends State<FriendGroupSelector> {
       status: 'loading...',
       maskType: EasyLoadingMaskType.black,
     );
-    ImValueCallback<List<ImFriendGroup>> res = await ImSDKPlugin
-        .imManager
+    ImValueCallback<List<ImFriendGroup>> res = await ImSDKPlugin.imManager
         .getFriendshipManager()
         .getFriendGroups();
     EasyLoading.dismiss();
-    if (res.code != 0) {
-      Utils.toastError(res.code, res.desc);
+    if (!res.isSuccess) {
+      Utils.toastError(res.code, res.msg);
     } else {
       setState(() {
         friendList = res.data!;
@@ -183,7 +181,9 @@ class FriendGroupSelectorState extends State<FriendGroupSelector> {
   }
 
   AlertDialog dialogShow(context) {
-    final chooseType = (widget.switchSelectType ? imt(imt("单选")) : imt(imt("多选")));
+    final chooseType = (widget.switchSelectType
+        ? imt(imt("单选"))
+        : imt(imt("多选")));
     AlertDialog dialog = AlertDialog(
       title: Text("分组选择（$chooseType）"),
       contentPadding: EdgeInsets.zero,

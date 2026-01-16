@@ -13,10 +13,18 @@ class GetFriendList extends StatefulWidget {
 class GetFriendListState extends State<GetFriendList> {
   Map<String, dynamic>? resData;
   getFriendList() async {
-    ImValueCallback<List<ImFriendInfo>> res = await ImSDKPlugin
-        .imManager
+    ImValueCallback<List<ImFriendInfo>> res = await ImSDKPlugin.imManager
         .getFriendshipManager()
         .getFriendList();
+    setState(() {
+      resData = res.toJson();
+    });
+  }
+
+  syncFriendList() async {
+    ImValueCallback<List<ImFriendInfo>> res = await ImSDKPlugin.imManager
+        .getFriendshipManager()
+        .syncFriendList();
     setState(() {
       resData = res.toJson();
     });
@@ -34,7 +42,14 @@ class GetFriendListState extends State<GetFriendList> {
                   onPressed: getFriendList,
                   child: Text(imt("获取好友列表")),
                 ),
-              )
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: syncFriendList,
+                  child: Text(imt("同步好友列表")),
+                ),
+              ),
             ],
           ),
           SDKResponse(resData),

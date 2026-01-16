@@ -14,10 +14,13 @@ class FriendSelector extends StatefulWidget {
   final OnSelect onSelect;
   final bool switchSelectType;
   final List<String> value;
-  const FriendSelector(
-      {Key? key, required this.onSelect,
-      this.switchSelectType = true,
-      required this.value}) : super(key: key);
+
+  const FriendSelector({
+    Key? key,
+    required this.onSelect,
+    this.switchSelectType = true,
+    required this.value,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => FriendSelectorState();
@@ -28,10 +31,12 @@ class FriendItem extends StatefulWidget {
   final OnSelectItemChange onSelectItemChange;
   final ImFriendInfo info;
   final List<String> selected;
+
   const FriendItem(
     this.switchSelectType,
     this.info,
-    this.selected, {Key? key, 
+    this.selected, {
+    Key? key,
     required this.onSelectItemChange,
   }) : super(key: key);
 
@@ -42,12 +47,13 @@ class FriendItem extends StatefulWidget {
 class FriendItemState extends State<FriendItem> {
   bool itemSelect = false;
   List<String> selected = List.empty(growable: true);
+
   @override
   void initState() {
     super.initState();
     setState(() {
       selected = widget.selected;
-      itemSelect = widget.selected.contains(widget.info.userID);
+      itemSelect = widget.selected.contains(widget.info.toId);
     });
   }
 
@@ -80,19 +86,17 @@ class FriendItemState extends State<FriendItem> {
       height: 40,
       child: InkWell(
         onTap: () {
-          onItemTap(widget.info.userID);
+          onItemTap(widget.info.toId);
         },
         child: Row(
           children: [
             Checkbox(
               value: itemSelect,
               onChanged: (data) {
-                onItemTap(widget.info.userID, data);
+                onItemTap(widget.info.toId, data);
               },
             ),
-            Expanded(
-              child: Text("userID：${widget.info.userID}"),
-            )
+            Expanded(child: Text("userID：${widget.info.toId}")),
           ],
         ),
       ),
@@ -105,7 +109,15 @@ class FriendList extends StatefulWidget {
   final List<ImFriendInfo> users;
   final OnSelect onSelect;
   final List<String> value;
-  const FriendList(this.switchSelectType, this.users, this.onSelect, this.value, {Key? key}) : super(key: key);
+
+  const FriendList(
+    this.switchSelectType,
+    this.users,
+    this.onSelect,
+    this.value, {
+    Key? key,
+  }) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => FriendListState();
 }
@@ -120,11 +132,12 @@ class FriendListState extends State<FriendList> {
   }
 
   List<String> selected = List.empty(growable: true);
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 400,
-      child:  ListView.builder(
+      child: ListView.builder(
         primary: true,
         shrinkWrap: true,
         itemCount: widget.users.length,
@@ -156,17 +169,16 @@ class FriendSelectorState extends State<FriendSelector> {
       selected = widget.value;
     });
   }
-  
+
   List<String> selected = List.empty(growable: true);
   List<ImFriendInfo> friendList = List.empty();
 
   Future<ImFriendInfo?> getLoginUser() async {
-    ImValueCallback<String> res =
-        await ImSDKPlugin.imManager.getLoginUser();
-    if (res.code != 0) {
-      Utils.toastError(res.code, res.desc);
+    ImValueCallback<String> res = await ImSDKPlugin.imManager.getLoginUser();
+    if (!res.isSuccess) {
+      Utils.toastError(res.code, res.msg);
     } else {
-      return ImFriendInfo(userID: res.data.toString());
+      return ImFriendInfo(toId: res.data.toString());
     }
     return null;
   }
@@ -176,15 +188,14 @@ class FriendSelectorState extends State<FriendSelector> {
       status: 'loading...',
       maskType: EasyLoadingMaskType.black,
     );
-    ImValueCallback<List<ImFriendInfo>> res = await ImSDKPlugin
-        .imManager
+    ImValueCallback<List<ImFriendInfo>> res = await ImSDKPlugin.imManager
         .getFriendshipManager()
         .getFriendList();
     ImFriendInfo? loginUserInfo = await getLoginUser();
     EasyLoading.dismiss();
 
-    if (res.code != 0) {
-      Utils.toastError(res.code, res.desc);
+    if (!res.isSuccess) {
+      Utils.toastError(res.code, res.msg);
     } else {
       setState(() {
         if (loginUserInfo != null) {
@@ -198,7 +209,9 @@ class FriendSelectorState extends State<FriendSelector> {
   }
 
   AlertDialog dialogShow(context) {
-    final chooseType = (widget.switchSelectType ? imt(imt("单选")) : imt(imt("多选")));
+    final chooseType = (widget.switchSelectType
+        ? imt(imt("单选"))
+        : imt(imt("多选")));
     AlertDialog dialog = AlertDialog(
       title: Text("好友选择（$chooseType）"),
       contentPadding: EdgeInsets.zero,

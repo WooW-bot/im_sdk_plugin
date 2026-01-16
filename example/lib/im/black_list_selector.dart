@@ -15,7 +15,11 @@ class BlackListSelector extends StatefulWidget {
   final bool switchSelectType;
   final List<String> value;
 
-  BlackListSelector({required this.onSelect, this.switchSelectType = true, required this.value});
+  BlackListSelector({
+    required this.onSelect,
+    this.switchSelectType = true,
+    required this.value,
+  });
 
   @override
   State<StatefulWidget> createState() => BlackListSelectorState();
@@ -27,7 +31,12 @@ class FriendItem extends StatefulWidget {
   final ImFriendInfo info;
   final List<String> selected;
 
-  FriendItem(this.switchSelectType, this.info, this.selected, {required this.onSelectItemChange});
+  FriendItem(
+    this.switchSelectType,
+    this.info,
+    this.selected, {
+    required this.onSelectItemChange,
+  });
 
   @override
   State<StatefulWidget> createState() => FriendItemState();
@@ -41,7 +50,7 @@ class FriendItemState extends State<FriendItem> {
     super.initState();
     setState(() {
       selected = widget.selected;
-      itemSelect = widget.selected.contains(widget.info.userID);
+      itemSelect = widget.selected.contains(widget.info.toId);
     });
   }
 
@@ -74,17 +83,17 @@ class FriendItemState extends State<FriendItem> {
       height: 40,
       child: InkWell(
         onTap: () {
-          onItemTap(widget.info.userID);
+          onItemTap(widget.info.toId);
         },
         child: Row(
           children: [
             Checkbox(
               value: itemSelect,
               onChanged: (data) {
-                onItemTap(widget.info.userID, data);
+                onItemTap(widget.info.toId, data);
               },
             ),
-            Expanded(child: Text("userID：${widget.info.userID}")),
+            Expanded(child: Text("userID：${widget.info.toId}")),
           ],
         ),
       ),
@@ -154,12 +163,16 @@ class BlackListSelectorState extends State<BlackListSelector> {
   List<ImFriendInfo> friendList = List.empty();
 
   Future<List<ImFriendInfo>?> getFriendList() async {
-    await EasyLoading.show(status: 'loading...', maskType: EasyLoadingMaskType.black);
-    ImValueCallback<List<ImFriendInfo>> res = await ImSDKPlugin.imManager.getFriendshipManager()
+    await EasyLoading.show(
+      status: 'loading...',
+      maskType: EasyLoadingMaskType.black,
+    );
+    ImValueCallback<List<ImFriendInfo>> res = await ImSDKPlugin.imManager
+        .getFriendshipManager()
         .getBlackList();
     EasyLoading.dismiss();
-    if (res.code != 0) {
-      Utils.toastError(res.code, res.desc);
+    if (!res.isSuccess) {
+      Utils.toastError(res.code, res.msg);
     } else {
       setState(() {
         friendList = res.data!;
@@ -170,7 +183,9 @@ class BlackListSelectorState extends State<BlackListSelector> {
   }
 
   AlertDialog dialogShow(context) {
-    String chooseType = (widget.switchSelectType ? imt(imt("单选")) : imt(imt("多选")));
+    String chooseType = (widget.switchSelectType
+        ? imt(imt("单选"))
+        : imt(imt("多选")));
     AlertDialog dialog = AlertDialog(
       title: Text("黑名单好友选择（$chooseType）"),
       contentPadding: EdgeInsets.zero,
@@ -205,7 +220,10 @@ class BlackListSelectorState extends State<BlackListSelector> {
         List<ImFriendInfo>? fl = await this.getFriendList();
         if (fl != null) {
           if (fl.length > 0) {
-            showDialog<void>(context: context, builder: (context) => dialogShow(context));
+            showDialog<void>(
+              context: context,
+              builder: (context) => dialogShow(context),
+            );
           } else {
             Utils.toast(imt("请先在好友关系链模块中添加好友"));
           }

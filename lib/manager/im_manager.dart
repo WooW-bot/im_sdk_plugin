@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:dio/dio.dart';
+
+import 'package:im_sdk_plugin/listener/im_simple_msg_listener.dart';
 import 'package:im_sdk_plugin/models/login_model.dart';
-import 'package:im_sdk_plugin/models/im_client_config.dart';
 import 'package:im_sdk_plugin/models/user_model.dart';
 import 'package:uuid/uuid.dart';
 
+import '../db/db_manager.dart';
 import '../listener/im_group_listener.dart';
 import '../listener/im_sdk_listener.dart';
 import '../enums/log_level_enum.dart';
@@ -20,14 +21,37 @@ import 'im_signaling_manager.dart';
 import 'im_friendship_manager.dart';
 import 'im_group_manager.dart';
 import 'im_message_manager.dart';
+import '../models/sdk_context.dart';
 import '../models/im_message.dart';
+import '../core/im_core.dart';
 
 /// IM SDK 主核心管理类
 class IMManager {
+  late IMConversationManager conversationManager;
+  late IMMessageManager messageManager;
+  late IMFriendshipManager friendshipManager;
+  late IMGroupManager groupManager;
+  late IMOfflinePushManager offlinePushManager;
+  late IMSignalingManager signalingManager;
+  late Map<String, ImSimpleMsgListener> simpleMessageListenerList = {};
   late Map<String, ImSDKListener> initSDKListenerList = {};
-  IMClientConfig? _config;
-  String? _currentUserID;
+  late Map<String, ImGroupListener> groupListenerList = {};
+
+  final SDKContext _sdkContext = SDKContext();
+  late ImCore _imCore;
+
+  // 内部登录状态
   int _loginStatus = LoginStatusEnum.limit.index;
+
+  IMManager() {
+    _imCore = ImCore(_sdkContext);
+    conversationManager = IMConversationManager();
+    messageManager = IMMessageManager();
+    friendshipManager = IMFriendshipManager(_sdkContext, _imCore);
+    groupManager = IMGroupManager();
+    offlinePushManager = IMOfflinePushManager();
+    signalingManager = IMSignalingManager();
+  }
 
   /// 初始化 SDK
   ///
@@ -43,44 +67,42 @@ class IMManager {
     String apiHost = "http://172.16.100.112:8000",
   }) async {
     final String uuid = Uuid().v4();
-    int platform = _getPlatform();
-    // Reset to logout status on init
+
+    // 更新 SDKContext
+    _sdkContext.appID = appID;
+    _sdkContext.apiHost = apiHost;
+    _sdkContext.logLevel = logLevel;
+    _sdkContext.listenerUuid = uuid;
+    _sdkContext.showImLog = showImLog ?? false;
+    _sdkContext.uiPlatform = _getPlatform();
+
+    // 初始化时重置为登出状态
     _loginStatus = LoginStatusEnum.logout.index;
 
     initSDKListenerList[uuid] = listener;
-    // 1. Initialize Configuration
-    _config = IMClientConfig(
-      appID: appID,
-      logLevel: logLevel.index,
-      listenerUuid: uuid,
-      uiPlatform: platform,
-      showImLog: showImLog ?? false,
-      apiHost: apiHost,
-    );
-    final config = _config!;
 
-    // 2. Initialize Logging (Stub)
-    if (config.showImLog) {
-      print("IMSDK: [Init] Logger initialized. Level: ${config.logLevel}");
+    // 2. 初始化日志 (Stub)
+    if (_sdkContext.showImLog) {
+      print("IMSDK: [Init] Logger initialized. Level: ${_sdkContext.logLevel}");
     }
 
-    // 3. Register Listener
+    // 3. 注册监听器
     initSDKListenerList[uuid] = listener;
 
-    // 4. Initialize Database (Simulated)
-    if (config.showImLog) {
+    // 4. 初始化数据库 (模拟)
+    if (_sdkContext.showImLog) {
       print("IMSDK: [Init] Preparing local database...");
     }
     await Future.delayed(const Duration(milliseconds: 50));
-    if (config.showImLog) {
+    if (_sdkContext.showImLog) {
       print("IMSDK: [Init] Database ready (Simulated SQLite).");
     }
 
-    // 5. Initialize Network (Pending in login)
-    // As per server architecture, actual connection happens after login returns the route.
-    // initSDK only prepares local resources.
+    // 5. 初始化网络 (在登录中进行)
+    // 根据服务器架构，实际连接发生在登录返回路由后。
+    // initSDK 仅准备本地资源。
 
-    return ImValueCallback<bool>(code: 0, desc: "Success", data: true);
+    return ImValueCallback.success(data: true);
   }
 
   int _getPlatform() {
@@ -108,116 +130,98 @@ class IMManager {
     required String userSig,
   }) async {
     try {
-      if (_config == null) {
-        return ImValueCallback(
-          code: -1,
-          desc: "SDK not initialized",
-          data: null,
-        );
-      }
-
       if (_loginStatus == LoginStatusEnum.logged.index) {
-        return ImValueCallback(code: -1, desc: "Already logged in", data: null);
+        return ImValueCallback.error(msg: "Already logged in");
       }
 
       _loginStatus = LoginStatusEnum.logging.index;
 
-      // 1. HTTP Request to get RouteInfo from Backend
-      final String apiHost = _config!.apiHost;
-      final dio = Dio();
-
+      // 1. HTTP 请求从后端获取路由信息
       final req = LoginReq(
-        appId: _config!.appID,
+        appId: _sdkContext.appID ?? 0,
         userId: userID,
         clientType: 1, // 1 for Desktop/App
       );
 
-      final response = await dio.post(
-        "$apiHost/v1/user/login",
+      final ImValueCallback<RouteInfo> response = await _imCore.post<RouteInfo>(
+        "/v1/user/login",
         data: req.toJson(),
-        queryParameters: {'appId': _config!.appID},
       );
 
-      if (response.statusCode == 200 && response.data['code'] == 200) {
-        final routeData = response.data['data'];
-        final routeInfo = RouteInfo.fromJson(routeData);
+      if (response.isSuccess && response.data != null) {
+        final routeInfo = response.data!;
 
-        // 2. Establish TCP Connection
-        _triggerNativeEvent(_config!.listenerUuid, 'onConnecting');
+        // 2. 初始化数据库
+        await DBManager().initDB(userID);
 
-        // Connect to the TCP Server
-        try {
-          // Validate IP before connecting
-          if (routeInfo.ip.isNotEmpty && routeInfo.port > 0) {
-            // Add simple timeout
-            final socket = await Socket.connect(
-              routeInfo.ip,
-              routeInfo.port,
-              timeout: Duration(seconds: 5),
-            );
-            if (_config!.showImLog) {
-              print("IMSDK: Connected to ${routeInfo.ip}:${routeInfo.port}");
-            }
-            socket.destroy(); // Connection check only
-          } else {
-            print(
-              "IMSDK: Invalid RouteInfo: ${routeInfo.ip}:${routeInfo.port}",
-            );
-          }
-        } catch (e) {
-          print("IMSDK: TCP Connection warning: $e");
-          // We initiate the connection but don't fail the login if TCP fails immediately
-          // as per some mobile client behaviors (retry in background),
-          // but for this task, let's treat it as a flow success step since we lack a real server to connect to in this env.
-        }
+        // 3. 建立 TCP 连接
+        await _connectSocket(routeInfo);
 
-        _triggerNativeEvent(_config!.listenerUuid, 'onConnectSuccess');
-        _currentUserID = userID;
+        _triggerNativeEvent(_sdkContext.listenerUuid!, 'onConnectSuccess');
+        _sdkContext.currentUserID = userID;
+        _sdkContext.userSig = userSig;
         _loginStatus = LoginStatusEnum.logged.index;
-        return ImValueCallback(
-          code: 0,
-          desc: "Login Success",
-          data: response.data,
-        );
+        return response;
       } else {
-        _triggerNativeEvent(_config!.listenerUuid, 'onConnectFailed', {
-          'code': response.data['code'],
-          'desc': response.data['msg'],
+        _triggerNativeEvent(_sdkContext.listenerUuid!, 'onConnectFailed', {
+          'code': response.code,
+          'desc': response.msg,
         });
-        return ImValueCallback(
-          code: response.data['code'],
-          desc: response.data['msg'],
-          data: null,
-        );
+        return ImValueCallback.error(code: response.code, msg: response.msg);
       }
     } catch (e) {
       _loginStatus = LoginStatusEnum.logout.index;
-      _triggerNativeEvent(_config!.listenerUuid, 'onConnectFailed', {
+      _triggerNativeEvent(_sdkContext.listenerUuid ?? "", 'onConnectFailed', {
         'code': -1,
         'desc': e.toString(),
       });
-      return ImValueCallback(code: -1, desc: "Login Failed: $e", data: null);
+      return ImValueCallback.error(msg: "Login Failed: $e");
+    }
+  }
+
+  Future<void> _connectSocket(RouteInfo routeInfo) async {
+    _triggerNativeEvent(_sdkContext.listenerUuid!, 'onConnecting');
+    try {
+      if (routeInfo.ip.isNotEmpty && routeInfo.port > 0) {
+        final socket = await Socket.connect(
+          routeInfo.ip,
+          routeInfo.port,
+          timeout: Duration(seconds: 5),
+        );
+        if (_sdkContext.showImLog) {
+          print("IMSDK: Connected to ${routeInfo.ip}:${routeInfo.port}");
+        }
+        socket.destroy();
+      } else {
+        print("IMSDK: Invalid RouteInfo: ${routeInfo.ip}:${routeInfo.port}");
+      }
+    } catch (e) {
+      print("IMSDK: TCP Connection warning: $e");
     }
   }
 
   /// 登出
   Future<ImCallback> logout() async {
     _loginStatus = LoginStatusEnum.logout.index;
-    _currentUserID = null;
-    return ImCallback(code: 0, desc: "Logout Success");
+    _sdkContext.currentUserID = null;
+    _sdkContext.userSig = null;
+    return ImCallback.success(msg: "Logout Success");
   }
 
   /// 获取当前登录用户
   Future<ImValueCallback<String>> getLoginUser() async {
-    if (_currentUserID == null) {
-      return ImValueCallback(code: -1, desc: "Not logged in", data: "");
+    if (_sdkContext.currentUserID == null) {
+      return ImValueCallback.error(msg: "Not logged in", data: "");
     }
-    return ImValueCallback(code: 0, desc: "Success", data: _currentUserID!);
+    return ImValueCallback.success(
+      msg: "Success",
+      data: _sdkContext.currentUserID!,
+    );
   }
 
   /// 获取登录状态
   Future<ImValueCallback<int>> getLoginStatus() async {
-    return ImValueCallback(code: 0, desc: "Success", data: _loginStatus);
+    return ImValueCallback.success(msg: "Success", data: _loginStatus);
   }
 
   /// 获取服务器时间
@@ -234,32 +238,27 @@ class IMManager {
 
   /// 获取会话管理器
   IMConversationManager getConversationManager() {
-    // TODO: implement getConversationManager
-    throw UnimplementedError();
+    return conversationManager;
   }
 
   /// 获取关系链管理器
   IMFriendshipManager getFriendshipManager() {
-    // TODO: implement getFriendshipManager
-    throw UnimplementedError();
+    return friendshipManager;
   }
 
   /// 获取群组管理器
   IMGroupManager getGroupManager() {
-    // TODO: implement getGroupManager
-    throw UnimplementedError();
+    return groupManager;
   }
 
   /// 获取消息管理器
   IMMessageManager getMessageManager() {
-    // TODO: implement getMessageManager
-    throw UnimplementedError();
+    return messageManager;
   }
 
   /// 获取离线推送管理器
   IMOfflinePushManager getOfflinePushManager() {
-    // TODO: implement getOfflinePushManager
-    throw UnimplementedError();
+    return offlinePushManager;
   }
 
   /// 添加群组监听器
@@ -301,41 +300,18 @@ class IMManager {
     required List<String> userIDList,
   }) async {
     try {
-      if (_config == null) {
-        return ImValueCallback(code: -1, desc: "SDK not initialized", data: []);
+      if (_sdkContext.appID == null) {
+        return ImValueCallback.error(msg: "SDK not initialized", data: []);
       }
 
-      final String apiHost = _config!.apiHost;
-      final dio = Dio();
       final req = GetUserInfoReq(userIds: userIDList);
 
-      final response = await dio.post(
-        "$apiHost/v1/user/data/getUserInfo",
+      return await _imCore.post<List<ImUserFullInfo>>(
+        "/v1/user/data/getUserInfo",
         data: req.toJson(),
-        queryParameters: {'appId': _config!.appID},
       );
-
-      if (response.statusCode == 200 && response.data['code'] == 200) {
-        final List<dynamic> userListJson =
-            response.data['data']['userInfoList'] ?? [];
-        final List<ImUserFullInfo> userList = userListJson
-            .map((json) => ImUserFullInfo.fromJson(json))
-            .toList();
-
-        return ImValueCallback(code: 0, desc: "Success", data: userList);
-      } else {
-        return ImValueCallback(
-          code: response.data['code'],
-          desc: response.data['msg'],
-          data: [],
-        );
-      }
     } catch (e) {
-      return ImValueCallback(
-        code: -1,
-        desc: "getUsersInfo Failed: $e",
-        data: [],
-      );
+      return ImValueCallback.error(msg: "getUsersInfo Failed: $e", data: []);
     }
   }
 
@@ -417,7 +393,7 @@ class IMManager {
     throw UnimplementedError();
   }
 
-  /// Internal helper to simulate native event callback
+  /// 模拟原生事件回调的内部助手
   void _triggerNativeEvent(String listenerUuid, String type, [dynamic data]) {
     final listener = initSDKListenerList[listenerUuid];
     if (listener != null) {

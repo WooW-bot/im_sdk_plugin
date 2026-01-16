@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:im_sdk_plugin_example/utils/customerField/customer_field.dart';
@@ -18,7 +19,7 @@ class SetSelfInfoState extends State<SetSelfInfo> {
   String? selfSignature;
   int? gender;
   int? allowType;
-  int? bithday;
+  String? birthday;
   Map<String, String> customInfo = {"Str": "test custominfo 1222 r"};
 
   Map<String, dynamic>? resData;
@@ -30,9 +31,9 @@ class SetSelfInfoState extends State<SetSelfInfo> {
         faceUrl: faceUrl,
         selfSignature: selfSignature,
         gender: gender,
-        allowType: allowType,
-        customInfo: customInfo,
-        birthday: bithday,
+        friendAllowType: allowType,
+        extra: customInfo.isNotEmpty ? json.encode(customInfo) : null,
+        birthday: birthday,
       ),
     );
     setState(() {
@@ -94,22 +95,23 @@ class SetSelfInfoState extends State<SetSelfInfo> {
                         },
                       ),
                       TextField(
-                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          labelText: imt("生日(int类型，不要输入字符串)"),
+                          labelText: imt("生日(字符串 YYYY-MM-DD)"),
                           hintText: imt("生日"),
                           prefixIcon: Icon(Icons.person),
                         ),
                         onChanged: (res) {
                           setState(() {
-                            bithday = int.parse(res);
+                            birthday = res;
                           });
                         },
                       ),
                       Container(
                         height: 60,
                         decoration: BoxDecoration(
-                          border: Border(bottom: BorderSide(color: Colors.black45)),
+                          border: Border(
+                            bottom: BorderSide(color: Colors.black45),
+                          ),
                         ),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -163,7 +165,9 @@ class SetSelfInfoState extends State<SetSelfInfo> {
                       Container(
                         height: 60,
                         decoration: BoxDecoration(
-                          border: Border(bottom: BorderSide(color: Colors.black45)),
+                          border: Border(
+                            bottom: BorderSide(color: Colors.black45),
+                          ),
                         ),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -226,7 +230,9 @@ class SetSelfInfoState extends State<SetSelfInfo> {
                       Container(
                         height: 60,
                         decoration: BoxDecoration(
-                          border: Border(bottom: BorderSide(color: Colors.black45)),
+                          border: Border(
+                            bottom: BorderSide(color: Colors.black45),
+                          ),
                         ),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -311,7 +317,11 @@ class SetSelfInfoState extends State<SetSelfInfo> {
                             Container(
                               margin: EdgeInsets.only(left: 12),
                               child: faceUrl != ''
-                                  ? Image.network(faceUrl ?? "", width: 40, height: 40)
+                                  ? Image.network(
+                                      faceUrl ?? "",
+                                      width: 40,
+                                      height: 40,
+                                    )
                                   : Container(),
                             ),
                           ],
@@ -327,7 +337,10 @@ class SetSelfInfoState extends State<SetSelfInfo> {
           new Row(
             children: [
               Expanded(
-                child: ElevatedButton(onPressed: setSelfInfo, child: Text(imt("设置个人信息"))),
+                child: ElevatedButton(
+                  onPressed: setSelfInfo,
+                  child: Text(imt("设置个人信息")),
+                ),
               ),
             ],
           ),

@@ -13,10 +13,11 @@ class GroupSelector extends StatefulWidget {
   final OnSelect onSelect;
   final bool switchSelectType;
   final List<String> value;
-  GroupSelector(
-      {required this.onSelect,
-      this.switchSelectType = true,
-      required this.value});
+  GroupSelector({
+    required this.onSelect,
+    this.switchSelectType = true,
+    required this.value,
+  });
 
   @override
   State<StatefulWidget> createState() => GroupSelectorState();
@@ -90,8 +91,9 @@ class GroupItemState extends State<GroupItem> {
             ),
             Expanded(
               child: Text(
-                  "GroupID：${widget.info.groupType} ${widget.info.groupID}"),
-            )
+                "GroupID：${widget.info.groupType} ${widget.info.groupID}",
+              ),
+            ),
           ],
         ),
       ),
@@ -162,13 +164,12 @@ class GroupSelectorState extends State<GroupSelector> {
       status: 'loading...',
       maskType: EasyLoadingMaskType.black,
     );
-    ImValueCallback<List<ImGroupInfo>> res = await ImSDKPlugin
-        .imManager
+    ImValueCallback<List<ImGroupInfo>> res = await ImSDKPlugin.imManager
         .getGroupManager()
         .getJoinedGroupList();
     EasyLoading.dismiss();
-    if (res.code != 0) {
-      Utils.toastError(res.code, res.desc);
+    if (!res.isSuccess) {
+      Utils.toastError(res.code, res.msg);
     } else {
       setState(() {
         groupList = res.data!;
@@ -179,7 +180,9 @@ class GroupSelectorState extends State<GroupSelector> {
   }
 
   AlertDialog dialogShow(context) {
-    String chooseType = (widget.switchSelectType ? imt(imt("单选")) : imt(imt("多选")));
+    String chooseType = (widget.switchSelectType
+        ? imt(imt("单选"))
+        : imt(imt("多选")));
     AlertDialog dialog = AlertDialog(
       title: Text("群组选择（$chooseType）"),
       contentPadding: EdgeInsets.zero,

@@ -1,5 +1,3 @@
-// for flutter 2.0+
-
 import 'dart:convert';
 // import 'dart:io';
 
@@ -11,31 +9,19 @@ import 'package:archive/archive_io.dart';
 ///
 class GenerateTestUserSig {
   GenerateTestUserSig({required this.sdkappid, required this.key});
+
   int sdkappid;
   String key;
 
   ///生成UserSig
-  String genSig({
-    required String identifier,
-    required int expire,
-  }) {
+  String genSig({required String identifier, required int expire}) {
     int currTime = _getCurrentTime();
     String sig = '';
     Map<String, dynamic> sigDoc = new Map<String, dynamic>();
-    sigDoc.addAll({
-      "TLS.ver": "2.0",
-      "TLS.identifier": identifier,
-      "TLS.sdkappid": this.sdkappid,
-      "TLS.expire": expire,
-      "TLS.time": currTime,
-    });
-
-    sig = _hmacsha256(
-      identifier: identifier,
-      currTime: currTime,
-      expire: expire,
-    );
+    sigDoc.addAll({"TLS.expire": expire, "TLS.appId": this.sdkappid, "TLS.identifier": identifier});
+    sig = _hmacsha256(identifier: identifier, currTime: currTime, expire: expire);
     sigDoc['TLS.sig'] = sig;
+    sigDoc['TLS.time'] = currTime;
     String jsonStr = json.encode(sigDoc);
     List<int>? compress = ZLibEncoder().encode(utf8.encode(jsonStr));
     return _escape(content: base64.encode(compress));
@@ -52,19 +38,13 @@ class GenerateTestUserSig {
   }) {
     int sdkappid = this.sdkappid;
     String contentToBeSigned =
-        "TLS.identifier:$identifier\nTLS.sdkappid:$sdkappid\nTLS.time:$currTime\nTLS.expire:$expire\n";
+        "TLS.identifier:$identifier\nTLS.appId:$sdkappid\nTLS.time:$currTime\nTLS.expire:$expire\n";
     Hmac hmacSha256 = new Hmac(sha256, utf8.encode(this.key));
-    Digest hmacSha256Digest =
-        hmacSha256.convert(utf8.encode(contentToBeSigned));
+    Digest hmacSha256Digest = hmacSha256.convert(utf8.encode(contentToBeSigned));
     return base64.encode(hmacSha256Digest.bytes);
   }
 
-  String _escape({
-    required String content,
-  }) {
-    return content
-        .replaceAll('\+', '*')
-        .replaceAll('\/', '-')
-        .replaceAll('=', '_');
+  String _escape({required String content}) {
+    return content.replaceAll('\+', '*').replaceAll('\/', '-').replaceAll('=', '_');
   }
 }

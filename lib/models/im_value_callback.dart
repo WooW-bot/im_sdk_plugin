@@ -1,3 +1,4 @@
+import 'login_model.dart';
 import 'im_conversation.dart';
 import 'im_conversation_operation_result.dart';
 import 'im_conversation_result.dart';
@@ -30,18 +31,33 @@ import 'im_topic_info_result.dart';
 import 'im_topic_operation_result.dart';
 import 'im_user_full_info.dart';
 import 'im_user_status.dart';
+import 'sync_response.dart';
 
 class ImValueCallback<T> {
   /// 错误码
   late int code;
 
   /// 错误描述
-  late String desc;
+  late String msg;
 
   /// 数据
   T? data;
 
-  ImValueCallback({required this.code, required this.desc, this.data});
+  ImValueCallback({required this.code, required this.msg, this.data});
+
+  bool get isSuccess => code == 200;
+
+  static ImValueCallback<T> success<T>({T? data, String msg = "success"}) {
+    return ImValueCallback<T>(code: 200, msg: msg, data: data);
+  }
+
+  static ImValueCallback<T> error<T>({
+    int code = -1,
+    String msg = "Unknown Error",
+    T? data,
+  }) {
+    return ImValueCallback<T>(code: code, msg: msg, data: data);
+  }
 
   _getT<T>() => T;
 
@@ -60,6 +76,8 @@ class ImValueCallback<T> {
                   return ImUserFullInfo.fromJson(e);
                 }).toList()
                 as T;
+      } else if (T == RouteInfo) {
+        fromJsonData = RouteInfo.fromJson(json['data']) as T;
       } else if (T == _getT<List<ImGroupInfo>>()) {
         fromJsonData =
             (json['data'] as List).map((e) {
@@ -217,6 +235,14 @@ class ImValueCallback<T> {
                   return ImConversationOperationResult.fromJson(e);
                 }).toList()
                 as T;
+      } else if (T == _getT<SyncResponse<ImFriendInfo>>()) {
+        // Explicitly handle SyncResponse<ImFriendInfo>
+        fromJsonData =
+            SyncResponse<ImFriendInfo>.fromJson(
+                  json['data'],
+                  (v) => ImFriendInfo.fromJson(v),
+                )
+                as T;
       } else if (T == _getT<List<String>>()) {
         fromJsonData = List.from(
           json["data"],
@@ -226,21 +252,23 @@ class ImValueCallback<T> {
       }
     }
 
-    code = json['code'];
-    desc = json['desc'] ?? '';
+    code = json['code'] ?? -1;
+    msg = json['msg'] ?? '';
     data = fromJsonData;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['code'] = code;
-    data['desc'] = desc;
+    data['msg'] = msg;
     dynamic toJsonData = this.data;
     if (this.data == null) {
       data['data'] = this.data;
     } else {
       if (T == ImMessage) {
         toJsonData = (this.data as ImMessage).toJson();
+      } else if (T == RouteInfo) {
+        toJsonData = (this.data as RouteInfo).toJson();
       } else if (T == ImMessageListResult) {
         toJsonData = (this.data as ImMessageListResult).toJson();
       } else if (T == ImUserFullInfo) {
@@ -351,6 +379,10 @@ class ImValueCallback<T> {
         toJsonData = (this.data as List)
             .map((e) => (e as ImConversationOperationResult).toJson())
             .toList();
+      } else if (T == _getT<SyncResponse<ImFriendInfo>>()) {
+        toJsonData = (this.data as SyncResponse<ImFriendInfo>).toJson(
+          (v) => v.toJson(),
+        );
       } else {
         toJsonData = this.data;
       }

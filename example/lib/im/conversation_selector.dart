@@ -20,10 +20,11 @@ class ConversationSelector extends StatefulWidget {
   final OnSelect onSelect;
   final bool switchSelectType;
   final List<String> value;
-  ConversationSelector(
-      {required this.onSelect,
-      this.switchSelectType = true,
-      required this.value});
+  ConversationSelector({
+    required this.onSelect,
+    this.switchSelectType = true,
+    required this.value,
+  });
 
   @override
   State<StatefulWidget> createState() => ConversationSelectorState();
@@ -95,9 +96,7 @@ class ConversationItemState extends State<ConversationItem> {
                 onItemTap(widget.info.conversationID, data);
               },
             ),
-            Expanded(
-              child: Text("ID:${widget.info.conversationID}"),
-            )
+            Expanded(child: Text("ID:${widget.info.conversationID}")),
           ],
         ),
       ),
@@ -111,7 +110,11 @@ class ConversationList extends StatefulWidget {
   final OnSelect onSelect;
   final List<String> value;
   ConversationList(
-      this.switchSelectType, this.conversation, this.onSelect, this.value);
+    this.switchSelectType,
+    this.conversation,
+    this.onSelect,
+    this.value,
+  );
   @override
   State<StatefulWidget> createState() => ConversationListState();
 }
@@ -169,13 +172,12 @@ class ConversationSelectorState extends State<ConversationSelector> {
       status: 'loading...',
       maskType: EasyLoadingMaskType.black,
     );
-    ImValueCallback<ImConversationResult> res = await ImSDKPlugin
-        .imManager
+    ImValueCallback<ImConversationResult> res = await ImSDKPlugin.imManager
         .getConversationManager()
         .getConversationList(nextSeq: "0", count: 300);
     EasyLoading.dismiss();
-    if (res.code != 0) {
-      Utils.toastError(res.code, res.desc);
+    if (!res.isSuccess) {
+      Utils.toastError(res.code, res.msg);
     } else {
       setState(() {
         conversationList = res.data!.conversationList;
@@ -186,12 +188,15 @@ class ConversationSelectorState extends State<ConversationSelector> {
   }
 
   AlertDialog dialogShow(context) {
-    final chooseType = (widget.switchSelectType ? imt(imt("单选")) : imt(imt("多选")));
+    final chooseType = (widget.switchSelectType
+        ? imt(imt("单选"))
+        : imt(imt("多选")));
     AlertDialog dialog = AlertDialog(
       title: Text("会话选择（$chooseType）"),
       contentPadding: EdgeInsets.zero,
-      content:
-          ConversationList(widget.switchSelectType, conversationList, (data) {
+      content: ConversationList(widget.switchSelectType, conversationList, (
+        data,
+      ) {
         setState(() {
           selected = data;
         });

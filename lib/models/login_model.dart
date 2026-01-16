@@ -33,4 +33,8 @@ class RouteInfo {
   factory RouteInfo.fromJson(Map<String, dynamic> json) {
     return RouteInfo(ip: json['ip'] ?? "", port: json['port'] ?? 0);
   }
+
+  Map<String, dynamic> toJson() {
+    return {'ip': ip, 'port': port};
+  }
 }

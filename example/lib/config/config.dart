@@ -1,12 +1,16 @@
 // ignore_for_file: library_prefixes, unused_import
 
-import 'package:im_sdk_plugin_example/im/accept_group_application.dart' deferred as AcceptGroupApplication;
+import 'package:im_sdk_plugin_example/im/accept_group_application.dart'
+    deferred as AcceptGroupApplication;
 import 'package:im_sdk_plugin_example/im/add_event_listener.dart' deferred as AddEventListener;
 import 'package:im_sdk_plugin_example/im/add_friend.dart' deferred as AddFriend;
-import 'package:im_sdk_plugin_example/im/add_friends_to_friend_group.dart' deferred as AddFriendsToFriendGroup;
-import 'package:im_sdk_plugin_example/im/add_invited_signaling.dart' deferred as AddInvitedSignaling;
+import 'package:im_sdk_plugin_example/im/add_friends_to_friend_group.dart'
+    deferred as AddFriendsToFriendGroup;
+import 'package:im_sdk_plugin_example/im/add_invited_signaling.dart'
+    deferred as AddInvitedSignaling;
 import 'package:im_sdk_plugin_example/im/add_to_black_list.dart' deferred as AddToBlackList;
-import 'package:im_sdk_plugin_example/im/agree_friend_application.dart' deferred as AgreeFriendApplication;
+import 'package:im_sdk_plugin_example/im/agree_friend_application.dart'
+    deferred as AgreeFriendApplication;
 import 'package:im_sdk_plugin_example/im/append_message.dart' deferred as AppendMessage;
 import 'package:im_sdk_plugin_example/im/check_ability.dart' deferred as CheckAbility;
 import 'package:im_sdk_plugin_example/im/check_friend.dart' deferred as CheckFriend;
@@ -17,42 +21,54 @@ import 'package:im_sdk_plugin_example/im/delete_conversation.dart' deferred as D
 import 'package:im_sdk_plugin_example/im/delete_friend_group.dart' deferred as DeleteFriendGroup;
 import 'package:im_sdk_plugin_example/im/delete_friends_from_friend_group.dart'
     deferred as DeleteFriendsFromFriendGroup;
-import 'package:im_sdk_plugin_example/im/delete_from_black_list.dart' deferred as DeleteFromBlackList;
-import 'package:im_sdk_plugin_example/im/delete_from_friend_list.dart' deferred as DeleteFromFriendList;
+import 'package:im_sdk_plugin_example/im/delete_from_black_list.dart'
+    deferred as DeleteFromBlackList;
+import 'package:im_sdk_plugin_example/im/delete_from_friend_list.dart'
+    deferred as DeleteFromFriendList;
 import 'package:im_sdk_plugin_example/im/delete_message_from_local_storage.dart'
     deferred as DeleteMessageFromLocalStorage;
 import 'package:im_sdk_plugin_example/im/delete_messages.dart' deferred as DeleteMessages;
 import 'package:im_sdk_plugin_example/im/dismiss_group.dart' deferred as DismissGroup;
 import 'package:im_sdk_plugin_example/im/get_black_list.dart' deferred as GetBlackList;
-import 'package:im_sdk_plugin_example/im/get_c2_c_history_message_list.dart' deferred as GetC2CHistoryMessageList;
+import 'package:im_sdk_plugin_example/im/get_c2_c_history_message_list.dart'
+    deferred as GetC2CHistoryMessageList;
 import 'package:im_sdk_plugin_example/im/get_conversation.dart' deferred as GetConversation;
-import 'package:im_sdk_plugin_example/im/get_conversation_list.dart' deferred as GetConversationList;
+import 'package:im_sdk_plugin_example/im/get_conversation_list.dart'
+    deferred as GetConversationList;
 import 'package:im_sdk_plugin_example/im/get_conversation_list_by_conversaion_ids.dart'
     deferred as GetConversationListByConversaionIds;
-import 'package:im_sdk_plugin_example/im/get_friend_application_list.dart' deferred as GetFriendApplicationList;
+import 'package:im_sdk_plugin_example/im/get_friend_application_list.dart'
+    deferred as GetFriendApplicationList;
 import 'package:im_sdk_plugin_example/im/get_friend_groups.dart' deferred as GetFriendGroups;
 import 'package:im_sdk_plugin_example/im/get_friend_list.dart' deferred as GetFriendList;
 import 'package:im_sdk_plugin_example/im/get_friends_info.dart' deferred as GetFriendsInfo;
-import 'package:im_sdk_plugin_example/im/get_group_history_message_list.dart' deferred as GetGroupHistoryMessageList;
+import 'package:im_sdk_plugin_example/im/get_group_history_message_list.dart'
+    deferred as GetGroupHistoryMessageList;
 import 'package:im_sdk_plugin_example/im/get_group_member_list.dart' deferred as GetGroupMemberList;
 import 'package:im_sdk_plugin_example/im/get_topic_list.dart' deferred as GetTopicList;
 import 'package:im_sdk_plugin_example/im/set_topic_info.dart' deferred as SetTopicInfo;
-import 'package:im_sdk_plugin_example/im/get_group_members_info.dart' deferred as GetGroupMembersInfo;
+import 'package:im_sdk_plugin_example/im/get_group_members_info.dart'
+    deferred as GetGroupMembersInfo;
 import 'package:im_sdk_plugin_example/im/get_group_message_read_member_list.dart'
     deferred as GetGroupMessageReadMemberList;
-import 'package:im_sdk_plugin_example/im/get_group_online_member_count.dart' deferred as GetGroupOnlineMemberCount;
+import 'package:im_sdk_plugin_example/im/get_group_online_member_count.dart'
+    deferred as GetGroupOnlineMemberCount;
 import 'package:im_sdk_plugin_example/im/get_groups_info.dart' deferred as GetGroupsInfo;
-import 'package:im_sdk_plugin_example/im/get_history_message_list.dart' deferred as GetHistoryMessageList;
+import 'package:im_sdk_plugin_example/im/get_history_message_list.dart'
+    deferred as GetHistoryMessageList;
 import 'package:im_sdk_plugin_example/im/get_history_message_list_without_format.dart'
     deferred as GetHistoryMessageListWithoutFormat;
-import 'package:im_sdk_plugin_example/im/get_joined_community_list.dart' deferred as GetJoinedCommunityList;
+import 'package:im_sdk_plugin_example/im/get_joined_community_list.dart'
+    deferred as GetJoinedCommunityList;
 import 'package:im_sdk_plugin_example/im/get_joined_group_list.dart' deferred as GetJoinedGroupList;
 import 'package:im_sdk_plugin_example/im/get_login_status.dart' deferred as GetLoginStatus;
 import 'package:im_sdk_plugin_example/im/get_login_user.dart' deferred as GetLoginUser;
-import 'package:im_sdk_plugin_example/im/get_message_read_receipts.dart' deferred as GetMessageReadReceipts;
+import 'package:im_sdk_plugin_example/im/get_message_read_receipts.dart'
+    deferred as GetMessageReadReceipts;
 import 'package:im_sdk_plugin_example/im/get_server_time.dart' deferred as GetServerTime;
 import 'package:im_sdk_plugin_example/im/get_signaling_info.dart' deferred as GetSignalingInfo;
-import 'package:im_sdk_plugin_example/im/get_total_unread_message_count.dart' deferred as GetTotalUnreadMessageCount;
+import 'package:im_sdk_plugin_example/im/get_total_unread_message_count.dart'
+    deferred as GetTotalUnreadMessageCount;
 import 'package:im_sdk_plugin_example/im/get_user_status.dart' deferred as GetUserStatus;
 import 'package:im_sdk_plugin_example/im/get_users_info.dart' deferred as GetUsersInfo;
 import 'package:im_sdk_plugin_example/im/get_version.dart' deferred as GetVersion;
@@ -68,68 +84,86 @@ import 'package:im_sdk_plugin_example/im/join_group.dart' deferred as JoinGroup;
 import 'package:im_sdk_plugin_example/im/kick_group_member.dart' deferred as KickGroupMember;
 import 'package:im_sdk_plugin_example/im/login.dart' deferred as Login;
 import 'package:im_sdk_plugin_example/im/logout.dart' deferred as Logout;
-import 'package:im_sdk_plugin_example/im/mark_c2_c_message_as_read.dart' deferred as MarkC2CMessageAsRead;
-import 'package:im_sdk_plugin_example/im/mark_group_message_as_read.dart' deferred as MarkGroupMessageAsRead;
-import 'package:im_sdk_plugin_example/im/mark_all_message_as_read.dart' deferred as MarkAllMessageAsRead;
+import 'package:im_sdk_plugin_example/im/mark_c2_c_message_as_read.dart'
+    deferred as MarkC2CMessageAsRead;
+import 'package:im_sdk_plugin_example/im/mark_group_message_as_read.dart'
+    deferred as MarkGroupMessageAsRead;
+import 'package:im_sdk_plugin_example/im/mark_all_message_as_read.dart'
+    deferred as MarkAllMessageAsRead;
 import 'package:im_sdk_plugin_example/im/modify_message.dart' deferred as ModifyMessage;
 import 'package:im_sdk_plugin_example/im/multi_api_test.dart' deferred as MultiApiTest;
 import 'package:im_sdk_plugin_example/im/mute_group_member.dart' deferred as MuteGroupMember;
 import 'package:im_sdk_plugin_example/im/pin_conversation.dart' deferred as PinConversation;
 import 'package:im_sdk_plugin_example/im/quit_group.dart' deferred as QuitGroup;
 import 'package:im_sdk_plugin_example/im/re_send_message.dart' deferred as ReSendMessage;
-import 'package:im_sdk_plugin_example/im/refuse_friend_application.dart' deferred as RefuseFriendApplication;
+import 'package:im_sdk_plugin_example/im/refuse_friend_application.dart'
+    deferred as RefuseFriendApplication;
 import 'package:im_sdk_plugin_example/im/rename_friend_group.dart' deferred as RenameFriendGroup;
 import 'package:im_sdk_plugin_example/im/revoke_message.dart' deferred as RevokeMessage;
-import 'package:im_sdk_plugin_example/im/send_c2_c_custom_message.dart' deferred as SendC2CCustomMessage;
-import 'package:im_sdk_plugin_example/im/send_c2_c_text_message.dart' deferred as SendC2CTextMessage;
+import 'package:im_sdk_plugin_example/im/send_c2_c_custom_message.dart'
+    deferred as SendC2CCustomMessage;
+import 'package:im_sdk_plugin_example/im/send_c2_c_text_message.dart'
+    deferred as SendC2CTextMessage;
 import 'package:im_sdk_plugin_example/im/send_custom_message.dart' deferred as SendCustomMessage;
 import 'package:im_sdk_plugin_example/im/send_face_message.dart' deferred as SendFaceMessage;
 import 'package:im_sdk_plugin_example/im/send_file_message.dart' deferred as SendFileMessage;
 import 'package:im_sdk_plugin_example/im/send_forward_message.dart' deferred as SendForwardMessage;
-import 'package:im_sdk_plugin_example/im/send_group_custom_message.dart' deferred as SendGroupCustomMessage;
-import 'package:im_sdk_plugin_example/im/send_group_text_message.dart' deferred as SendGroupTextMessage;
+import 'package:im_sdk_plugin_example/im/send_group_custom_message.dart'
+    deferred as SendGroupCustomMessage;
+import 'package:im_sdk_plugin_example/im/send_group_text_message.dart'
+    deferred as SendGroupTextMessage;
 import 'package:im_sdk_plugin_example/im/send_image_message.dart' deferred as SendImageMessage;
-import 'package:im_sdk_plugin_example/im/send_location_message.dart' deferred as SendLocationMessage;
+import 'package:im_sdk_plugin_example/im/send_location_message.dart'
+    deferred as SendLocationMessage;
 import 'package:im_sdk_plugin_example/im/send_merger_message.dart' deferred as SendMergerMessage;
-import 'package:im_sdk_plugin_example/im/send_message_read_receipts.dart' deferred as SendMessageReadReceipts;
+import 'package:im_sdk_plugin_example/im/send_message_read_receipts.dart'
+    deferred as SendMessageReadReceipts;
 import 'package:im_sdk_plugin_example/im/send_sound_message.dart' deferred as SendSoundMessage;
 import 'package:im_sdk_plugin_example/im/send_text_at_message.dart' deferred as SendTextAtMessage;
 import 'package:im_sdk_plugin_example/im/send_text_message.dart' deferred as SendTextMessage;
 import 'package:im_sdk_plugin_example/im/send_video_message.dart' deferred as SendVideoMessage;
 import 'package:im_sdk_plugin_example/im/set_apns_listener.dart' deferred as SetAPNSListener;
 import 'package:im_sdk_plugin_example/im/set_cloud_custom_data.dart' deferred as SetCloudCustomData;
-import 'package:im_sdk_plugin_example/im/set_conversation_draft.dart' deferred as SetConversationDraft;
+import 'package:im_sdk_plugin_example/im/set_conversation_draft.dart'
+    deferred as SetConversationDraft;
 import 'package:im_sdk_plugin_example/im/set_friend_info.dart' deferred as SetFriendInfo;
 import 'package:im_sdk_plugin_example/im/set_group_info.dart' deferred as SetGroupInfo;
 import 'package:im_sdk_plugin_example/im/set_group_member_info.dart' deferred as SetGroupMemberInfo;
 import 'package:im_sdk_plugin_example/im/set_group_member_role.dart' deferred as SetGroupMemberRole;
 import 'package:im_sdk_plugin_example/im/set_local_custom_data.dart' deferred as SetLocalCustomData;
 import 'package:im_sdk_plugin_example/im/set_local_custom_int.dart' deferred as SetLocalCustomInt;
-import 'package:im_sdk_plugin_example/im/set_offline_push_config.dart' deferred as SetOfflinePushConfig;
+import 'package:im_sdk_plugin_example/im/set_offline_push_config.dart'
+    deferred as SetOfflinePushConfig;
 import 'package:im_sdk_plugin_example/im/set_self_info.dart' deferred as SetSelfInfo;
 import 'package:im_sdk_plugin_example/im/set_self_status.dart' deferred as SetSelfStatus;
 import 'package:im_sdk_plugin_example/im/transfer_group_owner.dart' deferred as TransferGroupOwner;
-import 'package:im_sdk_plugin_example/im/call_experimental_api.dart' deferred as CallExperimentalAPI;
-import 'package:im_sdk_plugin_example/im/clear_c2_c_history_message.dart' deferred as ClearC2CHistoryMessage;
-import 'package:im_sdk_plugin_example/im/clear_group_history_message.dart' deferred as ClearGroupHistoryMessage;
-import 'package:im_sdk_plugin_example/im/search_local_messages.dart' deferred as SearchLocalMessages;
+import 'package:im_sdk_plugin_example/im/call_experimental_api.dart'
+    deferred as CallExperimentalAPI;
+import 'package:im_sdk_plugin_example/im/clear_c2_c_history_message.dart'
+    deferred as ClearC2CHistoryMessage;
+import 'package:im_sdk_plugin_example/im/clear_group_history_message.dart'
+    deferred as ClearGroupHistoryMessage;
+import 'package:im_sdk_plugin_example/im/search_local_messages.dart'
+    deferred as SearchLocalMessages;
 import 'package:im_sdk_plugin_example/im/find_messages.dart' deferred as FindMessages;
 import 'package:im_sdk_plugin_example/im/search_groups.dart' deferred as SearchGroups;
 import 'package:im_sdk_plugin_example/im/search_group_members.dart' deferred as SearchGroupMembers;
 import 'package:im_sdk_plugin_example/im/search_friends.dart' deferred as SearchFriends;
-import 'package:im_sdk_plugin_example/im/get_c2_c_receive_message_opt.dart' deferred as GetC2CReceiveMessageOpt;
+import 'package:im_sdk_plugin_example/im/get_c2_c_receive_message_opt.dart'
+    deferred as GetC2CReceiveMessageOpt;
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
 
-import 'package:im_sdk_plugin_example/im/create_topic_in_community.dart' deferred as CreateTopicInCommunity;
+import 'package:im_sdk_plugin_example/im/create_topic_in_community.dart'
+    deferred as CreateTopicInCommunity;
 import 'package:flutter/material.dart';
 
 class Config {
-  static const String appName = "API Example For Flutter";
+  static const String appName = "API 示例";
   static const int sdkappid = 10001;
   static const String userID = "10001";
 
   // 【重要】 生产环境userSig请放在服务端生产。
-  static const String key = "3e4cd0e12b2535fd968a96a2b3aeebf76ee8a76b5aa3f7ae6ed3b09df607cbb2";
+  static const String key = "dc32d51f8d2f957cfc9f1c197f917a54ad207b5dfb30ab9ca5799b5e273a69dd";
   static const String XG_ACCESS_ID = "A7CH63Q4QBZB"; // 腾讯云TPNS控制台注册所得ACCESS_ID
   static const String XG_ACCESS_KEY =
       "3ba86c2eaa4f99152c271b1f6eda3021"; // 腾讯云TPNS控制台注册所得ACCESS_KEY

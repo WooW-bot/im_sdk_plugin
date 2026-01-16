@@ -108,7 +108,12 @@ class FriendApplicationList extends StatefulWidget {
   final OnSelect onSelect;
   final List<String> value;
 
-  FriendApplicationList(this.switchSelectType, this.users, this.onSelect, this.value);
+  FriendApplicationList(
+    this.switchSelectType,
+    this.users,
+    this.onSelect,
+    this.value,
+  );
 
   @override
   State<StatefulWidget> createState() => FriendApplicationListState();
@@ -164,16 +169,21 @@ class FriendApplicationSelectorState extends State<FriendApplicationSelector> {
   List<ImFriendApplication?> friendList = List.empty();
 
   Future<List<ImFriendApplication?>?> getApplicationList() async {
-    await EasyLoading.show(status: 'loading...', maskType: EasyLoadingMaskType.black);
-    ImValueCallback<ImFriendApplicationResult> res =
-        await ImSDKPlugin.imManager.getFriendshipManager().getFriendApplicationList();
+    await EasyLoading.show(
+      status: 'loading...',
+      maskType: EasyLoadingMaskType.black,
+    );
+    ImValueCallback<ImFriendApplicationResult> res = await ImSDKPlugin.imManager
+        .getFriendshipManager()
+        .getFriendApplicationList();
 
     EasyLoading.dismiss();
 
-    if (res.code != 0) {
-      Utils.toastError(res.code, res.desc);
+    if (!res.isSuccess) {
+      Utils.toastError(res.code, res.msg);
     } else {
-      List<ImFriendApplication?> friendApplication = res.data?.friendApplicationList ?? [];
+      List<ImFriendApplication?> friendApplication =
+          res.data?.friendApplicationList ?? [];
       setState(() {
         friendList = friendApplication;
       });
@@ -184,15 +194,22 @@ class FriendApplicationSelectorState extends State<FriendApplicationSelector> {
 
   // 弹窗了
   AlertDialog dialogShow(context, applicationTransferList) {
-    final chooseType = (widget.switchSelectType ? imt(imt("单选")) : imt(imt("多选")));
+    final chooseType = (widget.switchSelectType
+        ? imt(imt("单选"))
+        : imt(imt("多选")));
     AlertDialog dialog = AlertDialog(
       title: Text("好友申请选择（$chooseType）"),
       contentPadding: EdgeInsets.zero,
-      content: FriendApplicationList(widget.switchSelectType, applicationTransferList, (data) {
-        setState(() {
-          selected = data;
-        });
-      }, selected),
+      content: FriendApplicationList(
+        widget.switchSelectType,
+        applicationTransferList,
+        (data) {
+          setState(() {
+            selected = data;
+          });
+        },
+        selected,
+      ),
       actions: [
         ElevatedButton(
           onPressed: () {
@@ -224,7 +241,8 @@ class FriendApplicationSelectorState extends State<FriendApplicationSelector> {
             fl.forEach((item) => {applicationTransferList.add(item!)});
             showDialog<void>(
               context: context,
-              builder: (context) => dialogShow(context, applicationTransferList),
+              builder: (context) =>
+                  dialogShow(context, applicationTransferList),
             );
           } else {
             Utils.toast(imt("目前没有好友申请"));

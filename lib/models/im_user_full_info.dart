@@ -1,7 +1,7 @@
 /// 用户详细信息
 class ImUserFullInfo {
   /// 用户 ID
-  late String? userID;
+  late String? userId;
 
   /// 昵称
   late String? nickName;
@@ -16,60 +16,52 @@ class ImUserFullInfo {
   late int? gender;
 
   /// 加好友验证方式
-  late int? allowType;
-
-  /// 自定义信息
-  late Map<String, String>? customInfo;
-
-  /// 角色
-  late int? role;
-
-  /// 等级
-  late int? level;
+  late int? friendAllowType;
 
   /// 生日
-  late int? birthday;
+  late String? birthday;
+
+  /// 地址
+  late String? location;
+
+  /// 扩展字段 (JSON)
+  late String? extra;
 
   ImUserFullInfo({
-    this.userID,
+    this.userId,
     this.nickName,
     this.faceUrl,
     this.selfSignature,
     this.gender,
-    this.allowType,
-    this.customInfo,
-    this.role,
-    this.level,
+    this.friendAllowType,
     this.birthday,
+    this.location,
+    this.extra,
   });
 
   ImUserFullInfo.fromJson(Map<String, dynamic> json) {
-    userID = json['userID'];
+    userId = json['userId'];
     nickName = json['nickName'];
     faceUrl = json['faceUrl'];
     selfSignature = json['selfSignature'];
     gender = json['gender'];
-    allowType = json['allowType'];
-    customInfo = json['customInfo'] == null
-        ? <String, String>{}
-        : Map<String, String>.from(json['customInfo']);
-    role = json['role'];
-    level = json['level'];
+    friendAllowType = json['friendAllowType'];
     birthday = json['birthday'];
+    location = json['location'];
+    extra = json['extra'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['userID'] = userID;
+    data['userId'] = userId;
     data['nickName'] = nickName;
     data['faceUrl'] = faceUrl;
     data['selfSignature'] = selfSignature;
     data['gender'] = gender;
-    data['allowType'] = allowType;
-    data['customInfo'] = customInfo;
-    data['role'] = role;
-    data['level'] = level;
+    data['friendAllowType'] = friendAllowType;
     data['birthday'] = birthday;
+    data['location'] = location;
+    data['extra'] = extra;
     return data;
   }
 }

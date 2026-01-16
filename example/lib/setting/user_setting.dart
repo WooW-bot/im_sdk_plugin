@@ -95,14 +95,15 @@ class UserSettingState extends State<UserSettingPage> {
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: sdkappid != '' && secret != '' && userID != ''
+                        onPressed:
+                            sdkappid != '' && secret != '' && userID != ''
                             ? () {
                                 storage.setItem("sdkappid", sdkappid);
                                 storage.setItem("secret", secret);
                                 storage.setItem("userID", userID);
                                 // 设置成功
                                 ImSDKPlugin.imManager.unInitSDK().then((res) {
-                                  if (res.code == 0) {
+                                  if (res.isSuccess) {
                                     Navigator.pop(context);
                                   }
                                 });
@@ -118,7 +119,10 @@ class UserSettingState extends State<UserSettingPage> {
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: sdkappid.length > 0 && secret.length > 0 && userID.length > 0
+                        onPressed:
+                            sdkappid.length > 0 &&
+                                secret.length > 0 &&
+                                userID.length > 0
                             ? () {
                                 storage.deleteItem('sdkappid');
                                 storage.deleteItem('secret');
