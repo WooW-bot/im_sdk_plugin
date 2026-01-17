@@ -18,8 +18,14 @@ import '../models/im_topic_info_result.dart';
 import '../models/im_topic_operation_result.dart';
 import '../models/im_value_callback.dart';
 
+import '../core/im_core.dart';
+
 /// 群组管理器
 class IMGroupManager {
+  final ImCore _imCore;
+
+  IMGroupManager(this._imCore);
+
   /// 创建群组
   Future<ImValueCallback<String>> createGroup({
     String? groupID,
@@ -39,8 +45,7 @@ class IMGroupManager {
 
   /// 获取已加入的群组列表
   Future<ImValueCallback<List<ImGroupInfo>>> getJoinedGroupList() async {
-    // TODO: implement getJoinedGroupList
-    throw UnimplementedError();
+    return _imCore.getJoinedGroupList();
   }
 
   /// 获取群组信息

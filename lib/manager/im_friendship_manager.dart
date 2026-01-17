@@ -1,4 +1,3 @@
-import '../models/sdk_context.dart';
 import '../listener/im_friendship_listener.dart';
 import '../enums/friend_application_type_enum.dart';
 import '../enums/friend_response_type_enum.dart';
@@ -13,17 +12,12 @@ import '../models/im_friend_operation_result.dart';
 import '../models/im_friend_search_param.dart';
 import '../models/im_value_callback.dart';
 import '../core/im_core.dart';
-import '../models/req/get_friend_list_req.dart';
-import '../db/db_manager.dart';
-import '../models/sync_request.dart';
-import '../models/sync_response.dart';
 
 /// 关系链管理器
 class IMFriendshipManager {
-  final SDKContext _sdkContext;
   final ImCore _imCore;
 
-  IMFriendshipManager(this._sdkContext, this._imCore);
+  IMFriendshipManager(this._imCore);
 
   /// 添加用户到黑名单
   Future<ImValueCallback<List<ImFriendOperationResult>>> addToBlackList({
@@ -43,12 +37,7 @@ class IMFriendshipManager {
 
   /// 获取黑名单列表
   Future<ImValueCallback<List<ImFriendInfo>>> getBlackList() async {
-    try {
-      final list = await DBManager().getBlackList();
-      return ImValueCallback.success(data: list);
-    } catch (e) {
-      return ImValueCallback.error(msg: "getBlackList Failed: $e", data: []);
-    }
+    return _imCore.getBlackList();
   }
 
   /// 添加关系链监听器
@@ -69,101 +58,19 @@ class IMFriendshipManager {
 
   /// 获取好友列表
   Future<ImValueCallback<List<ImFriendInfo>>> getFriendList() async {
-    try {
-      if (_sdkContext.appID == null ||
-          _sdkContext.currentUserID == null ||
-          _sdkContext.userSig == null) {
-        return ImValueCallback.error(
-          msg: "SDK not initialized or not logged in",
-          data: [],
-        );
-      }
-
-      final req = GetFriendListReq(userId: _sdkContext.currentUserID!);
-
-      final result = await _imCore.post<List<ImFriendInfo>>(
-        "/v1/friendship/getAllFriendShip",
-        data: req.toJson(),
-      );
-
-      // 数据同步：持久化到本地数据库
-      if (result.isSuccess && result.data != null) {
-        await DBManager().batchInsertFriends(result.data!);
-      }
-
-      return result;
-    } catch (e) {
-      return ImValueCallback.error(msg: "getFriendList Failed: $e", data: []);
-    }
+    return _imCore.getFriendList();
   }
 
   /// 增量同步好友列表
   Future<ImValueCallback<List<ImFriendInfo>>> syncFriendList() async {
-    try {
-      if (_sdkContext.appID == null ||
-          _sdkContext.currentUserID == null ||
-          _sdkContext.userSig == null) {
-        return ImValueCallback.error(
-          msg: "SDK not initialized or not logged in",
-          data: [],
-        );
-      }
-
-      int lastSeq = await DBManager().getFriendMaxSequence();
-      bool completed = false;
-      List<ImFriendInfo> allSyncedFriends = [];
-
-      while (!completed) {
-        final req = SyncRequest(
-          lastSequence: lastSeq,
-          maxLimit: 100, // Reasonable batch size
-        );
-
-        final ImValueCallback<SyncResponse<ImFriendInfo>> result = await _imCore
-            .post<SyncResponse<ImFriendInfo>>(
-              "/v1/friendship/syncFriendshipList",
-              data: req.toJson(),
-            );
-
-        if (!result.isSuccess || result.data == null) {
-          return ImValueCallback.error(
-            code: result.code,
-            msg: result.msg,
-            data: allSyncedFriends,
-          );
-        }
-
-        final syncResp = result.data!;
-        final list = syncResp.dataList ?? [];
-
-        if (list.isNotEmpty) {
-          // 批量插入/更新数据库
-          await DBManager().batchInsertFriends(list);
-          allSyncedFriends.addAll(list);
-          // Update lastSeq for next page based on response maxSequence
-          if (syncResp.maxSequence != null) {
-            lastSeq = syncResp.maxSequence!;
-          } else {
-            // Fallback if maxSequence missing, check last item
-            lastSeq = list.last.friendSequence ?? lastSeq;
-          }
-        }
-
-        completed = syncResp.completed ?? true;
-      }
-
-      return ImValueCallback.success(data: allSyncedFriends);
-    } catch (e) {
-      return ImValueCallback.error(msg: "syncFriendList Failed: $e", data: []);
-    }
+    return _imCore.syncFriendList();
   }
 
-  /// 获取好友信息
+  /// 获取好友信息 (Smart Fetch: Local -> Network)
   Future<ImValueCallback<List<ImFriendInfoResult>>> getFriendsInfo({
     required List<String> userIDList,
   }) async {
-    // TODO: implement getFriendsInfo
-    throw UnimplementedError();
+    return _imCore.getFriendsInfo(userIDList: userIDList);
   }
 
   /// 设置好友信息
@@ -203,8 +110,7 @@ class IMFriendshipManager {
     required List<String> userIDList,
     required FriendTypeEnum checkType,
   }) async {
-    // TODO: implement checkFriend
-    throw UnimplementedError();
+    return _imCore.checkFriend(userIDList: userIDList, checkType: checkType);
   }
 
   /// 获取好友申请列表

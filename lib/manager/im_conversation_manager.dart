@@ -1,5 +1,3 @@
-import 'package:flutter/services.dart';
-
 import '../listener/im_conversation_listener.dart';
 import '../models/im_callback.dart';
 import '../models/im_conversation.dart';
@@ -8,8 +6,13 @@ import '../models/im_value_callback.dart';
 import '../models/im_conversation_operation_result.dart';
 import '../models/im_conversation_list_filter.dart';
 
+import '../core/im_core.dart';
+
 /// 会话管理器
 class IMConversationManager {
+  final ImCore _imCore;
+
+  IMConversationManager(this._imCore);
 
   /// 添加会话监听器
   Future<void> addConversationListener({
@@ -27,13 +30,18 @@ class IMConversationManager {
     throw UnimplementedError();
   }
 
-  /// 获取会话列表
+  /// 获取会话列表 (Pagination)
   Future<ImValueCallback<ImConversationResult>> getConversationList({
     required String nextSeq,
     required int count,
   }) async {
     // TODO: implement getConversationList
     throw UnimplementedError();
+  }
+
+  /// 同意步会话列表 (Sync All/Recent on Login)
+  Future<ImValueCallback<List<ImConversation>>> syncConversationList() async {
+    return _imCore.syncConversationList();
   }
 
   /// 获取指定会话列表

@@ -10,15 +10,15 @@ import 'package:im_sdk_plugin/models/im_user_full_info.dart';
 import 'package:im_sdk_plugin/models/im_message.dart';
 import 'package:im_sdk_plugin/models/im_conversation.dart';
 
-import 'package:im_sdk_plugin/models/im_conversation_set_entity.dart';
 import 'package:im_sdk_plugin/models/im_group_member.dart';
+import 'package:im_sdk_plugin/models/im_group_info.dart';
 
 class DBManager {
   static final DBManager _instance = DBManager._internal();
   static Database? _database;
   String? _currentUserID;
 
-  static const int _dbVersion = 1;
+  static const int _dbVersion = 2;
 
   // Table Names
   static const String _tblUsers = 'local_users';
@@ -26,6 +26,7 @@ class DBManager {
   static const String _tblConversations = 'local_conversations';
   static const String _tblGroups = 'local_groups';
   static const String _tblGroupMembers = 'local_group_members';
+  static const String _tblMessages = 'local_messages';
 
   factory DBManager() {
     return _instance;
@@ -162,7 +163,28 @@ class DBManager {
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     print("IMSDK: Upgrading database from version $oldVersion to $newVersion");
-    // Development phase: Drop and recreate or just ignore for now if assuming fresh install
+    if (oldVersion < 2) {
+      // Create local_messages table
+      await db.execute('''
+        CREATE TABLE $_tblMessages (
+          client_msg_id TEXT PRIMARY KEY,
+          server_msg_id TEXT,
+          conversation_id TEXT,
+          sender_id TEXT,
+          send_time INTEGER,
+          create_time INTEGER, -- Timestamp in API
+          content_type INTEGER,
+          content TEXT, -- JSON content
+          seq INTEGER,
+          status INTEGER,
+          is_read INTEGER,
+          sender_face_url TEXT,
+          sender_nickname TEXT,
+          attached_info TEXT,
+          ex TEXT
+        )
+      ''');
+    }
   }
 
   /// 获取群成员列表 (JOIN Query)
@@ -215,6 +237,56 @@ class DBManager {
     print("IMSDK: Cached ${friends.length} friends locally.");
   }
 
+  /// 批量插入用户资料
+  Future<void> batchInsertUsers(List<ImUserFullInfo> users) async {
+    if (_database == null || _currentUserID == null) return;
+
+    await _database!.transaction((txn) async {
+      final batch = txn.batch();
+      for (var user in users) {
+        batch.insert(
+          _tblUsers,
+          _userToMap(user),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
+      await batch.commit(noResult: true);
+    });
+    print("IMSDK: Cached ${users.length} users locally.");
+  }
+
+  /// 批量插入/更新群组列表
+  Future<void> batchInsertGroups(List<ImGroupInfo> groups) async {
+    if (_database == null || _currentUserID == null) return;
+
+    await _database!.transaction((txn) async {
+      final batch = txn.batch();
+      for (var group in groups) {
+        batch.insert(
+          _tblGroups,
+          _groupToMap(group),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
+      await batch.commit(noResult: true);
+    });
+    print("IMSDK: Cached ${groups.length} groups locally.");
+  }
+
+  /// 获取指定列表的用户资料
+  Future<List<ImUserFullInfo>> getUserList(List<String> userIDs) async {
+    if (_database == null || _currentUserID == null || userIDs.isEmpty) {
+      return [];
+    }
+
+    final placeholders = List.filled(userIDs.length, '?').join(',');
+    final List<Map<String, dynamic>> maps = await _database!.rawQuery('''
+      SELECT * FROM $_tblUsers WHERE user_id IN ($placeholders)
+      ''', userIDs);
+
+    return List.generate(maps.length, (i) => _mapToUserInfo(maps[i]));
+  }
+
   /// 获取本地好友列表 (JOIN Query)
   /// 仅返回状态正常且未拉黑的好友
   Future<List<ImFriendInfo>> getFriendList() async {
@@ -233,6 +305,30 @@ class DBManager {
       WHERE F.from_id = ? AND F.status = 1 AND (F.black IS NULL OR F.black = 0)
     ''',
       [_currentUserID],
+    );
+
+    return List.generate(maps.length, (i) => _mapToFriendInfo(maps[i]));
+  }
+
+  /// 获取指定好友信息列表 (Smart Fetch Support)
+  Future<List<ImFriendInfo>> getFriendInfoList(List<String> userIDs) async {
+    if (_database == null || _currentUserID == null || userIDs.isEmpty) {
+      return [];
+    }
+
+    final placeholders = List.filled(userIDs.length, '?').join(',');
+    final List<Map<String, dynamic>> maps = await _database!.rawQuery(
+      '''
+      SELECT 
+        F.to_id, F.remark, F.add_source, F.create_time, F.extra, F.status, F.black, F.friend_sequence,
+        U.user_id, U.nick_name as nickname, U.face_url, U.gender, U.self_signature, 
+        U.friend_allow_type, U.birthday, U.location, U.extra as user_extra
+      FROM $_tblFriends F
+      LEFT JOIN $_tblUsers U ON F.to_id = U.user_id
+      WHERE F.from_id = ? 
+        AND F.to_id IN ($placeholders)
+      ''',
+      [_currentUserID, ...userIDs],
     );
 
     return List.generate(maps.length, (i) => _mapToFriendInfo(maps[i]));
@@ -287,36 +383,112 @@ class DBManager {
   }
 
   /// 批量插入/更新会话列表 (Sync from Server)
-  Future<void> batchInsertConversations(List<ImConversationSetEntity> conversations) async {
+  Future<void> batchInsertConversations(
+    List<ImConversation> conversations,
+  ) async {
     if (_database == null || _currentUserID == null) return;
 
     await _database!.transaction((txn) async {
       final batch = txn.batch();
 
       for (var conv in conversations) {
-        batch.insert(_tblConversations, {
-          'conversation_id': conv.conversationId,
-          'conversation_type': conv.conversationType,
-          'from_id': conv.fromId,
-          'to_id': conv.toId,
-          'is_mute': conv.isMute,
-          'is_top': conv.isTop,
-          'sequence': conv.sequence,
-          'read_sequence': conv.readSequence,
-          // 'draft_text': // Draft kept local, do not overwrite if null?
-          // Actually, server doesn't send draft, so we should probably use upsert logic preserving draft.
-          // But SQLite 'REPLACE' deletes the row.
-          // We need 'INSERT OR REPLACE' but preserving old columns is hard.
-          // For now, simpler approach: Use conflict algorithm REPLACE, but we lose local draft?
-          // Correct approach: check existence or use specialized Update.
-          // Since this is a "Sync", we assume authoritative data.
-          // BUT draft is local. We must preserve it.
-          // We can resolve this later. For now, using standard insert.
-        }, conflictAlgorithm: ConflictAlgorithm.replace);
+        batch.insert(
+          _tblConversations,
+          _conversationToMap(conv),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
       }
       await batch.commit(noResult: true);
     });
     print("IMSDK: Cached ${conversations.length} conversations locally.");
+  }
+
+  /// 批量插入消息 (Sync)
+  Future<void> batchInsertMessages(List<ImMessage> messages) async {
+    if (_database == null || _currentUserID == null) return;
+    await _database!.transaction((txn) async {
+      final batch = txn.batch();
+      for (var msg in messages) {
+        batch.insert(
+          _tblMessages,
+          _messageToMap(msg),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
+      await batch.commit(noResult: true);
+    });
+    print("IMSDK: Cached ${messages.length} messages locally.");
+  }
+
+  /// 获取最大消息 Seq
+  Future<int> getMaxMessageSeq() async {
+    if (_database == null) return 0;
+    try {
+      final List<Map<String, dynamic>> result = await _database!.rawQuery(
+        "SELECT MAX(seq) as max_seq FROM $_tblMessages",
+      );
+      if (result.isNotEmpty && result.first['max_seq'] != null) {
+        return result.first['max_seq'] as int;
+      }
+    } catch (e) {
+      print("IMSDK: Error getting max message seq: $e");
+    }
+    return 0;
+  }
+
+  Map<String, dynamic> _messageToMap(ImMessage msg) {
+    // Determine Conversation ID if missing?
+    // Usually msg has conversationID. If not, derive from groupID or logic.
+    // For sync, msg usually has conversationID.
+    // ImMessage model doesn't have 'conversationID' field explicitly?
+    // Check Step 3950: ImMessage has 'groupID', 'userID' (peer), 'msgID'.
+    // It doesn't have 'conversationID' field!
+    // We must derive it.
+    // Single: if sender == self, converID = "single_" + userID (peer).
+    //         if sender != self, converID = "single_" + sender.
+    // Group: "group_" + groupID.
+    // Wait, OpenIM usage: conversationID logic is complex.
+    // But for storage, we might need it.
+    // Or we store 'session_type' and 'session_id'.
+    // Let's check _tblMessages schema I defined above: 'conversation_id'.
+    // I need to generate it.
+    // Helper:
+    String convID = "";
+    if (msg.groupID != null && msg.groupID!.isNotEmpty) {
+      convID = "group_${msg.groupID}";
+    } else {
+      // Single chat
+      // Need to sort IDs? Or is it fixed "single_OTHER"?
+      // OpenIM Single Chat ConversationID: "single_" + UserID
+      // If I am sender, UserID is receiver.
+      // If I am receiver, UserID is sender.
+      // Actually ImMessage 'userID' field usually means the Peer ID in some contexts, or Receiver?
+      // Let's assume standard logic:
+      // If self send: Peer is msg.userID (receiver).
+      // If self receive: Peer is msg.sender.
+      String peer = (msg.sender == _currentUserID)
+          ? (msg.userID ?? "")
+          : (msg.sender ?? "");
+      convID = "single_$peer";
+    }
+
+    return {
+      'client_msg_id': msg.msgID, // SDK generated?
+      'server_msg_id': msg.msgID, // Or id?
+      'conversation_id': convID,
+      'sender_id': msg.sender,
+      'send_time': msg.timestamp,
+      'create_time': msg.timestamp,
+      'content_type': msg.elemType,
+      'content': jsonEncode(msg.toJson()), // Store full JSON for simplicity
+      'seq': int.tryParse(msg.seq.toString()) ?? 0,
+      'status': msg.status,
+      'is_read': msg.isRead == true ? 1 : 0,
+      'sender_face_url': msg.faceUrl,
+      'sender_nickname': msg.nickName,
+      'attached_info': null,
+      'ex': msg.localCustomData,
+    };
   }
 
   /// 获取最大的好友 Sequence (用于增量同步)
@@ -402,6 +574,62 @@ class DBManager {
     };
   }
 
+  Map<String, dynamic> _conversationToMap(ImConversation conv) {
+    return {
+      'conversation_id': conv.conversationID,
+      'conversation_type': conv.type,
+      'from_id': _currentUserID, // Conversation list is for current user
+      'to_id': conv.userID ?? conv.groupID,
+      'is_mute': conv.recvOpt,
+      'is_top': conv.isPinned == true ? 1 : 0,
+      'sequence': 0, // Server might not send sequence in ImConversation
+      'read_sequence': 0,
+      'latest_msg': conv.lastMessage != null
+          ? jsonEncode(conv.lastMessage!.toJson())
+          : null,
+      'latest_msg_time':
+          conv.lastMessage?.timestamp ?? 0, // Correct field is timestamp
+      'unread_count': conv.unreadCount,
+      'order_key': conv.orderkey,
+      'draft_text': conv.draftText,
+      'draft_text_time': conv.draftTimestamp,
+      'ex': conv.customData,
+    };
+  }
+
+  Map<String, dynamic> _groupToMap(ImGroupInfo group) {
+    return {
+      'group_id': group.groupID,
+      'group_name': group.groupName,
+      'notification': group.notification,
+      'introduction': group.introduction,
+      'face_url': group.faceUrl,
+      'owner_id': group.owner,
+      'create_time': group.createTime,
+      'update_time': group.lastInfoTime ?? 0,
+      'max_member_count': group
+          .memberCount, // Using current count as placeholder if max missing
+      'status': 0, // Default to normal as model lacks status
+      'group_type': int.tryParse(group.groupType) ?? 0,
+      'mute': group.isAllMuted == true ? 1 : 0,
+      'ex': group.customInfo != null ? jsonEncode(group.customInfo) : null,
+    };
+  }
+
+  ImUserFullInfo _mapToUserInfo(Map<String, dynamic> map) {
+    return ImUserFullInfo(
+      userId: map['user_id'],
+      nickName: map['nick_name'],
+      faceUrl: map['face_url'],
+      gender: map['gender'],
+      selfSignature: map['self_signature'],
+      friendAllowType: map['friend_allow_type'],
+      birthday: map['birthday'],
+      location: map['location'],
+      extra: map['extra'],
+    );
+  }
+
   Map<String, dynamic> _friendToRelationMap(ImFriendInfo friend) {
     // Serialize extra fields (customInfo, groups) into 'extra'
     final Map<String, dynamic> exMap = {};
@@ -450,7 +678,9 @@ class DBManager {
       try {
         final exMap = jsonDecode(map['extra']);
         if (exMap['friendCustomInfo'] != null) {
-          friendCustomInfo = Map<String, String>.from(exMap['friendCustomInfo']);
+          friendCustomInfo = Map<String, String>.from(
+            exMap['friendCustomInfo'],
+          );
         }
         if (exMap['friendGroups'] != null) {
           friendGroups = List<String>.from(exMap['friendGroups']);

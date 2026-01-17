@@ -3,10 +3,8 @@ import 'package:flutter/foundation.dart';
 
 import 'package:im_sdk_plugin/listener/im_simple_msg_listener.dart';
 import 'package:im_sdk_plugin/models/login_model.dart';
-import 'package:im_sdk_plugin/models/user_model.dart';
 import 'package:uuid/uuid.dart';
 
-import '../db/db_manager.dart';
 import '../listener/im_group_listener.dart';
 import '../listener/im_sdk_listener.dart';
 import '../enums/log_level_enum.dart';
@@ -45,10 +43,11 @@ class IMManager {
 
   IMManager() {
     _imCore = ImCore(_sdkContext);
-    conversationManager = IMConversationManager();
-    messageManager = IMMessageManager();
-    friendshipManager = IMFriendshipManager(_sdkContext, _imCore);
-    groupManager = IMGroupManager();
+    conversationManager = IMConversationManager(_imCore);
+    messageManager = IMMessageManager(_imCore);
+    friendshipManager = IMFriendshipManager(_imCore);
+    groupManager = IMGroupManager(_imCore);
+    offlinePushManager = IMOfflinePushManager();
     offlinePushManager = IMOfflinePushManager();
     signalingManager = IMSignalingManager();
   }
@@ -136,26 +135,17 @@ class IMManager {
 
       _loginStatus = LoginStatusEnum.logging.index;
 
-      // 1. HTTP 请求从后端获取路由信息
-      final req = LoginReq(
-        appId: _sdkContext.appID ?? 0,
-        userId: userID,
-        clientType: 1, // 1 for Desktop/App
-      );
-
-      final ImValueCallback<RouteInfo> response = await _imCore.post<RouteInfo>(
-        "/v1/user/login",
-        data: req.toJson(),
-      );
+      // Delegate to ImCore
+      final response = await _imCore.login(userID: userID, userSig: userSig);
 
       if (response.isSuccess && response.data != null) {
         final routeInfo = response.data!;
 
-        // 2. 初始化数据库
-        await DBManager().initDB(userID);
-
-        // 3. 建立 TCP 连接
+        // 3. 建立 TCP 连接 (Keep locally for now as agreed)
         await _connectSocket(routeInfo);
+
+        // 4. 执行数据同步
+        _imCore.postLoginSync(userID);
 
         _triggerNativeEvent(_sdkContext.listenerUuid!, 'onConnectSuccess');
         _sdkContext.currentUserID = userID;
@@ -200,12 +190,14 @@ class IMManager {
     }
   }
 
+  // _syncData moved to ImCore.postLoginSync
+
   /// 登出
   Future<ImCallback> logout() async {
     _loginStatus = LoginStatusEnum.logout.index;
     _sdkContext.currentUserID = null;
     _sdkContext.userSig = null;
-    return ImCallback.success(msg: "Logout Success");
+    return _imCore.logout();
   }
 
   /// 获取当前登录用户
@@ -299,20 +291,7 @@ class IMManager {
   Future<ImValueCallback<List<ImUserFullInfo>>> getUsersInfo({
     required List<String> userIDList,
   }) async {
-    try {
-      if (_sdkContext.appID == null) {
-        return ImValueCallback.error(msg: "SDK not initialized", data: []);
-      }
-
-      final req = GetUserInfoReq(userIds: userIDList);
-
-      return await _imCore.post<List<ImUserFullInfo>>(
-        "/v1/user/data/getUserInfo",
-        data: req.toJson(),
-      );
-    } catch (e) {
-      return ImValueCallback.error(msg: "getUsersInfo Failed: $e", data: []);
-    }
+    return _imCore.getUsersInfo(userIDList: userIDList);
   }
 
   /// 获取用户状态

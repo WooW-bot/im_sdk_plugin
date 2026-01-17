@@ -1,5 +1,3 @@
-import 'package:flutter/services.dart';
-
 import '../listener/im_advanced_msg_listener.dart';
 import '../enums/get_group_message_read_member_list_filter.dart';
 import '../enums/history_msg_get_type_enum.dart';
@@ -20,9 +18,13 @@ import '../models/im_message_extension_result.dart';
 import '../models/im_message_list_result.dart';
 import 'dart:collection';
 import '../models/im_message_online_url.dart';
+import '../core/im_core.dart';
 
 /// 消息管理器
 class IMMessageManager {
+  final ImCore _imCore;
+
+  IMMessageManager(this._imCore);
 
   /// 创建文本消息
   Future<ImValueCallback<ImMsgCreateInfoResult>> createTextMessage({
@@ -437,6 +439,11 @@ class IMMessageManager {
   }) async {
     // TODO: implement setCloudCustomData
     throw UnimplementedError();
+  }
+
+  /// 同步离线消息
+  Future<ImValueCallback<List<ImMessage>>> syncOfflineMessages() async {
+    return _imCore.syncOfflineMessages();
   }
 
   /// 查找消息

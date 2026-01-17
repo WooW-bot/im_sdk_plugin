@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 import '../listener/im_signaling_listener.dart';
 import '../models/offline_push_info.dart';
 import '../models/im_callback.dart';
@@ -6,18 +8,32 @@ import '../models/im_signaling_info.dart';
 
 /// 信令管理器
 class IMSignalingManager {
+  Map<String, ImSignalingListener> signalingListenerList = {};
+
   /// 添加信令监听器
-  Future<void> addSignalingListener({
-    required ImSignalingListener listener,
-  }) async {
-    // TODO: implement addSignalingListener
-    throw UnimplementedError();
+  Future<void> addSignalingListener({required ImSignalingListener listener}) async {
+    final String listenerUuid = Uuid().v4();
+    signalingListenerList[listenerUuid] = listener;
+    /*    return ImFlutterPlatform.instance.addSignalingListener(
+      listenerUuid: listenerUuid,
+      listener: listener,
+    );*/
   }
 
   /// 移除信令监听器
   Future<void> removeSignalingListener({ImSignalingListener? listener}) async {
-    // TODO: implement removeSignalingListener
-    throw UnimplementedError();
+    var listenerUuid = "";
+    if (listener != null) {
+      listenerUuid = signalingListenerList.keys.firstWhere(
+        (k) => signalingListenerList[k] == listener,
+        orElse: () => "",
+      );
+      signalingListenerList.remove(listenerUuid);
+    } else {
+      signalingListenerList.clear();
+    }
+    /*    return ImFlutterPlatform.instance
+        .removeSignalingListener(listenerUuid: listenerUuid);*/
   }
 
   /// 邀请个人
@@ -71,9 +87,7 @@ class IMSignalingManager {
   }
 
   /// 获取信令信息
-  Future<ImValueCallback<ImSignalingInfo>> getSignalingInfo({
-    required String msgID,
-  }) async {
+  Future<ImValueCallback<ImSignalingInfo>> getSignalingInfo({required String msgID}) async {
     // TODO: implement getSignalingInfo
     throw UnimplementedError();
   }
