@@ -1,4 +1,4 @@
-import '../../models/im_value_callback.dart';
+import '../../im_sdk_plugin.dart';
 import '../../models/im_friend_info.dart';
 import '../../models/im_friend_check_result.dart';
 import '../../models/sync_response.dart';

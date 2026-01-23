@@ -6,7 +6,7 @@ import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 import 'package:im_sdk_plugin/listener/im_sdk_listener.dart';
 import 'package:im_sdk_plugin/enums/log_level_enum.dart';
-import 'package:im_sdk_plugin/models/im_value_callback.dart';
+
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
 
@@ -22,7 +22,7 @@ class InitSDKState extends State<InitSDK> {
 
   initIMSDK() async {
     ImValueCallback<bool> res = await ImSDKPlugin.imManager.initSDK(
-      appID: Config.sdkappid,
+      appID: Config.sdkappid.toString(),
       logLevel: LogLevelEnum.IM_LOG_ALL,
       showImLog: true,
       listener: new ImSDKListener(

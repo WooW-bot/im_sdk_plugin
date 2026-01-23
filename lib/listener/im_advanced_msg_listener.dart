@@ -1,4 +1,4 @@
-import '../models/im_message.dart';
+import '../im_sdk_plugin.dart';
 import '../models/im_message_download_progress.dart';
 import '../models/im_message_extension.dart';
 import '../models/im_message_receipt.dart';

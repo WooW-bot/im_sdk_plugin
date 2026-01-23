@@ -1,6 +1,4 @@
-import '../models/im_group_change_info.dart';
-import '../models/im_group_member_change_info.dart';
-import '../models/im_group_member_info.dart';
+import '../im_sdk_plugin.dart';
 import '../models/im_topic_info.dart';
 import 'callbacks.dart';
 

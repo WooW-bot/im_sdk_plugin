@@ -1,8 +1,9 @@
+import 'package:im_sdk_core/im_sdk_core.dart';
+
+import '../im_sdk_plugin.dart';
 import '../listener/im_conversation_listener.dart';
-import '../models/im_callback.dart';
 import '../models/im_conversation.dart';
 import '../models/im_conversation_result.dart';
-import '../models/im_value_callback.dart';
 import '../models/im_conversation_operation_result.dart';
 import '../models/im_conversation_list_filter.dart';
 
@@ -10,7 +11,7 @@ import '../core/im_core.dart';
 
 /// 会话管理器
 class IMConversationManager {
-  final ImCore _imCore;
+  final ImSdkCore _imCore;
 
   IMConversationManager(this._imCore);
 
@@ -41,7 +42,8 @@ class IMConversationManager {
 
   /// 同意步会话列表 (Sync All/Recent on Login)
   Future<ImValueCallback<List<ImConversation>>> syncConversationList() async {
-    return _imCore.syncConversationList();
+    // TODO: implement getConversationListByConversationIds
+    throw UnimplementedError();
   }
 
   /// 获取指定会话列表

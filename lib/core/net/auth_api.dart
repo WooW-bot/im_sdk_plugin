@@ -1,5 +1,7 @@
-import '../../models/im_value_callback.dart';
-import '../../models/login_model.dart';
+
+import 'package:im_sdk_core/core/models/im_value_callback.dart';
+import 'package:im_sdk_core/core/models/login_model.dart';
+
 import 'api_client.dart';
 
 class AuthApi {
@@ -9,7 +11,7 @@ class AuthApi {
 
   /// 登录
   Future<ImValueCallback<RouteInfo>> login({
-    required int appID,
+    required String appID,
     required String userID,
     required int clientType,
   }) async {

@@ -1,5 +1,5 @@
+import '../im_sdk_plugin.dart';
 import 'im_group_at_info.dart';
-import 'im_message.dart';
 
 class ImTopicInfo {
   /// 话题 ID

@@ -3,7 +3,7 @@ import 'package:im_sdk_plugin_example/im/conversation_selector.dart';
 import 'package:im_sdk_plugin_example/utils/sdk_response.dart';
 import 'package:im_sdk_plugin/enums/conversation_type.dart';
 import 'package:im_sdk_plugin/enums/im_conversation_marktype.dart';
-import 'package:im_sdk_plugin/models/im_callback.dart';
+
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
 import 'package:im_sdk_plugin/models/im_conversation_list_filter.dart';
 import 'package:im_sdk_plugin/models/im_conversation_operation_result.dart';
@@ -11,7 +11,7 @@ import 'package:im_sdk_plugin/models/im_conversation_result.dart';
 import 'package:im_sdk_plugin/models/im_topic_info.dart';
 import 'package:im_sdk_plugin/models/im_topic_info_result.dart';
 import 'package:im_sdk_plugin/models/im_topic_operation_result.dart';
-import 'package:im_sdk_plugin/models/im_value_callback.dart';
+
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 
 class MultiApiTest extends StatefulWidget {

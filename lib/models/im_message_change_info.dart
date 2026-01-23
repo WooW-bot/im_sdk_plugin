@@ -1,4 +1,4 @@
-import 'im_message.dart';
+import '../im_sdk_plugin.dart';
 
 class ImMessageChangeInfo {
   /// 错误码

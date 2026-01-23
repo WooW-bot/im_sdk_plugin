@@ -4,11 +4,6 @@ import 'package:im_sdk_plugin_example/utils/toast.dart';
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 import 'package:im_sdk_plugin/models/im_conversation.dart';
 import 'package:im_sdk_plugin/models/im_conversation_result.dart';
-import 'package:im_sdk_plugin/models/im_value_callback.dart';
-import 'package:im_sdk_plugin/models/im_conversation.dart';
-import 'package:im_sdk_plugin/models/im_conversation_result.dart';
-import 'package:im_sdk_plugin/models/im_value_callback.dart';
-import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
 
 import '../utils/toast.dart';

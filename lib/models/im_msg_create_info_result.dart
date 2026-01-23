@@ -1,4 +1,4 @@
-import 'im_message.dart';
+import '../im_sdk_plugin.dart';
 
 class ImMsgCreateInfoResult {
   /// 消息 ID

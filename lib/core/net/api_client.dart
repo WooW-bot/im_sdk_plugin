@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
-import '../../models/im_value_callback.dart';
-import '../../models/im_callback.dart';
-import '../../models/sdk_context.dart';
+import '../../im_sdk_plugin.dart';
 
 /// IM SDK 网络请求层
 class ApiClient {

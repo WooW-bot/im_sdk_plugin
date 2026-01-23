@@ -1,6 +1,6 @@
-import 'package:im_sdk_plugin/models/im_group_member_info.dart';
 import 'package:im_sdk_plugin/models/im_user_info.dart';
 
+import '../im_sdk_plugin.dart';
 import 'callbacks.dart';
 
 /// 简单消息监听器

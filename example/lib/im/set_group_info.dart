@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:im_sdk_plugin_example/im/group_selector.dart';
 import 'package:im_sdk_plugin_example/utils/sdk_response.dart';
 import 'package:im_sdk_plugin/enums/group_add_opt_type.dart';
-import 'package:im_sdk_plugin/models/im_callback.dart';
-import 'package:im_sdk_plugin/models/im_group_info.dart';
+
+
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
 import 'package:im_sdk_plugin_example/utils/customerField/customer_field.dart';

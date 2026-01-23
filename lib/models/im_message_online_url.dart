@@ -1,7 +1,4 @@
-import 'im_file_elem.dart';
-import 'im_image_elem.dart';
-import 'im_sound_elem.dart';
-import 'im_video_elem.dart';
+import '../im_sdk_plugin.dart';
 
 /// 消息在线 URL
 class ImMessageOnlineUrl {

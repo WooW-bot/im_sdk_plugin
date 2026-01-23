@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:im_sdk_plugin/models/offline_push_info.dart';
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 import 'package:im_sdk_plugin/models/im_signaling_info.dart';
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';

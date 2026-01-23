@@ -4,7 +4,7 @@ import 'package:im_sdk_plugin_example/im/group_member_selector.dart';
 import 'package:im_sdk_plugin_example/im/group_selector.dart';
 import 'package:im_sdk_plugin_example/utils/sdk_response.dart';
 import 'package:im_sdk_plugin/enums/group_member_role_enum.dart';
-import 'package:im_sdk_plugin/models/im_callback.dart';
+
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
 

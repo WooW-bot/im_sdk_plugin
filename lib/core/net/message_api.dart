@@ -1,5 +1,4 @@
-import '../../models/im_value_callback.dart';
-import '../../models/im_message.dart';
+import '../../im_sdk_plugin.dart';
 import '../../models/sync_request.dart';
 import 'api_client.dart';
 

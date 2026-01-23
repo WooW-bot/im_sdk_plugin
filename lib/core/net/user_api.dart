@@ -1,5 +1,4 @@
-import '../../models/im_value_callback.dart';
-import '../../models/im_user_full_info.dart';
+import '../../im_sdk_plugin.dart';
 import '../../models/req/get_user_info_req.dart';
 import 'api_client.dart';
 

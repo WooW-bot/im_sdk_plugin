@@ -1,4 +1,4 @@
-import '../models/im_callback.dart';
+import '../im_sdk_plugin.dart';
 
 /// 离线推送管理器
 class IMOfflinePushManager {

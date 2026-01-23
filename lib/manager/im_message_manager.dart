@@ -1,28 +1,26 @@
+import 'package:im_sdk_core/im_sdk_core.dart';
+
+import '../im_sdk_plugin.dart';
 import '../listener/im_advanced_msg_listener.dart';
 import '../enums/get_group_message_read_member_list_filter.dart';
 import '../enums/history_msg_get_type_enum.dart';
 import '../enums/message_priority_enum.dart';
-import '../models/offline_push_info.dart';
 import '../enums/receive_message_opt_enum.dart';
-import '../models/im_callback.dart';
 import '../models/im_group_message_read_member_list.dart';
-import '../models/im_message.dart';
 import '../models/im_message_change_info.dart';
 import '../models/im_message_receipt.dart';
 import '../models/im_message_search_param.dart';
 import '../models/im_message_search_result.dart';
 import '../models/im_msg_create_info_result.dart';
-import '../models/im_value_callback.dart';
 import '../models/im_message_extension.dart';
 import '../models/im_message_extension_result.dart';
 import '../models/im_message_list_result.dart';
 import 'dart:collection';
 import '../models/im_message_online_url.dart';
-import '../core/im_core.dart';
 
 /// 消息管理器
 class IMMessageManager {
-  final ImCore _imCore;
+  final ImSdkCore _imCore;
 
   IMMessageManager(this._imCore);
 
@@ -443,7 +441,8 @@ class IMMessageManager {
 
   /// 同步离线消息
   Future<ImValueCallback<List<ImMessage>>> syncOfflineMessages() async {
-    return _imCore.syncOfflineMessages();
+    // TODO: implement findMessages
+    throw UnimplementedError();
   }
 
   /// 查找消息

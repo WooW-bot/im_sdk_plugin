@@ -1,12 +1,6 @@
-import 'package:im_sdk_plugin/models/im_group_info.dart';
-
-import '../models/im_value_callback.dart';
-import '../models/im_callback.dart';
-import '../models/sdk_context.dart';
+import '../im_sdk_plugin.dart';
 import 'net/api_client.dart';
 import 'db/db_manager.dart';
-import '../models/login_model.dart'; // Contains LoginReq and RouteInfo
-import '../models/im_user_full_info.dart';
 // import '../models/get_user_info_req.dart'; // Removed, assuming it's in login_model or define here if missing
 import '../models/im_friend_info_result.dart';
 import '../models/im_friend_check_result.dart';
@@ -14,7 +8,6 @@ import '../enums/friend_type_enum.dart';
 import '../models/im_friend_info.dart';
 
 import '../models/im_conversation.dart';
-import '../models/im_message.dart';
 import 'net/auth_api.dart';
 import 'net/user_api.dart';
 import 'net/friendship_api.dart';
@@ -63,7 +56,7 @@ class ImCore {
     try {
       // 1. HTTP 请求从后端获取路由信息
       final ImValueCallback<RouteInfo> response = await _authApi.login(
-        appID: _sdkContext.appID ?? 0,
+        appID: _sdkContext.appID,
         userID: userID,
         clientType: 1,
       );

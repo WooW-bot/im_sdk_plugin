@@ -1,4 +1,4 @@
-import 'offline_push_info.dart';
+import '../im_sdk_plugin.dart';
 
 /// 信令信息
 class ImSignalingInfo {

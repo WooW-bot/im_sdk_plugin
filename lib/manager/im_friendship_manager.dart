@@ -1,8 +1,10 @@
+import 'package:im_sdk_core/im_sdk_core.dart';
+
+import '../im_sdk_plugin.dart';
 import '../listener/im_friendship_listener.dart';
 import '../enums/friend_application_type_enum.dart';
 import '../enums/friend_response_type_enum.dart';
 import '../enums/friend_type_enum.dart';
-import '../models/im_callback.dart';
 import '../models/im_friend_application_result.dart';
 import '../models/im_friend_check_result.dart';
 import '../models/im_friend_group.dart';
@@ -10,12 +12,10 @@ import '../models/im_friend_info.dart';
 import '../models/im_friend_info_result.dart';
 import '../models/im_friend_operation_result.dart';
 import '../models/im_friend_search_param.dart';
-import '../models/im_value_callback.dart';
-import '../core/im_core.dart';
 
 /// 关系链管理器
 class IMFriendshipManager {
-  final ImCore _imCore;
+  final ImSdkCore _imCore;
 
   IMFriendshipManager(this._imCore);
 
@@ -37,7 +37,8 @@ class IMFriendshipManager {
 
   /// 获取黑名单列表
   Future<ImValueCallback<List<ImFriendInfo>>> getBlackList() async {
-    return _imCore.getBlackList();
+    // TODO: implement addFriendListener
+    throw UnimplementedError();
   }
 
   /// 添加关系链监听器
@@ -58,19 +59,22 @@ class IMFriendshipManager {
 
   /// 获取好友列表
   Future<ImValueCallback<List<ImFriendInfo>>> getFriendList() async {
-    return _imCore.getFriendList();
+    // TODO: implement addFriendListener
+    throw UnimplementedError();
   }
 
   /// 增量同步好友列表
   Future<ImValueCallback<List<ImFriendInfo>>> syncFriendList() async {
-    return _imCore.syncFriendList();
+    // TODO: implement addFriendListener
+    throw UnimplementedError();
   }
 
   /// 获取好友信息 (Smart Fetch: Local -> Network)
   Future<ImValueCallback<List<ImFriendInfoResult>>> getFriendsInfo({
     required List<String> userIDList,
   }) async {
-    return _imCore.getFriendsInfo(userIDList: userIDList);
+    // TODO: implement addFriendListener
+    throw UnimplementedError();
   }
 
   /// 设置好友信息
@@ -110,7 +114,8 @@ class IMFriendshipManager {
     required List<String> userIDList,
     required FriendTypeEnum checkType,
   }) async {
-    return _imCore.checkFriend(userIDList: userIDList, checkType: checkType);
+    // TODO: implement addFriendListener
+    throw UnimplementedError();
   }
 
   /// 获取好友申请列表

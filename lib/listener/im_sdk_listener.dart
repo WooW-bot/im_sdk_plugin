@@ -1,4 +1,4 @@
-import '../models/im_user_full_info.dart';
+import '../im_sdk_plugin.dart';
 import '../models/im_user_status.dart';
 import 'callbacks.dart';
 

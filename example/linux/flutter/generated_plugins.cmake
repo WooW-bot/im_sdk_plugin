@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   dynamic_color
   file_selector_linux
+  im_sdk_core
   im_sdk_plugin
   record_linux
 )

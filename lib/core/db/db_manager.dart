@@ -6,12 +6,12 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
 import 'package:im_sdk_plugin/models/im_friend_info.dart';
-import 'package:im_sdk_plugin/models/im_user_full_info.dart';
-import 'package:im_sdk_plugin/models/im_message.dart';
+
 import 'package:im_sdk_plugin/models/im_conversation.dart';
 
 import 'package:im_sdk_plugin/models/im_group_member.dart';
-import 'package:im_sdk_plugin/models/im_group_info.dart';
+
+import '../../im_sdk_plugin.dart';
 
 class DBManager {
   static final DBManager _instance = DBManager._internal();

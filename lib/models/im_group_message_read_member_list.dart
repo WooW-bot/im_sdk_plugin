@@ -1,4 +1,4 @@
-import 'im_group_member_info.dart';
+import '../im_sdk_plugin.dart';
 
 class ImGroupMessageReadMemberList {
   /// 下一次拉取的序列号

@@ -1,4 +1,4 @@
-import 'im_message.dart';
+import '../im_sdk_plugin.dart';
 
 /// 消息搜索结果项
 class ImMessageSearchResultItem {

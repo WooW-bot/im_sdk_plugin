@@ -1,27 +1,24 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:im_sdk_core/core/models/im_callback.dart';
+import 'package:im_sdk_core/im_sdk_core.dart';
 
 import 'package:im_sdk_plugin/listener/im_simple_msg_listener.dart';
-import 'package:im_sdk_plugin/models/login_model.dart';
 import 'package:uuid/uuid.dart';
 
+import '../im_sdk_plugin.dart';
 import '../listener/im_group_listener.dart';
 import '../listener/im_sdk_listener.dart';
 import '../enums/log_level_enum.dart';
 import '../enums/login_status_enum.dart';
-import '../models/im_callback.dart';
-import '../models/im_user_full_info.dart';
 import '../models/im_user_status.dart';
-import '../models/im_value_callback.dart';
 import 'im_conversation_manager.dart';
 import 'im_offline_push_manager.dart';
 import 'im_signaling_manager.dart';
 import 'im_friendship_manager.dart';
 import 'im_group_manager.dart';
 import 'im_message_manager.dart';
-import '../models/sdk_context.dart';
-import '../models/im_message.dart';
-import '../core/im_core.dart';
+
 
 /// IM SDK 主核心管理类
 class IMManager {
@@ -34,19 +31,18 @@ class IMManager {
   late Map<String, ImSimpleMsgListener> simpleMessageListenerList = {};
   late Map<String, ImSDKListener> initSDKListenerList = {};
   late Map<String, ImGroupListener> groupListenerList = {};
-
-  final SDKContext _sdkContext = SDKContext();
-  late ImCore _imCore;
+  late SDKContext _sdkContext;
+  late ImSdkCore _imSdkCore;
 
   // 内部登录状态
   int _loginStatus = LoginStatusEnum.limit.index;
 
   IMManager() {
-    _imCore = ImCore(_sdkContext);
-    conversationManager = IMConversationManager(_imCore);
-    messageManager = IMMessageManager(_imCore);
-    friendshipManager = IMFriendshipManager(_imCore);
-    groupManager = IMGroupManager(_imCore);
+    _imSdkCore = ImSdkCore(_sdkContext);
+    conversationManager = IMConversationManager(_imSdkCore);
+    messageManager = IMMessageManager(_imSdkCore);
+    friendshipManager = IMFriendshipManager(_imSdkCore);
+    groupManager = IMGroupManager(_imSdkCore);
     offlinePushManager = IMOfflinePushManager();
     offlinePushManager = IMOfflinePushManager();
     signalingManager = IMSignalingManager();
@@ -59,7 +55,7 @@ class IMManager {
   /// [listener] SDK 监听器
   /// [showImLog] 是否显示 IM 日志
   Future<ImValueCallback<bool>> initSDK({
-    required int appID,
+    required String appID,
     required LogLevelEnum logLevel,
     required ImSDKListener listener,
     bool? showImLog = false,
@@ -67,8 +63,9 @@ class IMManager {
   }) async {
     final String uuid = Uuid().v4();
 
+
     // 更新 SDKContext
-    _sdkContext.appID = appID;
+    _sdkContext = SDKContext(appID: appID);
     _sdkContext.apiHost = apiHost;
     _sdkContext.logLevel = logLevel;
     _sdkContext.listenerUuid = uuid;
@@ -128,12 +125,10 @@ class IMManager {
     required String userID,
     required String userSig,
   }) async {
-    try {
-      if (_loginStatus == LoginStatusEnum.logged.index) {
-        return ImValueCallback.error(msg: "Already logged in");
-      }
+    return await _imSdkCore.login(userID: userID, userSig: userSig);
+    /*try {
 
-      _loginStatus = LoginStatusEnum.logging.index;
+
 
       // Delegate to ImCore
       final response = await _imCore.login(userID: userID, userSig: userSig);
@@ -166,7 +161,7 @@ class IMManager {
         'desc': e.toString(),
       });
       return ImValueCallback.error(msg: "Login Failed: $e");
-    }
+    }*/
   }
 
   Future<void> _connectSocket(RouteInfo routeInfo) async {
@@ -197,7 +192,8 @@ class IMManager {
     _loginStatus = LoginStatusEnum.logout.index;
     _sdkContext.currentUserID = null;
     _sdkContext.userSig = null;
-    return _imCore.logout();
+    // TODO: implement addFriendListener
+    throw UnimplementedError();
   }
 
   /// 获取当前登录用户
@@ -291,7 +287,8 @@ class IMManager {
   Future<ImValueCallback<List<ImUserFullInfo>>> getUsersInfo({
     required List<String> userIDList,
   }) async {
-    return _imCore.getUsersInfo(userIDList: userIDList);
+    // TODO: implement addFriendListener
+    throw UnimplementedError();
   }
 
   /// 获取用户状态

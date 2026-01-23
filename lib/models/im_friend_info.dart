@@ -1,4 +1,4 @@
-import 'im_user_full_info.dart';
+import '../im_sdk_plugin.dart';
 
 /// 好友信息
 class ImFriendInfo {

@@ -4,7 +4,7 @@ import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
 import 'package:im_sdk_plugin_example/im/topic_selector.dart';
 import 'package:im_sdk_plugin_example/utils/sdk_response.dart';
 import 'package:flutter/material.dart';
-import 'package:im_sdk_plugin/models/im_group_info.dart';
+
 import 'package:im_sdk_plugin/models/im_topic_info.dart';
 
 import 'community_selector.dart';

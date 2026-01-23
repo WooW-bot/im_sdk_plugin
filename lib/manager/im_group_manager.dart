@@ -1,11 +1,11 @@
+import 'package:im_sdk_core/im_sdk_core.dart';
+
 import '../enums/group_add_opt_enum.dart';
 import '../enums/group_application_type_enum.dart';
 import '../enums/group_member_filter_enum.dart';
 import '../enums/group_member_role_enum.dart';
-import '../models/im_callback.dart';
+import '../im_sdk_plugin.dart';
 import '../models/im_group_application_result.dart';
-import '../models/im_group_info.dart';
-import '../models/im_group_info_result.dart';
 import '../models/im_group_member.dart';
 import '../models/im_group_member_full_info.dart';
 import '../models/im_group_member_info_result.dart';
@@ -16,13 +16,10 @@ import '../models/im_group_search_param.dart';
 import '../models/im_topic_info.dart';
 import '../models/im_topic_info_result.dart';
 import '../models/im_topic_operation_result.dart';
-import '../models/im_value_callback.dart';
-
-import '../core/im_core.dart';
 
 /// 群组管理器
 class IMGroupManager {
-  final ImCore _imCore;
+  final ImSdkCore _imCore;
 
   IMGroupManager(this._imCore);
 
@@ -45,7 +42,8 @@ class IMGroupManager {
 
   /// 获取已加入的群组列表
   Future<ImValueCallback<List<ImGroupInfo>>> getJoinedGroupList() async {
-    return _imCore.getJoinedGroupList();
+    // TODO: implement addFriendListener
+    throw UnimplementedError();
   }
 
   /// 获取群组信息

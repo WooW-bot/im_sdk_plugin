@@ -3,7 +3,7 @@ import 'package:im_sdk_plugin_example/config/config.dart';
 import 'package:im_sdk_plugin_example/utils/generate_test_user_sig.dart';
 import 'package:im_sdk_plugin_example/utils/sdk_response.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:im_sdk_plugin/models/im_value_callback.dart';
+
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
 

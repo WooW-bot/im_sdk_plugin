@@ -1,4 +1,4 @@
-import 'im_message.dart';
+import '../im_sdk_plugin.dart';
 
 /// 消息列表获取结果
 class ImMessageListResult {
