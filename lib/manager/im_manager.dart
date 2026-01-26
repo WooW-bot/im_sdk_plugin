@@ -39,11 +39,13 @@ class IMManager with BaseMixin {
     bool? showImLog = false,
     String apiHost = "http://192.168.1.30:8000",
   }) async {
-    Logger.info("[IMManager] 初始化 SDK - appID: $appID, logLevel: $logLevel, apiHost: $apiHost");
+    Logger.setLogLevel(logLevel);
+    Logger.info(
+      "[IMManager] 初始化 SDK - appID: $appID, logLevel: $logLevel, apiHost: $apiHost",
+    );
     _sdkContext = SDKContext(
       appID: appID,
       apiHost: apiHost,
-      logLevel: logLevel,
       showImLog: showImLog ?? false,
     );
     _imSdkCore = ImSdkCore(_sdkContext);
@@ -65,7 +67,9 @@ class IMManager with BaseMixin {
 
   /// 设置InitSDK监听器
   Future<void> setInitSDKListener(ImSDKListener? listener) async {
-    Logger.debug("[IMManager] 设置 InitSDK 监听器: ${listener != null ? '已设置' : '已清除'}");
+    Logger.debug(
+      "[IMManager] 设置 InitSDK 监听器: ${listener != null ? '已设置' : '已清除'}",
+    );
     _initSDKListener = listener;
   }
 
@@ -88,7 +92,9 @@ class IMManager with BaseMixin {
     if (result.isSuccess) {
       Logger.info("[IMManager] 登录成功 - userID: $userID");
     } else {
-      Logger.error("[IMManager] 登录失败 - userID: $userID, code: ${result.code}, msg: ${result.msg}");
+      Logger.error(
+        "[IMManager] 登录失败 - userID: $userID, code: ${result.code}, msg: ${result.msg}",
+      );
     }
     return result;
   }
@@ -244,8 +250,7 @@ class IMManager with BaseMixin {
 
   /// 获取信令管理器
   IMSignalingManager getSignalingManager() {
-    // TODO: implement getSignalingManager
-    throw UnimplementedError();
+    return signalingManager;
   }
 
   /// 检查能力位
