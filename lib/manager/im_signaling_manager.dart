@@ -1,37 +1,18 @@
-import 'package:uuid/uuid.dart';
+import 'package:im_sdk_core/method_call_handler.dart';
+import 'package:im_sdk_plugin/mixins/mixin.dart';
 
 import '../im_sdk_plugin.dart';
 import '../listener/im_signaling_listener.dart';
 import '../models/im_signaling_info.dart';
 
 /// 信令管理器
-class IMSignalingManager {
-  Map<String, ImSignalingListener> signalingListenerList = {};
+class IMSignalingManager with BaseMixin {
+  ImSignalingListener? _signalingListener;
 
-  /// 添加信令监听器
-  Future<void> addSignalingListener({required ImSignalingListener listener}) async {
-    final String listenerUuid = Uuid().v4();
-    signalingListenerList[listenerUuid] = listener;
-    /*    return ImFlutterPlatform.instance.addSignalingListener(
-      listenerUuid: listenerUuid,
-      listener: listener,
-    );*/
-  }
-
-  /// 移除信令监听器
-  Future<void> removeSignalingListener({ImSignalingListener? listener}) async {
-    var listenerUuid = "";
-    if (listener != null) {
-      listenerUuid = signalingListenerList.keys.firstWhere(
-        (k) => signalingListenerList[k] == listener,
-        orElse: () => "",
-      );
-      signalingListenerList.remove(listenerUuid);
-    } else {
-      signalingListenerList.clear();
-    }
-    /*    return ImFlutterPlatform.instance
-        .removeSignalingListener(listenerUuid: listenerUuid);*/
+  /// 设置信令监听器
+  Future<void> setSignalingListener(ImSignalingListener? listener) async {
+    Logger.debug("[IMSignalingManager] 设置信令监听器: ${listener != null ? '已设置' : '已清除'}");
+    _signalingListener = listener;
   }
 
   /// 邀请个人
@@ -85,8 +66,59 @@ class IMSignalingManager {
   }
 
   /// 获取信令信息
-  Future<ImValueCallback<ImSignalingInfo>> getSignalingInfo({required String msgID}) async {
+  Future<ImValueCallback<ImSignalingInfo>> getSignalingInfo({
+    required String msgID,
+  }) async {
     // TODO: implement getSignalingInfo
     throw UnimplementedError();
+  }
+
+  void handleSignalingCallback(MethodCall call) {
+    Logger.debug("[IMSignalingManager] 收到信令回调");
+    if (_signalingListener == null) {
+      Logger.warn("[IMSignalingManager] 信令监听器未设置");
+      return;
+    }
+    final listener = _signalingListener!;
+
+    Map<String, dynamic> callData = formatJson(call.arguments);
+    String type = callData['type'];
+    Logger.debug("[IMSignalingManager] 处理信令事件: $type");
+
+    Map<String, dynamic> params = callData['data'];
+    String inviteID = params['inviteID'] ?? '';
+    String inviter = params['inviter'] ?? '';
+    String groupID = params['groupID'] ?? '';
+    List<String>? inviteeList = params['inviteeList'] == null
+        ? null
+        : List.from(params['inviteeList']);
+    String data = params['data'] ?? '';
+    String invitee = params['invitee'] ?? '';
+
+    safeExecute(() {
+      switch (type) {
+        case 'onReceiveNewInvitation':
+          listener.onReceiveNewInvitation(
+            inviteID,
+            inviter,
+            groupID,
+            inviteeList!,
+            data,
+          );
+          break;
+        case 'onInviteeAccepted':
+          listener.onInviteeAccepted(inviteID, invitee, data);
+          break;
+        case 'onInviteeRejected':
+          listener.onInviteeRejected(inviteID, invitee, data);
+          break;
+        case 'onInvitationCancelled':
+          listener.onInvitationCancelled(inviteID, inviter, data);
+          break;
+        case 'onInvitationTimeout':
+          listener.onInvitationTimeout(inviteID, inviteeList!);
+          break;
+      }
+    });
   }
 }

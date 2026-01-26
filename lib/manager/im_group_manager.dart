@@ -1,4 +1,7 @@
 import 'package:im_sdk_core/im_sdk_core.dart';
+import 'package:im_sdk_core/method_call_handler.dart';
+import 'package:im_sdk_plugin/listener/im_group_listener.dart';
+import 'package:im_sdk_plugin/mixins/mixin.dart';
 
 import '../enums/group_add_opt_enum.dart';
 import '../enums/group_application_type_enum.dart';
@@ -18,10 +21,17 @@ import '../models/im_topic_info_result.dart';
 import '../models/im_topic_operation_result.dart';
 
 /// 群组管理器
-class IMGroupManager {
+class IMGroupManager with BaseMixin {
   final ImSdkCore _imCore;
+  ImGroupListener? _groupListener;
 
   IMGroupManager(this._imCore);
+
+  /// 设置群组监听器
+  Future<void> setGroupListener(ImGroupListener? listener) async {
+    Logger.debug("[IMGroupManager] 设置群组监听器: ${listener != null ? '已设置' : '已清除'}");
+    _groupListener = listener;
+  }
 
   /// 创建群组
   Future<ImValueCallback<String>> createGroup({
@@ -266,5 +276,145 @@ class IMGroupManager {
   }) async {
     // TODO: implement getTopicInfoList
     throw UnimplementedError();
+  }
+
+  /// 处理 Group 回调
+  void handleGroupCallback(MethodCall call) {
+    Logger.debug("[IMGroupManager] 收到群组回调");
+    if (_groupListener == null) {
+      Logger.warn("[IMGroupManager] 群组监听器未设置");
+      return;
+    }
+    final listener = _groupListener!;
+
+    final Map<String, dynamic> data = formatJson(call.arguments);
+    String type = data['type'];
+    Logger.debug("[IMGroupManager] 处理群组事件: $type");
+
+    final Map<String, dynamic> params = data['data'] ?? <String, dynamic>{};
+    String groupID = params['groupID'] ?? '';
+    String opReason = params['opReason'] ?? '';
+    bool isAgreeJoin = params['isAgreeJoin'] ?? false;
+    String customData = params['customData'] ?? '';
+    String topicID = params["topicID"] ?? "";
+    List<String> topicIDList = params["topicIDList"] == null
+        ? List.empty(growable: true)
+        : List.castFrom(params["topicIDList"]);
+    ImTopicInfo topicInfo = params["topicInfo"] == null
+        ? ImTopicInfo()
+        : ImTopicInfo.fromJson(params['topicInfo']);
+    Map<String, String> groupAttributeMap = params['groupAttributeMap'] == null
+        ? <String, String>{}
+        : Map<String, String>.from(params['groupAttributeMap']);
+    List<Map<String, dynamic>> memberListMap = params['memberList'] == null
+        ? List.empty(growable: true)
+        : List.from(params['memberList']);
+    List<Map<String, dynamic>> groupMemberChangeInfoListMap =
+        params['groupMemberChangeInfoList'] == null
+        ? List.empty(growable: true)
+        : List.from(params['groupMemberChangeInfoList']);
+    List<Map<String, dynamic>> groupChangeInfoListMap =
+        params['groupChangeInfoList'] == null
+        ? List.empty(growable: true)
+        : List.from(params['groupChangeInfoList']);
+    List<ImGroupChangeInfo> groupChangeInfoList = List.empty(growable: true);
+    List<ImGroupMemberChangeInfo> groupMemberChangeInfoList = List.empty(
+      growable: true,
+    );
+    List<ImGroupMemberInfo> memberList = List.empty(growable: true);
+    if (memberListMap.isNotEmpty) {
+      for (var element in memberListMap) {
+        memberList.add(ImGroupMemberInfo.fromJson(element));
+      }
+    }
+    if (groupMemberChangeInfoListMap.isNotEmpty) {
+      for (var element in groupMemberChangeInfoListMap) {
+        groupMemberChangeInfoList.add(
+          ImGroupMemberChangeInfo.fromJson(element),
+        );
+      }
+    }
+    if (groupChangeInfoListMap.isNotEmpty) {
+      for (var element in groupChangeInfoListMap) {
+        groupChangeInfoList.add(ImGroupChangeInfo.fromJson(element));
+      }
+    }
+    late ImGroupMemberInfo opUser;
+    late ImGroupMemberInfo member;
+    if (params['opUser'] != null) {
+      opUser = ImGroupMemberInfo.fromJson(params['opUser']);
+    }
+    if (params['member'] != null) {
+      member = ImGroupMemberInfo.fromJson(params['member']);
+    }
+
+    safeExecute(() {
+      switch (type) {
+        case 'onMemberEnter':
+          listener.onMemberEnter(groupID, memberList);
+          break;
+        case 'onMemberLeave':
+          listener.onMemberLeave(groupID, member);
+          break;
+        case 'onMemberInvited':
+          listener.onMemberInvited(groupID, opUser, memberList);
+          break;
+        case 'onMemberKicked':
+          listener.onMemberKicked(groupID, opUser, memberList);
+          break;
+        case 'onMemberInfoChanged':
+          listener.onMemberInfoChanged(groupID, groupMemberChangeInfoList);
+          break;
+        case 'onGroupCreated':
+          listener.onGroupCreated(groupID);
+          break;
+        case 'onGroupDismissed':
+          listener.onGroupDismissed(groupID, opUser);
+          break;
+        case 'onGroupRecycled':
+          listener.onGroupRecycled(groupID, opUser);
+          break;
+        case 'onGroupInfoChanged':
+          listener.onGroupInfoChanged(groupID, groupChangeInfoList);
+          break;
+        case 'onReceiveJoinApplication':
+          listener.onReceiveJoinApplication(groupID, member, opReason);
+          break;
+        case 'onApplicationProcessed':
+          listener.onApplicationProcessed(
+            groupID,
+            opUser,
+            isAgreeJoin,
+            opReason,
+          );
+          break;
+        case 'onGrantAdministrator':
+          listener.onGrantAdministrator(groupID, opUser, memberList);
+          break;
+        case 'onRevokeAdministrator':
+          listener.onRevokeAdministrator(groupID, opUser, memberList);
+          break;
+        case 'onQuitFromGroup':
+          listener.onQuitFromGroup(groupID);
+          break;
+        case 'onReceiveRESTCustomData':
+          listener.onReceiveRESTCustomData(groupID, customData);
+          break;
+        case 'onGroupAttributeChanged':
+          listener.onGroupAttributeChanged(groupID, groupAttributeMap);
+          break;
+        case "onTopicCreated":
+          listener.onTopicCreated(groupID, topicID);
+          break;
+        case "onTopicDeleted":
+          listener.onTopicDeleted(groupID, topicIDList);
+          break;
+        case "onTopicInfoChanged":
+          listener.onTopicInfoChanged(groupID, topicInfo);
+          break;
+        default:
+          Logger.warn('未知的 Group 事件类型: $type');
+      }
+    });
   }
 }

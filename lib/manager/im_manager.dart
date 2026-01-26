@@ -1,16 +1,9 @@
-import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:im_sdk_core/core/models/im_callback.dart';
 import 'package:im_sdk_core/im_sdk_core.dart';
-
-import 'package:im_sdk_plugin/listener/im_simple_msg_listener.dart';
-import 'package:uuid/uuid.dart';
-
+import 'package:im_sdk_core/method_call_handler.dart';
+import 'package:im_sdk_plugin/mixins/mixin.dart';
 import '../im_sdk_plugin.dart';
-import '../listener/im_group_listener.dart';
 import '../listener/im_sdk_listener.dart';
-import '../enums/log_level_enum.dart';
-import '../enums/login_status_enum.dart';
 import '../models/im_user_status.dart';
 import 'im_conversation_manager.dart';
 import 'im_offline_push_manager.dart';
@@ -19,26 +12,42 @@ import 'im_friendship_manager.dart';
 import 'im_group_manager.dart';
 import 'im_message_manager.dart';
 
-
 /// IM SDK 主核心管理类
-class IMManager {
+class IMManager with BaseMixin {
   late IMConversationManager conversationManager;
   late IMMessageManager messageManager;
   late IMFriendshipManager friendshipManager;
   late IMGroupManager groupManager;
   late IMOfflinePushManager offlinePushManager;
   late IMSignalingManager signalingManager;
-  late Map<String, ImSimpleMsgListener> simpleMessageListenerList = {};
-  late Map<String, ImSDKListener> initSDKListenerList = {};
-  late Map<String, ImGroupListener> groupListenerList = {};
   late SDKContext _sdkContext;
   late ImSdkCore _imSdkCore;
 
-  // 内部登录状态
-  int _loginStatus = LoginStatusEnum.limit.index;
+  /// InitSDK 监听器
+  ImSDKListener? _initSDKListener;
 
-  IMManager() {
+  /// 初始化 SDK
+  ///
+  /// [appID] 应用 ID
+  /// [logLevel] 日志等级
+  /// [listener] SDK 监听器
+  /// [showImLog] 是否显示 IM 日志
+  Future<ImValueCallback<bool>> initSDK({
+    required String appID,
+    required LogLevel logLevel,
+    required ImSDKListener listener,
+    bool? showImLog = false,
+    String apiHost = "http://192.168.1.30:8000",
+  }) async {
+    Logger.info("[IMManager] 初始化 SDK - appID: $appID, logLevel: $logLevel, apiHost: $apiHost");
+    _sdkContext = SDKContext(
+      appID: appID,
+      apiHost: apiHost,
+      logLevel: logLevel,
+      showImLog: showImLog ?? false,
+    );
     _imSdkCore = ImSdkCore(_sdkContext);
+
     conversationManager = IMConversationManager(_imSdkCore);
     messageManager = IMMessageManager(_imSdkCore);
     friendshipManager = IMFriendshipManager(_imSdkCore);
@@ -46,69 +55,18 @@ class IMManager {
     offlinePushManager = IMOfflinePushManager();
     offlinePushManager = IMOfflinePushManager();
     signalingManager = IMSignalingManager();
-  }
 
-  /// 初始化 SDK
-  ///
-  /// [appID] 应用 ID
-  /// [loglevel] 日志等级
-  /// [listener] SDK 监听器
-  /// [showImLog] 是否显示 IM 日志
-  Future<ImValueCallback<bool>> initSDK({
-    required String appID,
-    required LogLevelEnum logLevel,
-    required ImSDKListener listener,
-    bool? showImLog = false,
-    String apiHost = "http://172.16.100.112:8000",
-  }) async {
-    final String uuid = Uuid().v4();
+    setInitSDKListener(listener);
+    setupNativeCallback(_imSdkCore);
 
-
-    // 更新 SDKContext
-    _sdkContext = SDKContext(appID: appID);
-    _sdkContext.apiHost = apiHost;
-    _sdkContext.logLevel = logLevel;
-    _sdkContext.listenerUuid = uuid;
-    _sdkContext.showImLog = showImLog ?? false;
-    _sdkContext.uiPlatform = _getPlatform();
-
-    // 初始化时重置为登出状态
-    _loginStatus = LoginStatusEnum.logout.index;
-
-    initSDKListenerList[uuid] = listener;
-
-    // 2. 初始化日志 (Stub)
-    if (_sdkContext.showImLog) {
-      print("IMSDK: [Init] Logger initialized. Level: ${_sdkContext.logLevel}");
-    }
-
-    // 3. 注册监听器
-    initSDKListenerList[uuid] = listener;
-
-    // 4. 初始化数据库 (模拟)
-    if (_sdkContext.showImLog) {
-      print("IMSDK: [Init] Preparing local database...");
-    }
-    await Future.delayed(const Duration(milliseconds: 50));
-    if (_sdkContext.showImLog) {
-      print("IMSDK: [Init] Database ready (Simulated SQLite).");
-    }
-
-    // 5. 初始化网络 (在登录中进行)
-    // 根据服务器架构，实际连接发生在登录返回路由后。
-    // initSDK 仅准备本地资源。
-
+    Logger.info("[IMManager] SDK 初始化成功");
     return ImValueCallback.success(data: true);
   }
 
-  int _getPlatform() {
-    if (kIsWeb) return 0;
-    if (Platform.isAndroid) return 1;
-    if (Platform.isIOS) return 2;
-    if (Platform.isMacOS) return 3;
-    if (Platform.isWindows) return 4;
-    if (Platform.isLinux) return 5;
-    return 6;
+  /// 设置InitSDK监听器
+  Future<void> setInitSDKListener(ImSDKListener? listener) async {
+    Logger.debug("[IMManager] 设置 InitSDK 监听器: ${listener != null ? '已设置' : '已清除'}");
+    _initSDKListener = listener;
   }
 
   /// 反初始化 SDK
@@ -125,91 +83,42 @@ class IMManager {
     required String userID,
     required String userSig,
   }) async {
-    return await _imSdkCore.login(userID: userID, userSig: userSig);
-    /*try {
-
-
-
-      // Delegate to ImCore
-      final response = await _imCore.login(userID: userID, userSig: userSig);
-
-      if (response.isSuccess && response.data != null) {
-        final routeInfo = response.data!;
-
-        // 3. 建立 TCP 连接 (Keep locally for now as agreed)
-        await _connectSocket(routeInfo);
-
-        // 4. 执行数据同步
-        _imCore.postLoginSync(userID);
-
-        _triggerNativeEvent(_sdkContext.listenerUuid!, 'onConnectSuccess');
-        _sdkContext.currentUserID = userID;
-        _sdkContext.userSig = userSig;
-        _loginStatus = LoginStatusEnum.logged.index;
-        return response;
-      } else {
-        _triggerNativeEvent(_sdkContext.listenerUuid!, 'onConnectFailed', {
-          'code': response.code,
-          'desc': response.msg,
-        });
-        return ImValueCallback.error(code: response.code, msg: response.msg);
-      }
-    } catch (e) {
-      _loginStatus = LoginStatusEnum.logout.index;
-      _triggerNativeEvent(_sdkContext.listenerUuid ?? "", 'onConnectFailed', {
-        'code': -1,
-        'desc': e.toString(),
-      });
-      return ImValueCallback.error(msg: "Login Failed: $e");
-    }*/
-  }
-
-  Future<void> _connectSocket(RouteInfo routeInfo) async {
-    _triggerNativeEvent(_sdkContext.listenerUuid!, 'onConnecting');
-    try {
-      if (routeInfo.ip.isNotEmpty && routeInfo.port > 0) {
-        final socket = await Socket.connect(
-          routeInfo.ip,
-          routeInfo.port,
-          timeout: Duration(seconds: 5),
-        );
-        if (_sdkContext.showImLog) {
-          print("IMSDK: Connected to ${routeInfo.ip}:${routeInfo.port}");
-        }
-        socket.destroy();
-      } else {
-        print("IMSDK: Invalid RouteInfo: ${routeInfo.ip}:${routeInfo.port}");
-      }
-    } catch (e) {
-      print("IMSDK: TCP Connection warning: $e");
+    Logger.info("[IMManager] 开始登录 - userID: $userID");
+    final result = await _imSdkCore.login(userID: userID, userSig: userSig);
+    if (result.isSuccess) {
+      Logger.info("[IMManager] 登录成功 - userID: $userID");
+    } else {
+      Logger.error("[IMManager] 登录失败 - userID: $userID, code: ${result.code}, msg: ${result.msg}");
     }
+    return result;
   }
-
-  // _syncData moved to ImCore.postLoginSync
 
   /// 登出
   Future<ImCallback> logout() async {
-    _loginStatus = LoginStatusEnum.logout.index;
-    _sdkContext.currentUserID = null;
-    _sdkContext.userSig = null;
-    // TODO: implement addFriendListener
-    throw UnimplementedError();
+    Logger.info("[IMManager] 开始登出");
+    final result = _imSdkCore.logout();
+    Logger.info("[IMManager] 登出成功");
+    return result;
   }
 
   /// 获取当前登录用户
   Future<ImValueCallback<String>> getLoginUser() async {
-    if (_sdkContext.currentUserID == null) {
-      return ImValueCallback.error(msg: "Not logged in", data: "");
+    Logger.debug("[IMManager] 获取当前登录用户");
+    final result = await _imSdkCore.getLoginUser();
+    if (result.isSuccess) {
+      Logger.debug("[IMManager] 当前登录用户: ${result.data}");
+    } else {
+      Logger.warn("[IMManager] 用户未登录");
     }
-    return ImValueCallback.success(
-      msg: "Success",
-      data: _sdkContext.currentUserID!,
-    );
+    return result;
   }
 
   /// 获取登录状态
   Future<ImValueCallback<int>> getLoginStatus() async {
-    return ImValueCallback.success(msg: "Success", data: _loginStatus);
+    Logger.debug("[IMManager] 获取登录状态");
+    final result = _imSdkCore.getLoginStatus();
+    Logger.debug("[IMManager] 登录状态: ${result.data}");
+    return result;
   }
 
   /// 获取服务器时间
@@ -247,18 +156,6 @@ class IMManager {
   /// 获取离线推送管理器
   IMOfflinePushManager getOfflinePushManager() {
     return offlinePushManager;
-  }
-
-  /// 添加群组监听器
-  Future<void> addGroupListener({required ImGroupListener listener}) async {
-    // TODO: implement addGroupListener
-    throw UnimplementedError();
-  }
-
-  /// 移除群组监听器
-  Future<void> removeGroupListener({ImGroupListener? listener}) async {
-    // TODO: implement removeGroupListener
-    throw UnimplementedError();
   }
 
   /// 加入群组
@@ -357,34 +254,67 @@ class IMManager {
     throw UnimplementedError();
   }
 
-  /// 移除简单消息监听器
-  Future<void> removeSimpleMsgListener({dynamic listener}) async {
-    // TODO: implement removeSimpleMsgListener
-    throw UnimplementedError();
+  /// 设置原生回调处理器
+  ///
+  /// 注册 MethodCallHandler 以处理来自 Core 的回调事件
+  /// [handler] 方法调用处理器
+  void setupNativeCallback(MethodCallHandler handler) {
+    handler.setMethodCallHandler((call) {
+      try {
+        if (call.method == ListenerType.initSDKListener) {
+          handleInitSDKCallback(call);
+        } else if (call.method == ListenerType.groupListener) {
+          getGroupManager().handleGroupCallback(call);
+        } else if (call.method == ListenerType.advancedMsgListener) {
+          getMessageManager().handleAdvancedMsgCallback(call);
+        } else if (call.method == ListenerType.conversationListener) {
+          getConversationManager().handleConversationCallback(call);
+        } else if (call.method == ListenerType.friendListener) {
+          getFriendshipManager().handleFriendCallback(call);
+        } else if (call.method == ListenerType.signalingListener) {
+          getSignalingManager().handleSignalingCallback(call);
+        }
+      } catch (err, stackTrace) {
+        Logger.error(
+          "回调处理失败: ${call.method}",
+          error: err,
+          stackTrace: stackTrace,
+        );
+      }
+      return Future.value(null);
+    });
   }
 
-  /// 添加简单消息监听器
-  Future<void> addSimpleMsgListener({dynamic listener}) async {
-    // TODO: implement addSimpleMsgListener
-    throw UnimplementedError();
-  }
+  /// 处理 InitSDK 回调
+  @protected
+  void handleInitSDKCallback(MethodCall call) {
+    Logger.debug("[IMManager] 收到 InitSDK 回调");
+    if (_initSDKListener == null) {
+      Logger.warn("[IMManager] InitSDK 监听器未设置");
+      return;
+    }
+    final listener = _initSDKListener!;
 
-  /// 模拟原生事件回调的内部助手
-  void _triggerNativeEvent(String listenerUuid, String type, [dynamic data]) {
-    final listener = initSDKListenerList[listenerUuid];
-    if (listener != null) {
+    final Map<String, dynamic> data = formatJson(call.arguments);
+    final String type = data['type'];
+    Logger.debug("[IMManager] 处理 InitSDK 事件: $type");
+
+    final Map<String, dynamic> params = data['data'] ?? <String, dynamic>{};
+
+    safeExecute(() {
       switch (type) {
+        case 'onSelfInfoUpdated':
+          final userInfo = ImUserFullInfo.fromJson(params);
+          listener.onSelfInfoUpdated(userInfo);
+          break;
+        case 'onConnectFailed':
+          listener.onConnectFailed(params['code'], params['desc']);
+          break;
         case 'onConnecting':
           listener.onConnecting();
           break;
         case 'onConnectSuccess':
           listener.onConnectSuccess();
-          break;
-        case 'onConnectFailed':
-          listener.onConnectFailed(
-            data?['code'] ?? -1,
-            data?['desc'] ?? "Unknown Error",
-          );
           break;
         case 'onKickedOffline':
           listener.onKickedOffline();
@@ -392,7 +322,18 @@ class IMManager {
         case 'onUserSigExpired':
           listener.onUserSigExpired();
           break;
+        case 'onUserStatusChanged':
+          final List<dynamic> statusList = params['statusList'] ?? [];
+          // TODO: 需要转换为 ImUserStatus 类型
+          // 暂时使用 dynamic 类型，待 ImUserStatus 类型定义完成后修改
+          listener.onUserStatusChanged(statusList as dynamic);
+          break;
+        case 'onLog':
+          listener.onLog(params['level'], params['content']);
+          break;
+        default:
+          Logger.warn('未知的 InitSDK 事件类型: $type');
       }
-    }
+    });
   }
 }

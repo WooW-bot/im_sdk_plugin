@@ -1,4 +1,7 @@
 import 'package:im_sdk_core/im_sdk_core.dart';
+import 'package:im_sdk_core/method_call_handler.dart';
+import 'package:im_sdk_plugin/mixins/mixin.dart';
+import 'package:im_sdk_plugin/models/im_message_download_progress.dart';
 
 import '../im_sdk_plugin.dart';
 import '../listener/im_advanced_msg_listener.dart';
@@ -19,10 +22,17 @@ import 'dart:collection';
 import '../models/im_message_online_url.dart';
 
 /// 消息管理器
-class IMMessageManager {
+class IMMessageManager with BaseMixin {
   final ImSdkCore _imCore;
+  ImAdvancedMsgListener? _advancedMsgListener;
 
   IMMessageManager(this._imCore);
+
+  /// 设置高级消息监听器
+  Future<void> setAdvancedMsgListener(ImAdvancedMsgListener? listener) async {
+    Logger.debug("[IMMessageManager] 设置消息监听器: ${listener != null ? '已设置' : '已清除'}");
+    _advancedMsgListener = listener;
+  }
 
   /// 创建文本消息
   Future<ImValueCallback<ImMsgCreateInfoResult>> createTextMessage({
@@ -146,22 +156,6 @@ class IMMessageManager {
     required String createMessageAppendId,
   }) async {
     // TODO: implement appendMessage
-    throw UnimplementedError();
-  }
-
-  /// 添加高级消息监听器
-  Future<void> addAdvancedMsgListener({
-    required ImAdvancedMsgListener listener,
-  }) async {
-    // TODO: implement addAdvancedMsgListener
-    throw UnimplementedError();
-  }
-
-  /// 移除高级消息监听器
-  Future<void> removeAdvancedMsgListener({
-    ImAdvancedMsgListener? listener,
-  }) async {
-    // TODO: implement removeAdvancedMsgListener
     throw UnimplementedError();
   }
 
@@ -503,5 +497,85 @@ class IMMessageManager {
   }) async {
     // TODO: implement getHistoryMessageListWithoutFormat
     throw UnimplementedError();
+  }
+
+  void handleAdvancedMsgCallback(MethodCall call) {
+    Logger.debug("[IMMessageManager] 收到消息回调");
+    if (_advancedMsgListener == null) {
+      Logger.warn("[IMMessageManager] 消息监听器未设置");
+      return;
+    }
+    final listener = _advancedMsgListener!;
+
+    final Map<String, dynamic> data = formatJson(call.arguments);
+    final String type = data['type'];
+    Logger.debug("[IMMessageManager] 处理消息事件: $type");
+
+    final dynamic params = data['data'] ?? <String, dynamic>{};
+
+    safeExecute(() {
+      switch (type) {
+        case 'onRecvNewMessage':
+          listener.onRecvNewMessage(ImMessage.fromJson(params));
+          break;
+        case 'onRecvMessageModified':
+          listener.onRecvMessageModified(ImMessage.fromJson(params));
+          break;
+        case 'onRecvC2CReadReceipt':
+          List dataList = params;
+          List<ImMessageReceipt> receiptList = List.empty(growable: true);
+          for (var element in dataList) {
+            receiptList.add(ImMessageReceipt.fromJson(element));
+          }
+          listener.onRecvC2CReadReceipt(receiptList);
+          break;
+        case 'onRecvMessageRevoked':
+          listener.onRecvMessageRevoked(params);
+          break;
+        case 'onSendMessageProgress':
+          final message = ImMessage.fromJson(params['message']);
+          listener.onSendMessageProgress(message, params['progress']);
+          break;
+        case 'onRecvMessageReadReceipts':
+          List dataList = params;
+          List<ImMessageReceipt> receiptList = List.empty(growable: true);
+          for (var element in dataList) {
+            receiptList.add(ImMessageReceipt.fromJson(element));
+          }
+          listener.onRecvMessageReadReceipts(receiptList);
+          break;
+        case "onRecvMessageExtensionsChanged":
+          Map<String, dynamic> cbdata = Map<String, Object>.from(params);
+          String msgID = cbdata["msgID"] ?? "";
+          List<Map<String, dynamic>> extensions = List.from(
+            cbdata["extensions"] ?? [],
+          );
+          List<ImMessageExtension> resList = List.empty(growable: true);
+          for (var element in extensions) {
+            resList.add(
+              ImMessageExtension(
+                extensionKey: element["element"] ?? "",
+                extensionValue: element["extensionValue"] ?? "",
+              ),
+            );
+          }
+          listener.onRecvMessageExtensionsChanged(msgID, resList);
+          break;
+        case "onRecvMessageExtensionsDeleted":
+          Map<String, dynamic> cbdata = Map<String, dynamic>.from(params);
+          String msgID = cbdata["msgID"] ?? "";
+          List<String> extensionKeys = List.from(cbdata["extensionKeys"] ?? []);
+          listener.onRecvMessageExtensionsDeleted(msgID, extensionKeys);
+          break;
+        case "onMessageDownloadProgressCallback":
+          Map<String, dynamic> cbdata = Map<String, dynamic>.from(params);
+          listener.onMessageDownloadProgressCallback(
+            ImMessageDownloadProgress.fromJson(cbdata),
+          );
+          break;
+        default:
+          Logger.warn('未知的 AdvancedMsg 事件类型: $type');
+      }
+    });
   }
 }

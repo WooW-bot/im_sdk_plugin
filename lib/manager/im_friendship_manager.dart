@@ -1,4 +1,7 @@
 import 'package:im_sdk_core/im_sdk_core.dart';
+import 'package:im_sdk_core/method_call_handler.dart';
+import 'package:im_sdk_plugin/mixins/mixin.dart';
+import 'package:im_sdk_plugin/models/im_friend_application.dart';
 
 import '../im_sdk_plugin.dart';
 import '../listener/im_friendship_listener.dart';
@@ -14,10 +17,17 @@ import '../models/im_friend_operation_result.dart';
 import '../models/im_friend_search_param.dart';
 
 /// 关系链管理器
-class IMFriendshipManager {
+class IMFriendshipManager with BaseMixin {
   final ImSdkCore _imCore;
+  ImFriendshipListener? _friendListener;
 
   IMFriendshipManager(this._imCore);
+
+  /// 设置关系链监听器
+  Future<void> setFriendListener(ImFriendshipListener? listener) async {
+    Logger.debug("[IMFriendshipManager] 设置好友监听器: ${listener != null ? '已设置' : '已清除'}");
+    _friendListener = listener;
+  }
 
   /// 添加用户到黑名单
   Future<ImValueCallback<List<ImFriendOperationResult>>> addToBlackList({
@@ -40,22 +50,6 @@ class IMFriendshipManager {
     // TODO: implement addFriendListener
     throw UnimplementedError();
   }
-
-  /// 添加关系链监听器
-  Future<void> addFriendListener({
-    required ImFriendshipListener listener,
-  }) async {
-    // TODO: implement addFriendListener
-    throw UnimplementedError();
-  }
-
-  /// 移除关系链监听器
-  Future<void> removeFriendListener({ImFriendshipListener? listener}) async {
-    // TODO: implement removeFriendListener
-    throw UnimplementedError();
-  }
-
-  // ...
 
   /// 获取好友列表
   Future<ImValueCallback<List<ImFriendInfo>>> getFriendList() async {
@@ -219,5 +213,74 @@ class IMFriendshipManager {
   }) async {
     // TODO: implement searchFriends
     throw UnimplementedError();
+  }
+
+  void handleFriendCallback(MethodCall call) {
+    Logger.debug("[IMFriendshipManager] 收到好友回调");
+    if (_friendListener == null) {
+      Logger.warn("[IMFriendshipManager] 好友监听器未设置");
+      return;
+    }
+    final listener = _friendListener!;
+
+    Map<String, dynamic> data = formatJson(call.arguments);
+    String type = data['type'];
+    Logger.debug("[IMFriendshipManager] 处理好友事件: $type");
+
+    dynamic params = data['data'] ?? <String, dynamic>{};
+
+    safeExecute(() {
+      switch (type) {
+        case 'onFriendApplicationListAdded':
+          List applicationListMap = params;
+          List<ImFriendApplication> applicationList = List.empty(
+            growable: true,
+          );
+          for (var element in applicationListMap) {
+            applicationList.add(ImFriendApplication.fromJson(element));
+          }
+          listener.onFriendApplicationListAdded(applicationList);
+          break;
+        case 'onFriendApplicationListDeleted':
+          List<String> userIDList = List.from(params);
+          listener.onFriendApplicationListDeleted(userIDList);
+          break;
+        case 'onFriendApplicationListRead':
+          listener.onFriendApplicationListRead();
+          break;
+        case 'onFriendListAdded':
+          List userMap = params;
+          List<ImFriendInfo> users = List.empty(growable: true);
+          for (var element in userMap) {
+            users.add(ImFriendInfo.fromJson(element));
+          }
+          listener.onFriendListAdded(users);
+          break;
+        case 'onFriendListDeleted':
+          List<String> userList = List.from(params);
+          listener.onFriendListDeleted(userList);
+          break;
+        case 'onBlackListAdd':
+          List infoListMap = params;
+          List<ImFriendInfo> infoList = List.empty(growable: true);
+          for (var element in infoListMap) {
+            infoList.add(ImFriendInfo.fromJson(element));
+          }
+          listener.onBlackListAdd(infoList);
+          break;
+        case 'onBlackListDeleted':
+          List<String> userList = List.from(params);
+          listener.onBlackListDeleted(userList);
+          break;
+        case 'onFriendInfoChanged':
+          List infoListMap = params;
+          List<ImFriendInfo> infoList = List.empty(growable: true);
+          for (var element in infoListMap) {
+            infoList.add(ImFriendInfo.fromJson(element));
+          }
+          listener.onFriendInfoChanged(infoList);
+          break;
+      }
+    });
   }
 }
