@@ -20,15 +20,6 @@ class GetFriendListState extends State<GetFriendList> {
     });
   }
 
-  syncFriendList() async {
-    ImValueCallback<List<ImFriendInfo>> res = await ImSDKPlugin.imManager
-        .getFriendshipManager()
-        .syncFriendList();
-    setState(() {
-      resData = res.toJson();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,13 +31,6 @@ class GetFriendListState extends State<GetFriendList> {
                 child: ElevatedButton(
                   onPressed: getFriendList,
                   child: Text(imt("获取好友列表")),
-                ),
-              ),
-              SizedBox(width: 10),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: syncFriendList,
-                  child: Text(imt("同步好友列表")),
                 ),
               ),
             ],

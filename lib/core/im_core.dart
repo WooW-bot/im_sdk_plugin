@@ -2,7 +2,6 @@ import '../im_sdk_plugin.dart';
 import 'net/api_client.dart';
 import 'db/db_manager.dart';
 // import '../models/get_user_info_req.dart'; // Removed, assuming it's in login_model or define here if missing
-import '../models/im_friend_info_result.dart';
 import '../models/im_friend_check_result.dart';
 import '../enums/friend_type_enum.dart';
 

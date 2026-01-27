@@ -10,7 +10,6 @@ import '../enums/friend_type_enum.dart';
 import '../models/im_friend_application_result.dart';
 import '../models/im_friend_check_result.dart';
 import '../models/im_friend_group.dart';
-import '../models/im_friend_info_result.dart';
 import '../models/im_friend_operation_result.dart';
 import '../models/im_friend_search_param.dart';
 
@@ -56,18 +55,11 @@ class IMFriendshipManager with BaseMixin {
     return _imCore.getFriendList();
   }
 
-  /// 增量同步好友列表
-  Future<ImValueCallback<List<ImFriendInfo>>> syncFriendList() async {
-    // TODO: implement addFriendListener
-    throw UnimplementedError();
-  }
-
-  /// 获取好友信息 (Smart Fetch: Local -> Network)
+  /// 获取指定好友信息 (Smart Fetch: Local -> Network)
   Future<ImValueCallback<List<ImFriendInfoResult>>> getFriendsInfo({
     required List<String> userIDList,
   }) async {
-    // TODO: implement addFriendListener
-    throw UnimplementedError();
+    return _imCore.getFriendsInfo(userIDList: userIDList);
   }
 
   /// 设置好友信息

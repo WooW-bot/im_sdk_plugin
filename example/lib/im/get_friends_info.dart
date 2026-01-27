@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:im_sdk_plugin_example/im/friend_selector.dart';
 import 'package:im_sdk_plugin_example/utils/sdk_response.dart';
-import 'package:im_sdk_plugin/models/im_friend_info_result.dart';
 
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
@@ -14,13 +13,11 @@ class GetFriendsInfo extends StatefulWidget {
 class GetFriendsInfoState extends State<GetFriendsInfo> {
   Map<String, dynamic>? resData;
   List<String> users = List.empty(growable: true);
+
   getFriendsInfo() async {
-    ImValueCallback<List<ImFriendInfoResult>> res =
-        await ImSDKPlugin.imManager
-            .getFriendshipManager()
-            .getFriendsInfo(
-      userIDList: ["10042340"],
-    );
+    ImValueCallback<List<ImFriendInfoResult>> res = await ImSDKPlugin.imManager
+        .getFriendshipManager()
+        .getFriendsInfo(userIDList: users);
     setState(() {
       resData = res.toJson();
     });
@@ -50,9 +47,10 @@ class GetFriendsInfoState extends State<GetFriendsInfo> {
                       child: Container(
                         margin: EdgeInsets.only(left: 10),
                         child: Text(
-                            users.length > 0 ? users.toString() : imt("未选择")),
+                          users.length > 0 ? users.toString() : imt("未选择"),
+                        ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ],
@@ -65,7 +63,7 @@ class GetFriendsInfoState extends State<GetFriendsInfo> {
                   onPressed: getFriendsInfo,
                   child: Text(imt("获取好友信息")),
                 ),
-              )
+              ),
             ],
           ),
           SDKResponse(resData),
