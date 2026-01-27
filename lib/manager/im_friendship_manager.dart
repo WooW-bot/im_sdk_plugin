@@ -10,7 +10,6 @@ import '../enums/friend_type_enum.dart';
 import '../models/im_friend_application_result.dart';
 import '../models/im_friend_check_result.dart';
 import '../models/im_friend_group.dart';
-import '../models/im_friend_search_param.dart';
 
 /// 关系链管理器
 class IMFriendshipManager with BaseMixin {
@@ -198,8 +197,7 @@ class IMFriendshipManager with BaseMixin {
   Future<ImValueCallback<List<ImFriendInfoResult>>> searchFriends({
     required ImFriendSearchParam searchParam,
   }) async {
-    // TODO: implement searchFriends
-    throw UnimplementedError();
+    return _imCore.searchFriends(searchParam: searchParam);
   }
 
   void handleFriendCallback(MethodCall call) {
