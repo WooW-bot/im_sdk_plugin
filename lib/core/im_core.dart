@@ -5,7 +5,6 @@ import 'db/db_manager.dart';
 import '../models/im_friend_info_result.dart';
 import '../models/im_friend_check_result.dart';
 import '../enums/friend_type_enum.dart';
-import '../models/im_friend_info.dart';
 
 import '../models/im_conversation.dart';
 import 'net/auth_api.dart';
@@ -149,7 +148,7 @@ class ImCore {
   // --- Friend Logic ---
 
   /// 获取好友列表 (Full Sync)
-  Future<ImValueCallback<List<ImFriendInfo>>> getFriendList() async {
+/*  Future<ImValueCallback<List<ImFriendInfo>>> getFriendList() async {
     try {
       if (_sdkContext.appID == null ||
           _sdkContext.currentUserID == null ||
@@ -173,7 +172,7 @@ class ImCore {
     } catch (e) {
       return ImValueCallback.error(msg: "getFriendList Failed: $e", data: []);
     }
-  }
+  }*/
 
   /// 同步好友列表
   Future<ImValueCallback<List<ImFriendInfo>>> syncFriendList() async {

@@ -1,5 +1,4 @@
 import 'package:im_sdk_core/im_sdk_core.dart';
-import 'package:im_sdk_core/method_call_handler.dart';
 import 'package:im_sdk_plugin/mixins/mixin.dart';
 import 'package:im_sdk_plugin/models/im_message_download_progress.dart';
 

@@ -1,9 +1,7 @@
 import '../../im_sdk_plugin.dart';
-import '../../models/im_friend_info.dart';
 import '../../models/im_friend_check_result.dart';
 import '../../models/sync_response.dart';
 import '../../models/sync_request.dart';
-import '../../models/req/get_friend_list_req.dart';
 import '../../enums/friend_type_enum.dart';
 import 'api_client.dart';
 
@@ -47,16 +45,6 @@ class FriendshipApi {
     return _apiClient.post("/v1/friendship/deleteAllFriend", data: data);
   }
 
-  /// 获取好友列表 (Full)
-  Future<ImValueCallback<List<ImFriendInfo>>> getFriendList(
-    String userID,
-  ) async {
-    final req = GetFriendListReq(userId: userID);
-    return _apiClient.post<List<ImFriendInfo>>(
-      "/v1/friendship/getAllFriendShip",
-      data: req.toJson(),
-    );
-  }
 
   /// 获取好友关系状态
   Future<ImValueCallback<dynamic>> getRelation(

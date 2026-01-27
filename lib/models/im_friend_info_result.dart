@@ -1,4 +1,4 @@
-import 'im_friend_info.dart';
+import 'package:im_sdk_core/core/models/im_friend_info.dart';
 
 /// 好友信息结果
 class ImFriendInfoResult {

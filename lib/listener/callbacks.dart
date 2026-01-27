@@ -1,7 +1,6 @@
 import '../im_sdk_plugin.dart';
 import '../models/im_conversation.dart';
 import '../models/im_friend_application.dart';
-import '../models/im_friend_info.dart';
 import '../models/im_message_download_progress.dart';
 import '../models/im_message_extension.dart';
 import '../models/im_message_receipt.dart';

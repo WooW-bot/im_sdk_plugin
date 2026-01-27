@@ -1,5 +1,6 @@
+import 'package:im_sdk_core/core/models/im_friend_info.dart';
+
 import '../models/im_friend_application.dart';
-import '../models/im_friend_info.dart';
 import 'callbacks.dart';
 
 /// 关系链监听器

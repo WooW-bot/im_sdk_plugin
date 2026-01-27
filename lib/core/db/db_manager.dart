@@ -5,8 +5,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
-import 'package:im_sdk_plugin/models/im_friend_info.dart';
-
 import 'package:im_sdk_plugin/models/im_conversation.dart';
 
 import 'package:im_sdk_plugin/models/im_group_member.dart';

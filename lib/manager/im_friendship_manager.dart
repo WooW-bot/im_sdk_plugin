@@ -1,5 +1,4 @@
 import 'package:im_sdk_core/im_sdk_core.dart';
-import 'package:im_sdk_core/method_call_handler.dart';
 import 'package:im_sdk_plugin/mixins/mixin.dart';
 import 'package:im_sdk_plugin/models/im_friend_application.dart';
 
@@ -11,7 +10,6 @@ import '../enums/friend_type_enum.dart';
 import '../models/im_friend_application_result.dart';
 import '../models/im_friend_check_result.dart';
 import '../models/im_friend_group.dart';
-import '../models/im_friend_info.dart';
 import '../models/im_friend_info_result.dart';
 import '../models/im_friend_operation_result.dart';
 import '../models/im_friend_search_param.dart';
@@ -25,7 +23,9 @@ class IMFriendshipManager with BaseMixin {
 
   /// 设置关系链监听器
   Future<void> setFriendListener(ImFriendshipListener? listener) async {
-    Logger.debug("[IMFriendshipManager] 设置好友监听器: ${listener != null ? '已设置' : '已清除'}");
+    Logger.debug(
+      "[IMFriendshipManager] 设置好友监听器: ${listener != null ? '已设置' : '已清除'}",
+    );
     _friendListener = listener;
   }
 
@@ -53,8 +53,7 @@ class IMFriendshipManager with BaseMixin {
 
   /// 获取好友列表
   Future<ImValueCallback<List<ImFriendInfo>>> getFriendList() async {
-    // TODO: implement addFriendListener
-    throw UnimplementedError();
+    return _imCore.getFriendList();
   }
 
   /// 增量同步好友列表
