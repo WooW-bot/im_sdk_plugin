@@ -163,7 +163,7 @@ class Config {
   static const String userID = "10001";
 
   // 【重要】 生产环境userSig请放在服务端生产。
-  static const String key = "dc32d51f8d2f957cfc9f1c197f917a54ad207b5dfb30ab9ca5799b5e273a69dd";
+  static const String key = "461a9d131dc59d1843a72b99e3d7a05d875950917d9758718693a15822abab38";
   static const String XG_ACCESS_ID = "A7CH63Q4QBZB"; // 腾讯云TPNS控制台注册所得ACCESS_ID
   static const String XG_ACCESS_KEY =
       "3ba86c2eaa4f99152c271b1f6eda3021"; // 腾讯云TPNS控制台注册所得ACCESS_KEY
@@ -181,6 +181,7 @@ class Config {
           "detailRoute": InitSDK.loadLibrary,
           "codeFile": "lib/im/init_sdk.dart",
           "libs": () {
+            // PARKER Done
             return InitSDK.InitSDK();
           },
         },
@@ -191,6 +192,7 @@ class Config {
           "detailRoute": AddEventListener.loadLibrary,
           "codeFile": "lib/im/add_event_listener.dart",
           "libs": () {
+            // PARKER Done
             return AddEventListener.AddEventListener();
           },
         },
@@ -211,6 +213,7 @@ class Config {
           "detailRoute": Login.loadLibrary,
           "codeFile": "lib/im/login.dart",
           "libs": () {
+            // PARKER Done
             return Login.Login();
           },
         },
@@ -979,7 +982,7 @@ class Config {
           "detailRoute": AddToBlackList.loadLibrary,
           "codeFile": "lib/im/add_to_black_list.dart",
           "libs": () {
-            return InitSDK.InitSDK();
+            return AddToBlackList.AddToBlackList();
           },
         },
         {

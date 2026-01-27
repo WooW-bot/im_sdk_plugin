@@ -5,12 +5,7 @@ import 'package:im_sdk_plugin_example/utils/sdk_response.dart';
 import 'package:im_sdk_plugin/enums/friend_application_type_enum.dart';
 import 'package:im_sdk_plugin/enums/friend_response_type_enum.dart';
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
-import 'package:im_sdk_plugin/models/im_friend_operation_result.dart';
-import 'package:im_sdk_plugin/enums/friend_application_type_enum.dart';
-import 'package:im_sdk_plugin/enums/friend_response_type_enum.dart';
 import 'package:im_sdk_plugin/enums/friend_type.dart';
-import 'package:im_sdk_plugin/models/im_friend_operation_result.dart';
-import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
 
 import '../utils/sdk_response.dart';

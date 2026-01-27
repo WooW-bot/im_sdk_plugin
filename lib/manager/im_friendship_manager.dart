@@ -10,7 +10,6 @@ import '../enums/friend_type_enum.dart';
 import '../models/im_friend_application_result.dart';
 import '../models/im_friend_check_result.dart';
 import '../models/im_friend_group.dart';
-import '../models/im_friend_operation_result.dart';
 import '../models/im_friend_search_param.dart';
 
 /// 关系链管理器
@@ -32,22 +31,19 @@ class IMFriendshipManager with BaseMixin {
   Future<ImValueCallback<List<ImFriendOperationResult>>> addToBlackList({
     required List<String> userIDList,
   }) async {
-    // TODO: implement addToBlackList
-    throw UnimplementedError();
+    return _imCore.addToBlackList(userIDList: userIDList);
   }
 
   /// 从黑名单移除用户
   Future<ImValueCallback<List<ImFriendOperationResult>>> deleteFromBlackList({
     required List<String> userIDList,
   }) async {
-    // TODO: implement deleteFromBlackList
-    throw UnimplementedError();
+    return _imCore.deleteFromBlackList(userIDList: userIDList);
   }
 
   /// 获取黑名单列表
   Future<ImValueCallback<List<ImFriendInfo>>> getBlackList() async {
-    // TODO: implement addFriendListener
-    throw UnimplementedError();
+    return _imCore.getBlackList();
   }
 
   /// 获取好友列表
