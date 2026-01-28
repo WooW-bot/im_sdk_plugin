@@ -1,10 +1,5 @@
 import '../im_sdk_plugin.dart';
-import '../models/im_conversation.dart';
-import '../models/im_friend_application.dart';
 import '../models/im_message_download_progress.dart';
-import '../models/im_message_extension.dart';
-import '../models/im_message_receipt.dart';
-import '../models/im_topic_info.dart';
 import '../models/im_user_info.dart';
 import '../models/im_user_status.dart';
 
@@ -38,7 +33,8 @@ typedef OnRecvMessageExtensionsChanged =
     void Function(String msgID, List<ImMessageExtension> extensions);
 
 /// 收到消息扩展删除回调
-typedef OnRecvMessageExtensionsDeleted = void Function(String msgID, List<String> extensionKeys);
+typedef OnRecvMessageExtensionsDeleted =
+    void Function(String msgID, List<String> extensionKeys);
 
 /// 消息下载进度回调
 typedef OnMessageDownloadProgressCallback =
@@ -50,38 +46,63 @@ typedef OnRecvC2CCustomMessageCallback =
 
 /// 收到群文本消息回调
 typedef OnRecvGroupTextMessageCallback =
-    void Function(String msgID, String groupID, ImGroupMemberInfo sender, String text);
+    void Function(
+      String msgID,
+      String groupID,
+      ImGroupMemberInfo sender,
+      String text,
+    );
 
 /// 收到群自定义消息回调
 typedef OnRecvGroupCustomMessageCallback =
-    void Function(String msgID, String groupID, ImGroupMemberInfo sender, String customData);
+    void Function(
+      String msgID,
+      String groupID,
+      ImGroupMemberInfo sender,
+      String customData,
+    );
 
 /// 群成员进入回调
-typedef OnMemberEnterCallback = void Function(String groupID, List<ImGroupMemberInfo> memberList);
+typedef OnMemberEnterCallback =
+    void Function(String groupID, List<ImGroupMemberInfo> memberList);
 
 /// 群成员离开回调
-typedef OnMemberLeaveCallback = void Function(String groupID, ImGroupMemberInfo member);
+typedef OnMemberLeaveCallback =
+    void Function(String groupID, ImGroupMemberInfo member);
 
 /// 群成员被邀请回调
 typedef OnMemberInvitedCallback =
-    void Function(String groupID, ImGroupMemberInfo opUser, List<ImGroupMemberInfo> memberList);
+    void Function(
+      String groupID,
+      ImGroupMemberInfo opUser,
+      List<ImGroupMemberInfo> memberList,
+    );
 
 /// 群成员被踢回调
 typedef OnMemberKickedCallback =
-    void Function(String groupID, ImGroupMemberInfo opUser, List<ImGroupMemberInfo> memberList);
+    void Function(
+      String groupID,
+      ImGroupMemberInfo opUser,
+      List<ImGroupMemberInfo> memberList,
+    );
 
 /// 群成员信息变更回调
 typedef OnMemberInfoChangedCallback =
-    void Function(String groupID, List<ImGroupMemberChangeInfo> IMGroupMemberChangeInfoList);
+    void Function(
+      String groupID,
+      List<ImGroupMemberChangeInfo> IMGroupMemberChangeInfoList,
+    );
 
 /// 群创建回调
 typedef OnGroupCreatedCallback = void Function(String groupID);
 
 /// 群解散回调
-typedef OnGroupDismissedCallback = void Function(String groupID, ImGroupMemberInfo opUser);
+typedef OnGroupDismissedCallback =
+    void Function(String groupID, ImGroupMemberInfo opUser);
 
 /// 群回收回调
-typedef OnGroupRecycledCallback = void Function(String groupID, ImGroupMemberInfo opUser);
+typedef OnGroupRecycledCallback =
+    void Function(String groupID, ImGroupMemberInfo opUser);
 
 /// 群信息变更回调
 typedef OnGroupInfoChangedCallback =
@@ -93,21 +114,35 @@ typedef OnReceiveJoinApplicationCallback =
 
 /// 入群申请被处理回调
 typedef OnApplicationProcessedCallback =
-    void Function(String groupID, ImGroupMemberInfo opUser, bool isAgreeJoin, String opReason);
+    void Function(
+      String groupID,
+      ImGroupMemberInfo opUser,
+      bool isAgreeJoin,
+      String opReason,
+    );
 
 /// 授予管理员身份回调
 typedef OnGrantAdministratorCallback =
-    void Function(String groupID, ImGroupMemberInfo opUser, List<ImGroupMemberInfo> memberList);
+    void Function(
+      String groupID,
+      ImGroupMemberInfo opUser,
+      List<ImGroupMemberInfo> memberList,
+    );
 
 /// 撤销管理员身份回调
 typedef OnRevokeAdministratorCallback =
-    void Function(String groupID, ImGroupMemberInfo opUser, List<ImGroupMemberInfo> memberList);
+    void Function(
+      String groupID,
+      ImGroupMemberInfo opUser,
+      List<ImGroupMemberInfo> memberList,
+    );
 
 /// 退出群组回调
 typedef OnQuitFromGroupCallback = void Function(String groupID);
 
 /// 收到 REST 自定义数据回调
-typedef OnReceiveRESTCustomDataCallback = void Function(String groupID, String customData);
+typedef OnReceiveRESTCustomDataCallback =
+    void Function(String groupID, String customData);
 
 /// 群属性变更回调
 typedef OnGroupAttributeChangedCallback =
@@ -120,7 +155,8 @@ typedef OnRecvNewMessageCallback = void Function(ImMessage msg);
 typedef OnRecvMessageModified = void Function(ImMessage msg);
 
 /// 收到 C2C 消息已读回执回调
-typedef OnRecvC2CReadReceiptCallback = void Function(List<ImMessageReceipt> receiptList);
+typedef OnRecvC2CReadReceiptCallback =
+    void Function(List<ImMessageReceipt> receiptList);
 
 /// 收到消息撤回回调
 typedef OnRecvMessageRevokedCallback = void Function(String msgID);
@@ -130,7 +166,8 @@ typedef OnFriendApplicationListAddedCallback =
     void Function(List<ImFriendApplication> applicationList);
 
 /// 好友申请列表删除回调
-typedef OnFriendApplicationListDeletedCallback = void Function(List<String> userIDList);
+typedef OnFriendApplicationListDeletedCallback =
+    void Function(List<String> userIDList);
 
 /// 好友申请列表已读回调
 typedef OnFriendApplicationListReadCallback = void Function();
@@ -148,13 +185,16 @@ typedef OnBlackListAddCallback = void Function(List<ImFriendInfo> infoList);
 typedef OnBlackListDeletedCallback = void Function(List<String> userList);
 
 /// 好友信息变更回调
-typedef OnFriendInfoChangedCallback = void Function(List<ImFriendInfo> infoList);
+typedef OnFriendInfoChangedCallback =
+    void Function(List<ImFriendInfo> infoList);
 
 /// 会话变更回调
-typedef OnConversationChangedCallback = void Function(List<ImConversation> conversationList);
+typedef OnConversationChangedCallback =
+    void Function(List<ImConversation> conversationList);
 
 /// 新会话回调
-typedef OnNewConversation = void Function(List<ImConversation> conversationList);
+typedef OnNewConversation =
+    void Function(List<ImConversation> conversationList);
 
 /// 收到新邀请回调
 typedef OnReceiveNewInvitationCallback =
@@ -167,22 +207,28 @@ typedef OnReceiveNewInvitationCallback =
     );
 
 /// 邀请被接受回调
-typedef OnInviteeAcceptedCallback = void Function(String inviteID, String invitee, String data);
+typedef OnInviteeAcceptedCallback =
+    void Function(String inviteID, String invitee, String data);
 
 /// 邀请被拒绝回调
-typedef OnInviteeRejectedCallback = void Function(String inviteID, String invitee, String data);
+typedef OnInviteeRejectedCallback =
+    void Function(String inviteID, String invitee, String data);
 
 /// 邀请被取消回调
-typedef OnInvitationCancelledCallback = void Function(String inviteID, String inviter, String data);
+typedef OnInvitationCancelledCallback =
+    void Function(String inviteID, String inviter, String data);
 
 /// 邀请超时回调
-typedef OnInvitationTimeoutCallback = void Function(String inviteID, List<String> inviteeList);
+typedef OnInvitationTimeoutCallback =
+    void Function(String inviteID, List<String> inviteeList);
 
 /// 发送消息进度回调
-typedef OnSendMessageProgressCallback = void Function(ImMessage message, int progress);
+typedef OnSendMessageProgressCallback =
+    void Function(ImMessage message, int progress);
 
 /// 收到消息已读回执（包含群）回调
-typedef OnRecvMessageReadReceipts = void Function(List<ImMessageReceipt> receiptList);
+typedef OnRecvMessageReadReceipts =
+    void Function(List<ImMessageReceipt> receiptList);
 
 /// 会话分组创建回调
 typedef OnConversationGroupCreated =
@@ -192,7 +238,8 @@ typedef OnConversationGroupCreated =
 typedef OnConversationGroupDeleted = void Function(String groupName);
 
 /// 会话分组名称变更回调
-typedef OnConversationGroupNameChanged = void Function(String oldName, String newName);
+typedef OnConversationGroupNameChanged =
+    void Function(String oldName, String newName);
 
 /// 会话分组添加会话回调
 typedef OnConversationsAddedToGroup =
@@ -206,7 +253,9 @@ typedef OnConversationsDeletedFromGroup =
 typedef OnTopicCreated = void Function(String groupID, String topicID);
 
 /// 话题删除回调
-typedef OnTopicDeleted = void Function(String groupID, List<String> topicIDList);
+typedef OnTopicDeleted =
+    void Function(String groupID, List<String> topicIDList);
 
 /// 话题信息变更回调
-typedef OnTopicInfoChanged = void Function(String groupID, ImTopicInfo topicInfo);
+typedef OnTopicInfoChanged =
+    void Function(String groupID, ImTopicInfo topicInfo);

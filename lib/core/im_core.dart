@@ -2,7 +2,6 @@ import '../im_sdk_plugin.dart';
 import 'net/api_client.dart';
 import 'db/db_manager.dart';
 
-import '../models/im_conversation.dart';
 import 'net/auth_api.dart';
 import 'net/user_api.dart';
 import 'net/friendship_api.dart';

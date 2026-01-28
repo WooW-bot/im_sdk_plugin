@@ -4,21 +4,7 @@ import 'package:im_sdk_plugin/models/im_message_download_progress.dart';
 
 import '../im_sdk_plugin.dart';
 import '../listener/im_advanced_msg_listener.dart';
-import '../enums/get_group_message_read_member_list_filter.dart';
-import '../enums/history_msg_get_type_enum.dart';
-import '../enums/message_priority_enum.dart';
-import '../enums/receive_message_opt_enum.dart';
-import '../models/im_group_message_read_member_list.dart';
-import '../models/im_message_change_info.dart';
-import '../models/im_message_receipt.dart';
-import '../models/im_message_search_param.dart';
-import '../models/im_message_search_result.dart';
-import '../models/im_msg_create_info_result.dart';
-import '../models/im_message_extension.dart';
-import '../models/im_message_extension_result.dart';
-import '../models/im_message_list_result.dart';
 import 'dart:collection';
-import '../models/im_message_online_url.dart';
 
 /// 消息管理器
 class IMMessageManager with BaseMixin {
@@ -29,7 +15,9 @@ class IMMessageManager with BaseMixin {
 
   /// 设置高级消息监听器
   Future<void> setAdvancedMsgListener(ImAdvancedMsgListener? listener) async {
-    Logger.debug("[IMMessageManager] 设置消息监听器: ${listener != null ? '已设置' : '已清除'}");
+    Logger.debug(
+      "[IMMessageManager] 设置消息监听器: ${listener != null ? '已设置' : '已清除'}",
+    );
     _advancedMsgListener = listener;
   }
 
@@ -37,8 +25,7 @@ class IMMessageManager with BaseMixin {
   Future<ImValueCallback<ImMsgCreateInfoResult>> createTextMessage({
     required String text,
   }) async {
-    // TODO: implement createTextMessage
-    throw UnimplementedError();
+    return _imCore.createTextMessage(text: text);
   }
 
   /// 创建自定义消息
@@ -47,8 +34,11 @@ class IMMessageManager with BaseMixin {
     String desc = "",
     String extension = "",
   }) async {
-    // TODO: implement createCustomMessage
-    throw UnimplementedError();
+    return _imCore.createCustomMessage(
+      data: data,
+      desc: desc,
+      extension: extension,
+    );
   }
 
   /// 创建图片消息
@@ -57,8 +47,11 @@ class IMMessageManager with BaseMixin {
     dynamic inputElement,
     String? imageName,
   }) async {
-    // TODO: implement createImageMessage
-    throw UnimplementedError();
+    return _imCore.createImageMessage(
+      imagePath: imagePath,
+      inputElement: inputElement,
+      imageName: imageName,
+    );
   }
 
   /// 创建语音消息
@@ -66,8 +59,7 @@ class IMMessageManager with BaseMixin {
     required String soundPath,
     required int duration,
   }) async {
-    // TODO: implement createSoundMessage
-    throw UnimplementedError();
+    return _imCore.createSoundMessage(soundPath: soundPath, duration: duration);
   }
 
   /// 创建视频消息
@@ -78,8 +70,13 @@ class IMMessageManager with BaseMixin {
     required String snapshotPath,
     dynamic inputElement,
   }) async {
-    // TODO: implement createVideoMessage
-    throw UnimplementedError();
+    return _imCore.createVideoMessage(
+      videoFilePath: videoFilePath,
+      type: type,
+      duration: duration,
+      snapshotPath: snapshotPath,
+      inputElement: inputElement,
+    );
   }
 
   /// 创建 @ 消息
@@ -87,8 +84,7 @@ class IMMessageManager with BaseMixin {
     required String text,
     required List<String> atUserList,
   }) async {
-    // TODO: implement createTextAtMessage
-    throw UnimplementedError();
+    return _imCore.createTextAtMessage(text: text, atUserList: atUserList);
   }
 
   /// 创建文件消息
@@ -97,8 +93,11 @@ class IMMessageManager with BaseMixin {
     required String fileName,
     dynamic inputElement,
   }) async {
-    // TODO: implement createFileMessage
-    throw UnimplementedError();
+    return _imCore.createFileMessage(
+      filePath: filePath,
+      fileName: fileName,
+      inputElement: inputElement,
+    );
   }
 
   /// 创建位置消息
@@ -107,8 +106,11 @@ class IMMessageManager with BaseMixin {
     required double longitude,
     required double latitude,
   }) async {
-    // TODO: implement createLocationMessage
-    throw UnimplementedError();
+    return _imCore.createLocationMessage(
+      desc: desc,
+      longitude: longitude,
+      latitude: latitude,
+    );
   }
 
   /// 创建表情消息
@@ -116,8 +118,7 @@ class IMMessageManager with BaseMixin {
     required int index,
     required String data,
   }) async {
-    // TODO: implement createFaceMessage
-    throw UnimplementedError();
+    return _imCore.createFaceMessage(index: index, data: data);
   }
 
   /// 创建合并消息
@@ -127,8 +128,12 @@ class IMMessageManager with BaseMixin {
     required List<String> abstractList,
     required String compatibleText,
   }) async {
-    // TODO: implement createMergerMessage
-    throw UnimplementedError();
+    return _imCore.createMergerMessage(
+      msgIDList: msgIDList,
+      title: title,
+      abstractList: abstractList,
+      compatibleText: compatibleText,
+    );
   }
 
   /// 创建转发消息
@@ -136,8 +141,10 @@ class IMMessageManager with BaseMixin {
     required String msgID,
     String? webMessageInstance,
   }) async {
-    // TODO: implement createForwardMessage
-    throw UnimplementedError();
+    return _imCore.createForwardMessage(
+      msgID: msgID,
+      webMessageInstance: webMessageInstance,
+    );
   }
 
   /// 创建定向群消息
@@ -145,8 +152,10 @@ class IMMessageManager with BaseMixin {
     required String id,
     required List<String> receiverList,
   }) async {
-    // TODO: implement createTargetedGroupMessage
-    throw UnimplementedError();
+    return _imCore.createTargetedGroupMessage(
+      id: id,
+      receiverList: receiverList,
+    );
   }
 
   /// 添加元素到消息 (用于多元素消息)
@@ -154,8 +163,10 @@ class IMMessageManager with BaseMixin {
     required String createMessageBaseId,
     required String createMessageAppendId,
   }) async {
-    // TODO: implement appendMessage
-    throw UnimplementedError();
+    return _imCore.appendMessage(
+      createMessageBaseId: createMessageBaseId,
+      createMessageAppendId: createMessageAppendId,
+    );
   }
 
   /// 获取 C2C 历史消息列表
@@ -164,8 +175,11 @@ class IMMessageManager with BaseMixin {
     required int count,
     String? lastMsgID,
   }) async {
-    // TODO: implement getC2CHistoryMessageList
-    throw UnimplementedError();
+    return _imCore.getC2CHistoryMessageList(
+      userID: userID,
+      count: count,
+      lastMsgID: lastMsgID,
+    );
   }
 
   /// 获取历史消息列表
@@ -179,8 +193,15 @@ class IMMessageManager with BaseMixin {
     String? lastMsgID,
     List<int>? messageTypeList,
   }) async {
-    // TODO: implement getHistoryMessageList
-    throw UnimplementedError();
+    return _imCore.getHistoryMessageList(
+      getType: getType,
+      userID: userID,
+      groupID: groupID,
+      lastMsgSeq: lastMsgSeq,
+      count: count,
+      lastMsgID: lastMsgID,
+      messageTypeList: messageTypeList,
+    );
   }
 
   /// 获取群组历史消息列表
@@ -189,34 +210,33 @@ class IMMessageManager with BaseMixin {
     required int count,
     String? lastMsgID,
   }) async {
-    // TODO: implement getGroupHistoryMessageList
-    throw UnimplementedError();
+    return _imCore.getGroupHistoryMessageList(
+      groupID: groupID,
+      count: count,
+      lastMsgID: lastMsgID,
+    );
   }
 
   /// 标记 C2C 消息为已读
   Future<ImCallback> markC2CMessageAsRead({required String userID}) async {
-    // TODO: implement markC2CMessageAsRead
-    throw UnimplementedError();
+    return _imCore.markC2CMessageAsRead(userID: userID);
   }
 
   /// 标记群组消息为已读
   Future<ImCallback> markGroupMessageAsRead({required String groupID}) async {
-    // TODO: implement markGroupMessageAsRead
-    throw UnimplementedError();
+    return _imCore.markGroupMessageAsRead(groupID: groupID);
   }
 
   /// 标记所有消息为已读
   Future<ImCallback> markAllMessageAsRead() async {
-    // TODO: implement markAllMessageAsRead
-    throw UnimplementedError();
+    return _imCore.markAllMessageAsRead();
   }
 
   /// 从本地存储中删除消息
   Future<ImCallback> deleteMessageFromLocalStorage({
     required String msgID,
   }) async {
-    // TODO: implement deleteMessageFromLocalStorage
-    throw UnimplementedError();
+    return _imCore.deleteMessageFromLocalStorage(msgID: msgID);
   }
 
   /// 删除消息
@@ -224,8 +244,10 @@ class IMMessageManager with BaseMixin {
     required List<String> msgIDs,
     List<dynamic>? webMessageInstanceList,
   }) async {
-    // TODO: implement deleteMessages
-    throw UnimplementedError();
+    return _imCore.deleteMessages(
+      msgIDs: msgIDs,
+      webMessageInstanceList: webMessageInstanceList,
+    );
   }
 
   /// 插入群组消息到本地存储
@@ -234,8 +256,11 @@ class IMMessageManager with BaseMixin {
     required String groupID,
     required String sender,
   }) async {
-    // TODO: implement insertGroupMessageToLocalStorage
-    throw UnimplementedError();
+    return _imCore.insertGroupMessageToLocalStorage(
+      data: data,
+      groupID: groupID,
+      sender: sender,
+    );
   }
 
   /// 插入 C2C 消息到本地存储
@@ -244,20 +269,21 @@ class IMMessageManager with BaseMixin {
     required String userID,
     required String sender,
   }) async {
-    // TODO: implement insertC2CMessageToLocalStorage
-    throw UnimplementedError();
+    return _imCore.insertC2CMessageToLocalStorage(
+      data: data,
+      userID: userID,
+      sender: sender,
+    );
   }
 
   /// 清空 C2C 历史消息
   Future<ImCallback> clearC2CHistoryMessage({required String userID}) async {
-    // TODO: implement clearC2CHistoryMessage
-    throw UnimplementedError();
+    return _imCore.clearC2CHistoryMessage(userID: userID);
   }
 
   /// 清空群组历史消息
   Future<ImCallback> clearGroupHistoryMessage({required String groupID}) async {
-    // TODO: implement clearGroupHistoryMessage
-    throw UnimplementedError();
+    return _imCore.clearGroupHistoryMessage(groupID: groupID);
   }
 
   /// 下载合并消息
@@ -265,8 +291,10 @@ class IMMessageManager with BaseMixin {
     required String msgID,
     String? webMessageInstance,
   }) async {
-    // TODO: implement downloadMergerMessage
-    throw UnimplementedError();
+    return _imCore.downloadMergerMessage(
+      msgID: msgID,
+      webMessageInstance: webMessageInstance,
+    );
   }
 
   /// 设置 C2C 消息接收选项
@@ -274,8 +302,7 @@ class IMMessageManager with BaseMixin {
     required List<String> userIDList,
     required ReceiveMsgOptEnum opt,
   }) async {
-    // TODO: implement setC2CReceiveMessageOpt
-    throw UnimplementedError();
+    return _imCore.setC2CReceiveMessageOpt(userIDList: userIDList, opt: opt);
   }
 
   /// 设置群组消息接收选项
@@ -283,8 +310,7 @@ class IMMessageManager with BaseMixin {
     required String groupID,
     required ReceiveMsgOptEnum opt,
   }) async {
-    // TODO: implement setGroupReceiveMessageOpt
-    throw UnimplementedError();
+    return _imCore.setGroupReceiveMessageOpt(groupID: groupID, opt: opt);
   }
 
   /// 设置本地自定义数据
@@ -292,8 +318,10 @@ class IMMessageManager with BaseMixin {
     required String msgID,
     required String localCustomData,
   }) async {
-    // TODO: implement setLocalCustomData
-    throw UnimplementedError();
+    return _imCore.setLocalCustomData(
+      msgID: msgID,
+      localCustomData: localCustomData,
+    );
   }
 
   /// 设置本地自定义整数
@@ -301,25 +329,28 @@ class IMMessageManager with BaseMixin {
     required String msgID,
     required int localCustomInt,
   }) async {
-    // TODO: implement setLocalCustomInt
-    throw UnimplementedError();
+    return _imCore.setLocalCustomInt(
+      msgID: msgID,
+      localCustomInt: localCustomInt,
+    );
   }
 
   /// 撤回消息
   Future<ImCallback> revokeMessage({
     required String msgID,
-    Object? webMessageInstatnce,
+    Object? webMessageInstance,
   }) async {
-    // TODO: implement revokeMessage
-    throw UnimplementedError();
+    return _imCore.revokeMessage(
+      msgID: msgID,
+      webMessageInstance: webMessageInstance,
+    );
   }
 
   /// 修改消息
   Future<ImValueCallback<ImMessageChangeInfo>> modifyMessage({
     required ImMessage message,
   }) async {
-    // TODO: implement modifyMessage
-    throw UnimplementedError();
+    return _imCore.modifyMessage(message: message);
   }
 
   /// 发送消息
@@ -337,32 +368,41 @@ class IMMessageManager with BaseMixin {
     String? cloudCustomData, // 云自定义消息字段，只能在消息发送前添加
     String? localCustomData,
   }) async {
-    // TODO: implement sendMessage
-    throw UnimplementedError();
+    return _imCore.sendMessage(
+      id: id,
+      receiver: receiver,
+      groupID: groupID,
+      priority: priority,
+      onlineUserOnly: onlineUserOnly,
+      isExcludedFromUnreadCount: isExcludedFromUnreadCount,
+      isExcludedFromLastMessage: isExcludedFromLastMessage,
+      isSupportMessageExtension: isSupportMessageExtension,
+      needReadReceipt: needReadReceipt,
+      offlinePushInfo: offlinePushInfo,
+      cloudCustomData: cloudCustomData,
+      localCustomData: localCustomData,
+    );
   }
 
   /// 搜索本地消息
   Future<ImValueCallback<ImMessageSearchResult>> searchLocalMessages({
     required ImMessageSearchParam searchParam,
   }) async {
-    // TODO: implement searchLocalMessages
-    throw UnimplementedError();
+    return _imCore.searchLocalMessages(searchParam: searchParam);
   }
 
   /// 发送消息已读回执
   Future<ImCallback> sendMessageReadReceipts({
     required List<String> messageIDList,
   }) async {
-    // TODO: implement sendMessageReadReceipts
-    throw UnimplementedError();
+    return _imCore.sendMessageReadReceipts(messageIDList: messageIDList);
   }
 
   /// 获取消息已读回执
   Future<ImValueCallback<List<ImMessageReceipt>>> getMessageReadReceipts({
     required List<String> messageIDList,
   }) async {
-    // TODO: implement getMessageReadReceipts
-    throw UnimplementedError();
+    return _imCore.getMessageReadReceipts(messageIDList: messageIDList);
   }
 
   /// 获取群消息已读成员列表
@@ -373,8 +413,12 @@ class IMMessageManager with BaseMixin {
     int nextSeq = 0,
     int count = 100,
   }) async {
-    // TODO: implement getGroupMessageReadMemberList
-    throw UnimplementedError();
+    return _imCore.getGroupMessageReadMemberList(
+      messageID: messageID,
+      filter: filter,
+      nextSeq: nextSeq,
+      count: count,
+    );
   }
 
   /// 下载合并消息
@@ -384,16 +428,19 @@ class IMMessageManager with BaseMixin {
     required bool isSnapshot,
     int? messageType,
   }) async {
-    // TODO: implement downloadMessage
-    throw UnimplementedError();
+    return _imCore.downloadMessage(
+      msgID: msgID,
+      imageType: imageType,
+      isSnapshot: isSnapshot,
+      messageType: messageType,
+    );
   }
 
   /// 获取消息在线 URL
   Future<ImValueCallback<ImMessageOnlineUrl>> getMessageOnlineUrl({
     required String msgID,
   }) async {
-    // TODO: implement getMessageOnlineUrl
-    throw UnimplementedError();
+    return _imCore.getMessageOnlineUrl(msgID: msgID);
   }
 
   /// 设置消息扩展
@@ -401,16 +448,14 @@ class IMMessageManager with BaseMixin {
     required String msgID,
     required List<ImMessageExtension> extensions,
   }) async {
-    // TODO: implement setMessageExtensions
-    throw UnimplementedError();
+    return _imCore.setMessageExtensions(msgID: msgID, extensions: extensions);
   }
 
   /// 获取消息扩展
   Future<ImValueCallback<List<ImMessageExtension>>> getMessageExtensions({
     required String msgID,
   }) async {
-    // TODO: implement getMessageExtensions
-    throw UnimplementedError();
+    return _imCore.getMessageExtensions(msgID: msgID);
   }
 
   /// 删除消息扩展
@@ -419,8 +464,7 @@ class IMMessageManager with BaseMixin {
     required String msgID,
     required List<String> keys,
   }) async {
-    // TODO: implement deleteMessageExtensions
-    throw UnimplementedError();
+    return _imCore.deleteMessageExtensions(msgID: msgID, keys: keys);
   }
 
   /// 设置云端自定义数据
@@ -428,30 +472,26 @@ class IMMessageManager with BaseMixin {
     required String msgID,
     required String data,
   }) async {
-    // TODO: implement setCloudCustomData
-    throw UnimplementedError();
+    return _imCore.setCloudCustomData(msgID: msgID, data: data);
   }
 
   /// 同步离线消息
   Future<ImValueCallback<List<ImMessage>>> syncOfflineMessages() async {
-    // TODO: implement findMessages
-    throw UnimplementedError();
+    return _imCore.syncOfflineMessages();
   }
 
   /// 查找消息
   Future<ImValueCallback<List<ImMessage>>> findMessages({
     required List<String> messageIDList,
   }) async {
-    // TODO: implement findMessages
-    throw UnimplementedError();
+    return _imCore.findMessages(messageIDList: messageIDList);
   }
 
   /// 获取 C2C 消息接收选项
   Future<ImValueCallback<dynamic>> getC2CReceiveMessageOpt({
     required List<String> userIDList,
   }) async {
-    // TODO: implement getC2CReceiveMessageOpt
-    throw UnimplementedError();
+    return _imCore.getC2CReceiveMessageOpt(userIDList: userIDList);
   }
 
   /// 重发消息
@@ -459,8 +499,7 @@ class IMMessageManager with BaseMixin {
     required String msgID,
     bool onlineUserOnly = false,
   }) async {
-    // TODO: implement reSendMessage
-    throw UnimplementedError();
+    return _imCore.reSendMessage(msgID: msgID, onlineUserOnly: onlineUserOnly);
   }
 
   /// 发送自定义消息
@@ -469,8 +508,11 @@ class IMMessageManager with BaseMixin {
     required String receiver,
     required String groupID,
   }) async {
-    // TODO: implement sendCustomMessage
-    throw UnimplementedError();
+    return _imCore.sendCustomMessage(
+      data: data,
+      receiver: receiver,
+      groupID: groupID,
+    );
   }
 
   /// 获取历史消息列表高级接口
@@ -482,8 +524,14 @@ class IMMessageManager with BaseMixin {
     HistoryMsgGetTypeEnum? getType,
     List<int>? messageTypeList,
   }) async {
-    // TODO: implement getHistoryMessageListV2
-    throw UnimplementedError();
+    return _imCore.getHistoryMessageListV2(
+      userID: userID,
+      groupID: groupID,
+      count: count,
+      lastMsgID: lastMsgID,
+      getType: getType,
+      messageTypeList: messageTypeList,
+    );
   }
 
   /// 获取历史消息列表（不格式化）
@@ -494,8 +542,13 @@ class IMMessageManager with BaseMixin {
     String? lastMsgID,
     HistoryMsgGetTypeEnum? getType,
   }) async {
-    // TODO: implement getHistoryMessageListWithoutFormat
-    throw UnimplementedError();
+    return _imCore.getHistoryMessageListWithoutFormat(
+      userID: userID,
+      groupID: groupID,
+      count: count,
+      lastMsgID: lastMsgID,
+      getType: getType,
+    );
   }
 
   void handleAdvancedMsgCallback(MethodCall call) {

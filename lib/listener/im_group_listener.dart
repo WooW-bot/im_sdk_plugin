@@ -1,5 +1,4 @@
 import '../im_sdk_plugin.dart';
-import '../models/im_topic_info.dart';
 import 'callbacks.dart';
 
 /// 群组监听器

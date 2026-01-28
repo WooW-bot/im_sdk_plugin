@@ -1,4 +1,4 @@
-import '../models/im_conversation.dart';
+import '../im_sdk_plugin.dart';
 import 'callbacks.dart';
 
 /// 会话监听器
@@ -13,13 +13,16 @@ class ImConversationListener {
   VoidCallback onSyncServerFailed = () {};
 
   /// 收到新会话回调
-  OnNewConversation onNewConversation = (List<ImConversation> conversationList) {};
+  OnNewConversation onNewConversation =
+      (List<ImConversation> conversationList) {};
 
   /// 会话变更回调
-  OnConversationChangedCallback onConversationChanged = (List<ImConversation> conversationList) {};
+  OnConversationChangedCallback onConversationChanged =
+      (List<ImConversation> conversationList) {};
 
   /// 未读消息计数变更回调
-  OnTotalUnreadMessageCountChanged onTotalUnreadMessageCountChanged = (int totalUnreadCount) {};
+  OnTotalUnreadMessageCountChanged onTotalUnreadMessageCountChanged =
+      (int totalUnreadCount) {};
 
   /// 会话分组创建回调
   OnConversationGroupCreated onConversationGroupCreated =

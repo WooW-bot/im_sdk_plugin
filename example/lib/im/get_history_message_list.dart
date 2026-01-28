@@ -4,8 +4,6 @@ import 'package:im_sdk_plugin/enums/message_elem_type.dart';
 import 'package:im_sdk_plugin_example/im/friend_selector.dart';
 import 'package:im_sdk_plugin_example/im/group_selector.dart';
 import 'package:im_sdk_plugin_example/utils/sdk_response.dart';
-import 'package:im_sdk_plugin/enums/history_msg_get_type_enum.dart';
-import 'package:im_sdk_plugin/models/im_message_list_result.dart';
 
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 

@@ -1,7 +1,5 @@
 import '../im_sdk_plugin.dart';
 import '../models/im_message_download_progress.dart';
-import '../models/im_message_extension.dart';
-import '../models/im_message_receipt.dart';
 import 'callbacks.dart';
 
 /// 高级消息监听器
@@ -13,16 +11,19 @@ class ImAdvancedMsgListener {
   OnRecvMessageModified onRecvMessageModified = (ImMessage message) {};
 
   /// 消息发送进度回调
-  OnSendMessageProgressCallback onSendMessageProgress = (ImMessage message, int progress) {};
+  OnSendMessageProgressCallback onSendMessageProgress =
+      (ImMessage message, int progress) {};
 
   /// 收到 C2C 消息已读回执回调
-  OnRecvC2CReadReceiptCallback onRecvC2CReadReceipt = (List<ImMessageReceipt> receiptList) {};
+  OnRecvC2CReadReceiptCallback onRecvC2CReadReceipt =
+      (List<ImMessageReceipt> receiptList) {};
 
   /// 收到消息撤回回调
   OnRecvMessageRevokedCallback onRecvMessageRevoked = (String msgID) {};
 
   /// 收到消息已读回执回调
-  OnRecvMessageReadReceipts onRecvMessageReadReceipts = (List<ImMessageReceipt> receiptList) {};
+  OnRecvMessageReadReceipts onRecvMessageReadReceipts =
+      (List<ImMessageReceipt> receiptList) {};
 
   /// 收到消息扩展修改回调
   OnRecvMessageExtensionsChanged onRecvMessageExtensionsChanged =
@@ -72,7 +73,8 @@ class ImAdvancedMsgListener {
       this.onRecvMessageExtensionsDeleted = onRecvMessageExtensionsDeleted;
     }
     if (onMessageDownloadProgressCallback != null) {
-      this.onMessageDownloadProgressCallback = onMessageDownloadProgressCallback;
+      this.onMessageDownloadProgressCallback =
+          onMessageDownloadProgressCallback;
     }
   }
 }

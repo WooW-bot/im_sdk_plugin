@@ -1,6 +1,4 @@
-import 'package:im_sdk_core/core/models/im_friend_info.dart';
-
-import '../models/im_friend_application.dart';
+import '../im_sdk_plugin.dart';
 import 'callbacks.dart';
 
 /// 关系链监听器
@@ -29,7 +27,8 @@ class ImFriendshipListener {
   OnBlackListDeletedCallback onBlackListDeleted = (List<String> userList) {};
 
   /// 好友信息变更回调
-  OnFriendInfoChangedCallback onFriendInfoChanged = (List<ImFriendInfo> infoList) {};
+  OnFriendInfoChangedCallback onFriendInfoChanged =
+      (List<ImFriendInfo> infoList) {};
 
   ImFriendshipListener({
     OnFriendApplicationListAddedCallback? onFriendApplicationListAdded,

@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:im_sdk_core/im_sdk_core.dart';
 import 'package:im_sdk_plugin/mixins/mixin.dart';
 import '../im_sdk_plugin.dart';
-import '../listener/im_sdk_listener.dart';
 import '../models/im_user_status.dart';
 import 'im_conversation_manager.dart';
 import 'im_offline_push_manager.dart';
@@ -54,8 +52,7 @@ class IMManager with BaseMixin {
     friendshipManager = IMFriendshipManager(_imSdkCore);
     groupManager = IMGroupManager(_imSdkCore);
     offlinePushManager = IMOfflinePushManager();
-    offlinePushManager = IMOfflinePushManager();
-    signalingManager = IMSignalingManager();
+    signalingManager = IMSignalingManager(_imSdkCore);
 
     setInitSDKListener(listener);
     setupNativeCallback(_imSdkCore);

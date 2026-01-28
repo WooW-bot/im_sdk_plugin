@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:im_sdk_plugin/enums/group_application_type_enum.dart';
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 import 'package:im_sdk_plugin/models/im_group_application.dart';
-import 'package:im_sdk_plugin/models/im_group_application_result.dart';
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
 
 import '../utils/sdk_response.dart';

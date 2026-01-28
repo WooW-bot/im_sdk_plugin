@@ -4,10 +4,8 @@ import 'package:im_sdk_plugin/listener/im_conversation_listener.dart';
 import 'package:im_sdk_plugin/listener/im_friendship_listener.dart';
 import 'package:im_sdk_plugin/listener/im_group_listener.dart';
 import 'package:im_sdk_plugin/listener/im_signaling_listener.dart';
-import 'package:im_sdk_plugin/listener/im_simple_msg_listener.dart';
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 import 'package:im_sdk_plugin/models/im_message_download_progress.dart';
-import 'package:im_sdk_plugin/models/im_message_extension.dart';
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
 import 'package:provider/provider.dart';
 

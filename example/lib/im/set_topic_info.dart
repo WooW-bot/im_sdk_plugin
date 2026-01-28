@@ -5,8 +5,6 @@ import 'package:im_sdk_plugin_example/im/topic_selector.dart';
 import 'package:im_sdk_plugin_example/utils/sdk_response.dart';
 import 'package:flutter/material.dart';
 
-import 'package:im_sdk_plugin/models/im_topic_info.dart';
-
 import 'community_selector.dart';
 
 class SetTopicInfo extends StatefulWidget {

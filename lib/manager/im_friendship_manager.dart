@@ -1,13 +1,8 @@
 import 'package:im_sdk_core/im_sdk_core.dart';
 import 'package:im_sdk_plugin/mixins/mixin.dart';
-import 'package:im_sdk_plugin/models/im_friend_application.dart';
 
 import '../im_sdk_plugin.dart';
 import '../listener/im_friendship_listener.dart';
-import '../enums/friend_application_type_enum.dart';
-import '../enums/friend_response_type_enum.dart';
-import '../models/im_friend_application_result.dart';
-import '../models/im_friend_group.dart';
 
 /// 关系链管理器
 class IMFriendshipManager with BaseMixin {
@@ -61,8 +56,11 @@ class IMFriendshipManager with BaseMixin {
     String? friendRemark,
     Map<String, String>? friendCustomInfo,
   }) async {
-    // TODO: implement setFriendInfo
-    throw UnimplementedError();
+    return _imCore.setFriendInfo(
+      userID: userID,
+      friendRemark: friendRemark,
+      friendCustomInfo: friendCustomInfo,
+    );
   }
 
   /// 添加好友
@@ -74,8 +72,14 @@ class IMFriendshipManager with BaseMixin {
     String? addSource,
     required FriendTypeEnum addType,
   }) async {
-    // TODO: implement addFriend
-    throw UnimplementedError();
+    return _imCore.addFriend(
+      userID: userID,
+      remark: remark,
+      friendGroup: friendGroup,
+      addWording: addWording,
+      addSource: addSource,
+      addType: addType,
+    );
   }
 
   /// 从好友列表删除用户
@@ -83,8 +87,10 @@ class IMFriendshipManager with BaseMixin {
     required List<String> userIDList,
     required FriendTypeEnum deleteType,
   }) async {
-    // TODO: implement deleteFromFriendList
-    throw UnimplementedError();
+    return _imCore.deleteFromFriendList(
+      userIDList: userIDList,
+      deleteType: deleteType,
+    );
   }
 
   /// 检查好友关系
@@ -98,8 +104,7 @@ class IMFriendshipManager with BaseMixin {
   /// 获取好友申请列表
   Future<ImValueCallback<ImFriendApplicationResult>>
   getFriendApplicationList() async {
-    // TODO: implement getFriendApplicationList
-    throw UnimplementedError();
+    return _imCore.getFriendApplicationList();
   }
 
   /// 同意好友申请
@@ -108,8 +113,11 @@ class IMFriendshipManager with BaseMixin {
     required FriendApplicationTypeEnum type,
     required String userID,
   }) async {
-    // TODO: implement acceptFriendApplication
-    throw UnimplementedError();
+    return _imCore.acceptFriendApplication(
+      responseType: responseType,
+      type: type,
+      userID: userID,
+    );
   }
 
   /// 拒绝好友申请
@@ -117,8 +125,7 @@ class IMFriendshipManager with BaseMixin {
     required FriendApplicationTypeEnum type,
     required String userID,
   }) async {
-    // TODO: implement refuseFriendApplication
-    throw UnimplementedError();
+    return _imCore.refuseFriendApplication(type: type, userID: userID);
   }
 
   /// 删除好友申请
@@ -126,14 +133,12 @@ class IMFriendshipManager with BaseMixin {
     required FriendApplicationTypeEnum type,
     required String userID,
   }) async {
-    // TODO: implement deleteFriendApplication
-    throw UnimplementedError();
+    return _imCore.deleteFriendApplication(type: type, userID: userID);
   }
 
   /// 设置好友申请已读
   Future<ImCallback> setFriendApplicationRead() async {
-    // TODO: implement setFriendApplicationRead
-    throw UnimplementedError();
+    return _imCore.setFriendApplicationRead();
   }
 
   /// 创建好友分组
@@ -141,24 +146,24 @@ class IMFriendshipManager with BaseMixin {
     required String groupName,
     List<String>? userIDList,
   }) async {
-    // TODO: implement createFriendGroup
-    throw UnimplementedError();
+    return _imCore.createFriendGroup(
+      groupName: groupName,
+      userIDList: userIDList,
+    );
   }
 
   /// 获取好友分组列表
   Future<ImValueCallback<List<ImFriendGroup>>> getFriendGroups({
     List<String>? groupNameList,
   }) async {
-    // TODO: implement getFriendGroups
-    throw UnimplementedError();
+    return _imCore.getFriendGroups(groupNameList: groupNameList);
   }
 
   /// 删除好友分组
   Future<ImCallback> deleteFriendGroup({
     required List<String> groupNameList,
   }) async {
-    // TODO: implement deleteFriendGroup
-    throw UnimplementedError();
+    return _imCore.deleteFriendGroup(groupNameList: groupNameList);
   }
 
   /// 重命名好友分组
@@ -166,8 +171,7 @@ class IMFriendshipManager with BaseMixin {
     required String oldName,
     required String newName,
   }) async {
-    // TODO: implement renameFriendGroup
-    throw UnimplementedError();
+    return _imCore.renameFriendGroup(oldName: oldName, newName: newName);
   }
 
   /// 添加好友到分组
@@ -176,8 +180,10 @@ class IMFriendshipManager with BaseMixin {
     required String groupName,
     required List<String> userIDList,
   }) async {
-    // TODO: implement addFriendsToFriendGroup
-    throw UnimplementedError();
+    return _imCore.addFriendsToFriendGroup(
+      groupName: groupName,
+      userIDList: userIDList,
+    );
   }
 
   /// 从分组中删除好友
@@ -186,8 +192,10 @@ class IMFriendshipManager with BaseMixin {
     required String groupName,
     required List<String> userIDList,
   }) async {
-    // TODO: implement deleteFriendsFromFriendGroup
-    throw UnimplementedError();
+    return _imCore.deleteFriendsFromFriendGroup(
+      groupName: groupName,
+      userIDList: userIDList,
+    );
   }
 
   /// 搜索好友

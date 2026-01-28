@@ -2,15 +2,20 @@ import 'package:im_sdk_plugin/mixins/mixin.dart';
 
 import '../im_sdk_plugin.dart';
 import '../listener/im_signaling_listener.dart';
-import '../models/im_signaling_info.dart';
 
 /// 信令管理器
 class IMSignalingManager with BaseMixin {
+  final ImSdkCore _imCore;
+
   ImSignalingListener? _signalingListener;
+
+  IMSignalingManager(this._imCore);
 
   /// 设置信令监听器
   Future<void> setSignalingListener(ImSignalingListener? listener) async {
-    Logger.debug("[IMSignalingManager] 设置信令监听器: ${listener != null ? '已设置' : '已清除'}");
+    Logger.debug(
+      "[IMSignalingManager] 设置信令监听器: ${listener != null ? '已设置' : '已清除'}",
+    );
     _signalingListener = listener;
   }
 
@@ -22,8 +27,13 @@ class IMSignalingManager with BaseMixin {
     bool onlineUserOnly = false,
     OfflinePushInfo? offlinePushInfo,
   }) async {
-    // TODO: implement invite
-    throw UnimplementedError();
+    return _imCore.invite(
+      invitee: invitee,
+      data: data,
+      timeout: timeout,
+      onlineUserOnly: onlineUserOnly,
+      offlinePushInfo: offlinePushInfo,
+    );
   }
 
   /// 邀请群组
@@ -34,42 +44,42 @@ class IMSignalingManager with BaseMixin {
     int timeout = 30,
     bool onlineUserOnly = false,
   }) async {
-    // TODO: implement inviteInGroup
-    throw UnimplementedError();
+    return _imCore.inviteInGroup(
+      groupID: groupID,
+      inviteeList: inviteeList,
+      data: data,
+      timeout: timeout,
+      onlineUserOnly: onlineUserOnly,
+    );
   }
 
   /// 取消邀请
   Future<ImCallback> cancel({required String inviteID, String? data}) async {
-    // TODO: implement cancel
-    throw UnimplementedError();
+    return _imCore.cancel(inviteID: inviteID, data: data);
   }
 
   /// 接受邀请
   Future<ImCallback> accept({required String inviteID, String? data}) async {
-    // TODO: implement accept
-    throw UnimplementedError();
+    return _imCore.accept(inviteID: inviteID, data: data);
   }
 
   /// 拒绝邀请
   Future<ImCallback> reject({required String inviteID, String? data}) async {
-    // TODO: implement reject
-    throw UnimplementedError();
+    return _imCore.reject(inviteID: inviteID, data: data);
   }
 
   /// 添加邀请信令
   Future<ImValueCallback<ImSignalingInfo>> addInvitedSignaling({
     required ImSignalingInfo info,
   }) async {
-    // TODO: implement addInvitedSignaling
-    throw UnimplementedError();
+    return _imCore.addInvitedSignaling(info: info);
   }
 
   /// 获取信令信息
   Future<ImValueCallback<ImSignalingInfo>> getSignalingInfo({
     required String msgID,
   }) async {
-    // TODO: implement getSignalingInfo
-    throw UnimplementedError();
+    return _imCore.getSignalingInfo(msgID: msgID);
   }
 
   void handleSignalingCallback(MethodCall call) {

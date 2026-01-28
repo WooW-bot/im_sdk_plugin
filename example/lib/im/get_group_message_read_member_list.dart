@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:im_sdk_plugin/enums/get_group_message_read_member_list_filter.dart';
-import 'package:im_sdk_plugin/models/im_group_message_read_member_list.dart';
 
 import 'package:im_sdk_plugin_example/im/conversation_selector.dart';
 import 'package:im_sdk_plugin_example/im/message_selector.dart';

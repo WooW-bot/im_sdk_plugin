@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:im_sdk_plugin_example/utils/toast.dart';
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
-import 'package:im_sdk_plugin/models/im_friend_group.dart';
-
-import 'package:im_sdk_plugin/models/im_friend_group.dart';
-
-import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
 
 import '../utils/toast.dart';

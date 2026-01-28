@@ -1,4 +1,5 @@
 export 'package:im_sdk_core/im_sdk_core.dart';
+export 'package:im_sdk_plugin/listener/im_sdk_listener.dart';
 
 import 'manager/im_manager.dart';
 

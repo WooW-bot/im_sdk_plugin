@@ -15,14 +15,15 @@ class RevokeMessageState extends State<RevokeMessage> {
   Map<String, dynamic>? resData;
   List<String> conversaions = List.empty(growable: true);
   List<String> msgIDs = List.empty(growable: true);
+
   revokeMessage() async {
     // 注意：web中webMessageInstatnce 为必填写
-    ImCallback res = await ImSDKPlugin.imManager
-        .getMessageManager()
-        .revokeMessage(
-            msgID: msgIDs.first,
-            webMessageInstatnce:
-                '{"ID":"144115234457185510-1659689444-77842438","conversationID":"C2C3708","conversationType":"C2C","time":1659689445,"sequence":1645050002,"clientSequence":1645050002,"random":77842438,"priority":"Normal","nick":"xxxxx","avatar":"\\"\\"","isPeerRead":false,"nameCard":"","_elements":[{"type":"TIMTextElem","content":{"text":"test"}}],"isPlaceMessage":0,"isRevoked":false,"from":"940928","to":"3708","flow":"out","isSystemMessage":false,"protocol":"JSON","isResend":false,"isRead":true,"status":"success","_onlineOnlyFlag":false,"_groupAtInfoList":[],"_relayFlag":false,"atUserList":[],"cloudCustomData":"","isDeleted":false,"isModified":false,"_isExcludedFromUnreadCount":false,"_isExcludedFromLastMessage":false,"clientTime":1659689444,"senderTinyID":"144115234457185510","readReceiptInfo":{},"needReadReceipt":false,"version":0,"isBroadcastMessage":false,"payload":{"text":"test"},"type":"TIMTextElem"}');
+    ImCallback
+    res = await ImSDKPlugin.imManager.getMessageManager().revokeMessage(
+      msgID: msgIDs.first,
+      webMessageInstance:
+          '{"ID":"144115234457185510-1659689444-77842438","conversationID":"C2C3708","conversationType":"C2C","time":1659689445,"sequence":1645050002,"clientSequence":1645050002,"random":77842438,"priority":"Normal","nick":"xxxxx","avatar":"\\"\\"","isPeerRead":false,"nameCard":"","_elements":[{"type":"TIMTextElem","content":{"text":"test"}}],"isPlaceMessage":0,"isRevoked":false,"from":"940928","to":"3708","flow":"out","isSystemMessage":false,"protocol":"JSON","isResend":false,"isRead":true,"status":"success","_onlineOnlyFlag":false,"_groupAtInfoList":[],"_relayFlag":false,"atUserList":[],"cloudCustomData":"","isDeleted":false,"isModified":false,"_isExcludedFromUnreadCount":false,"_isExcludedFromLastMessage":false,"clientTime":1659689444,"senderTinyID":"144115234457185510","readReceiptInfo":{},"needReadReceipt":false,"version":0,"isBroadcastMessage":false,"payload":{"text":"test"},"type":"TIMTextElem"}',
+    );
     setState(() {
       resData = res.toJson();
     });
@@ -47,11 +48,13 @@ class RevokeMessageState extends State<RevokeMessage> {
               Expanded(
                 child: Container(
                   margin: EdgeInsets.only(left: 10),
-                  child: Text(conversaions.length > 0
-                      ? conversaions.toString()
-                      : imt("未选择")),
+                  child: Text(
+                    conversaions.length > 0
+                        ? conversaions.toString()
+                        : imt("未选择"),
+                  ),
                 ),
-              )
+              ),
             ],
           ),
           Row(
@@ -66,10 +69,11 @@ class RevokeMessageState extends State<RevokeMessage> {
                 },
               ),
               Expanded(
-                  child: Container(
-                margin: EdgeInsets.only(left: 12),
-                child: Text(msgIDs.toString()),
-              ))
+                child: Container(
+                  margin: EdgeInsets.only(left: 12),
+                  child: Text(msgIDs.toString()),
+                ),
+              ),
             ],
           ),
           Row(
@@ -79,7 +83,7 @@ class RevokeMessageState extends State<RevokeMessage> {
                   onPressed: revokeMessage,
                   child: Text(imt("撤回消息")),
                 ),
-              )
+              ),
             ],
           ),
           SDKResponse(resData),

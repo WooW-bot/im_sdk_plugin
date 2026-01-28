@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:im_sdk_plugin_example/im/group_selector.dart';
 import 'package:im_sdk_plugin_example/utils/sdk_response.dart';
-import 'package:im_sdk_plugin/models/im_group_member_search_param.dart';
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
 

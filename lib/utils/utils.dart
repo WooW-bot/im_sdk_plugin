@@ -1,5 +1,5 @@
 import '../enums/group_member_role.dart';
-import '../enums/group_member_role_enum.dart';
+import '../im_sdk_plugin.dart';
 
 /// 枚举工具类
 class EnumUtils {

@@ -3,12 +3,6 @@ import 'package:im_sdk_plugin/mixins/mixin.dart';
 
 import '../im_sdk_plugin.dart';
 import '../listener/im_conversation_listener.dart';
-import '../models/im_conversation.dart';
-import '../models/im_conversation_result.dart';
-import '../models/im_conversation_operation_result.dart';
-import '../models/im_conversation_list_filter.dart';
-
-import '../core/im_core.dart';
 
 /// 会话管理器
 class IMConversationManager with BaseMixin {
@@ -20,7 +14,9 @@ class IMConversationManager with BaseMixin {
 
   /// 设置会话监听器
   Future<void> setConversationListener(ImConversationListener? listener) async {
-    Logger.debug("[IMConversationManager] 设置会话监听器: ${listener != null ? '已设置' : '已清除'}");
+    Logger.debug(
+      "[IMConversationManager] 设置会话监听器: ${listener != null ? '已设置' : '已清除'}",
+    );
     _conversationListener = listener;
   }
 
@@ -29,14 +25,12 @@ class IMConversationManager with BaseMixin {
     required String nextSeq,
     required int count,
   }) async {
-    // TODO: implement getConversationList
-    throw UnimplementedError();
+    return _imCore.getConversationList(nextSeq: nextSeq, count: count);
   }
 
   /// 同意步会话列表 (Sync All/Recent on Login)
   Future<ImValueCallback<List<ImConversation>>> syncConversationList() async {
-    // TODO: implement getConversationListByConversationIds
-    throw UnimplementedError();
+    return _imCore.syncConversationList();
   }
 
   /// 获取指定会话列表
@@ -44,8 +38,9 @@ class IMConversationManager with BaseMixin {
   getConversationListByConversationIds({
     required List<String> conversationIDList,
   }) async {
-    // TODO: implement getConversationListByConversationIds
-    throw UnimplementedError();
+    return _imCore.getConversationListByConversationIds(
+      conversationIDList: conversationIDList,
+    );
   }
 
   /// 置顶会话
@@ -53,30 +48,29 @@ class IMConversationManager with BaseMixin {
     required String conversationID,
     required bool isPinned,
   }) async {
-    // TODO: implement pinConversation
-    throw UnimplementedError();
+    return _imCore.pinConversation(
+      conversationID: conversationID,
+      isPinned: isPinned,
+    );
   }
 
   /// 获取未读消息总数
   Future<ImValueCallback<int>> getTotalUnreadMessageCount() async {
-    // TODO: implement getTotalUnreadMessageCount
-    throw UnimplementedError();
+    return _imCore.getTotalUnreadMessageCount();
   }
 
   /// 获取单个会话
   Future<ImValueCallback<ImConversation>> getConversation({
     required String conversationID,
   }) async {
-    // TODO: implement getConversation
-    throw UnimplementedError();
+    return _imCore.getConversation(conversationID: conversationID);
   }
 
   /// 删除会话
   Future<ImCallback> deleteConversation({
     required String conversationID,
   }) async {
-    // TODO: implement deleteConversation
-    throw UnimplementedError();
+    return _imCore.deleteConversation(conversationID: conversationID);
   }
 
   /// 设置会话草稿
@@ -84,8 +78,10 @@ class IMConversationManager with BaseMixin {
     required String conversationID,
     String? draftText = "",
   }) async {
-    // TODO: implement setConversationDraft
-    throw UnimplementedError();
+    return _imCore.setConversationDraft(
+      conversationID: conversationID,
+      draftText: draftText,
+    );
   }
 
   /// 创建会话分组
@@ -94,8 +90,10 @@ class IMConversationManager with BaseMixin {
     required String groupName,
     required List<String> conversationIDList,
   }) async {
-    // TODO: implement createConversationGroup
-    throw UnimplementedError();
+    return _imCore.createConversationGroup(
+      groupName: groupName,
+      conversationIDList: conversationIDList,
+    );
   }
 
   /// 重命名会话分组
@@ -103,14 +101,12 @@ class IMConversationManager with BaseMixin {
     required String oldName,
     required String newName,
   }) async {
-    // TODO: implement renameConversationGroup
-    throw UnimplementedError();
+    return _imCore.renameConversationGroup(oldName: oldName, newName: newName);
   }
 
   /// 获取会话分组列表
   Future<ImValueCallback<List<String>>> getConversationGroupList() async {
-    // TODO: implement getConversationGroupList
-    throw UnimplementedError();
+    return _imCore.getConversationGroupList();
   }
 
   /// 添加会话到分组
@@ -119,8 +115,10 @@ class IMConversationManager with BaseMixin {
     required String groupName,
     required List<String> conversationIDList,
   }) async {
-    // TODO: implement addConversationsToGroup
-    throw UnimplementedError();
+    return _imCore.addConversationsToGroup(
+      groupName: groupName,
+      conversationIDList: conversationIDList,
+    );
   }
 
   /// 从分组删除会话
@@ -129,16 +127,17 @@ class IMConversationManager with BaseMixin {
     required String groupName,
     required List<String> conversationIDList,
   }) async {
-    // TODO: implement deleteConversationsFromGroup
-    throw UnimplementedError();
+    return _imCore.deleteConversationsFromGroup(
+      groupName: groupName,
+      conversationIDList: conversationIDList,
+    );
   }
 
   /// 删除会话分组
   Future<ImCallback> deleteConversationGroup({
     required String groupName,
   }) async {
-    // TODO: implement deleteConversationGroup
-    throw UnimplementedError();
+    return _imCore.deleteConversationGroup(groupName: groupName);
   }
 
   /// 设置会话自定义数据
@@ -147,8 +146,10 @@ class IMConversationManager with BaseMixin {
     required String customData,
     required List<String> conversationIDList,
   }) async {
-    // TODO: implement setConversationCustomData
-    throw UnimplementedError();
+    return _imCore.setConversationCustomData(
+      customData: customData,
+      conversationIDList: conversationIDList,
+    );
   }
 
   /// 标记会话
@@ -158,16 +159,18 @@ class IMConversationManager with BaseMixin {
     required int markType,
     required bool enableMark,
   }) async {
-    // TODO: implement markConversation
-    throw UnimplementedError();
+    return _imCore.markConversation(
+      conversationIDList: conversationIDList,
+      markType: markType,
+      enableMark: enableMark,
+    );
   }
 
   /// 获取会话列表高级接口
   Future<ImValueCallback<ImConversationResult>> getConversationListByFilter({
     required ImConversationListFilter filter,
   }) async {
-    // TODO: implement getConversationListByFilter
-    throw UnimplementedError();
+    return _imCore.getConversationListByFilter(filter: filter);
   }
 
   void handleConversationCallback(MethodCall call) {

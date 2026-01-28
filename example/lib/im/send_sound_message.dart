@@ -8,11 +8,6 @@ import 'package:im_sdk_plugin_example/im/group_selector.dart';
 import 'package:im_sdk_plugin_example/utils/sdk_response.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
-import 'package:im_sdk_plugin/enums/message_priority_enum.dart';
-
-
-import 'package:im_sdk_plugin/models/im_message_online_url.dart';
-import 'package:im_sdk_plugin/models/im_msg_create_info_result.dart';
 
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';

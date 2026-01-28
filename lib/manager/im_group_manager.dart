@@ -1,23 +1,7 @@
 import 'package:im_sdk_core/im_sdk_core.dart';
 import 'package:im_sdk_plugin/listener/im_group_listener.dart';
 import 'package:im_sdk_plugin/mixins/mixin.dart';
-
-import '../enums/group_add_opt_enum.dart';
-import '../enums/group_application_type_enum.dart';
-import '../enums/group_member_filter_enum.dart';
-import '../enums/group_member_role_enum.dart';
 import '../im_sdk_plugin.dart';
-import '../models/im_group_application_result.dart';
-import '../models/im_group_member.dart';
-import '../models/im_group_member_full_info.dart';
-import '../models/im_group_member_info_result.dart';
-import '../models/im_group_member_operation_result.dart';
-import '../models/im_group_member_search_param.dart';
-import '../models/im_group_member_search_result.dart';
-import '../models/im_group_search_param.dart';
-import '../models/im_topic_info.dart';
-import '../models/im_topic_info_result.dart';
-import '../models/im_topic_operation_result.dart';
 
 /// 群组管理器
 class IMGroupManager with BaseMixin {
@@ -28,7 +12,9 @@ class IMGroupManager with BaseMixin {
 
   /// 设置群组监听器
   Future<void> setGroupListener(ImGroupListener? listener) async {
-    Logger.debug("[IMGroupManager] 设置群组监听器: ${listener != null ? '已设置' : '已清除'}");
+    Logger.debug(
+      "[IMGroupManager] 设置群组监听器: ${listener != null ? '已设置' : '已清除'}",
+    );
     _groupListener = listener;
   }
 
@@ -45,28 +31,35 @@ class IMGroupManager with BaseMixin {
     GroupAddOptTypeEnum? addOpt,
     List<ImGroupMember>? memberList,
   }) async {
-    // TODO: implement createGroup
-    throw UnimplementedError();
+    return _imCore.createGroup(
+      groupID: groupID,
+      groupType: groupType,
+      groupName: groupName,
+      notification: notification,
+      introduction: introduction,
+      faceUrl: faceUrl,
+      isAllMuted: isAllMuted,
+      isSupportTopic: isSupportTopic,
+      addOpt: addOpt,
+      memberList: memberList,
+    );
   }
 
   /// 获取已加入的群组列表
   Future<ImValueCallback<List<ImGroupInfo>>> getJoinedGroupList() async {
-    // TODO: implement addFriendListener
-    throw UnimplementedError();
+    return _imCore.getJoinedGroupList();
   }
 
   /// 获取群组信息
   Future<ImValueCallback<List<ImGroupInfoResult>>> getGroupsInfo({
     required List<String> groupIDList,
   }) async {
-    // TODO: implement getGroupsInfo
-    throw UnimplementedError();
+    return _imCore.getGroupsInfo(groupIDList: groupIDList);
   }
 
   /// 设置群组信息
   Future<ImCallback> setGroupInfo({required ImGroupInfo info}) async {
-    // TODO: implement setGroupInfo
-    throw UnimplementedError();
+    return _imCore.setGroupInfo(info: info);
   }
 
   /// 删除群组属性
@@ -74,8 +67,7 @@ class IMGroupManager with BaseMixin {
     required String groupID,
     required List<String> keys,
   }) async {
-    // TODO: implement deleteGroupAttributes
-    throw UnimplementedError();
+    return _imCore.deleteGroupAttributes(groupID: groupID, keys: keys);
   }
 
   /// 获取群组属性
@@ -83,24 +75,21 @@ class IMGroupManager with BaseMixin {
     required String groupID,
     List<String>? keys,
   }) async {
-    // TODO: implement getGroupAttributes
-    throw UnimplementedError();
+    return _imCore.getGroupAttributes(groupID: groupID, keys: keys);
   }
 
   /// 搜索群组
   Future<ImValueCallback<List<ImGroupInfo>>> searchGroups({
     required ImGroupSearchParam searchParam,
   }) async {
-    // TODO: implement searchGroups
-    throw UnimplementedError();
+    return _imCore.searchGroups(searchParam: searchParam);
   }
 
   /// 获取群组在线成员数量
   Future<ImValueCallback<int>> getGroupOnlineMemberCount({
     required String groupID,
   }) async {
-    // TODO: implement getGroupOnlineMemberCount
-    throw UnimplementedError();
+    return _imCore.getGroupOnlineMemberCount(groupID: groupID);
   }
 
   /// 获取群组成员列表
@@ -111,8 +100,13 @@ class IMGroupManager with BaseMixin {
     int count = 15,
     int offset = 0,
   }) async {
-    // TODO: implement getGroupMemberList
-    throw UnimplementedError();
+    return _imCore.getGroupMemberList(
+      groupID: groupID,
+      filter: filter,
+      nextSeq: nextSeq,
+      count: count,
+      offset: offset,
+    );
   }
 
   /// 获取群组成员信息
@@ -120,8 +114,10 @@ class IMGroupManager with BaseMixin {
     required String groupID,
     required List<String> memberList,
   }) async {
-    // TODO: implement getGroupMembersInfo
-    throw UnimplementedError();
+    return _imCore.getGroupMembersInfo(
+      groupID: groupID,
+      memberList: memberList,
+    );
   }
 
   /// 设置群组成员信息
@@ -131,16 +127,19 @@ class IMGroupManager with BaseMixin {
     String? nameCard,
     Map<String, String>? customInfo,
   }) async {
-    // TODO: implement setGroupMemberInfo
-    throw UnimplementedError();
+    return _imCore.setGroupMemberInfo(
+      groupID: groupID,
+      userID: userID,
+      nameCard: nameCard,
+      customInfo: customInfo,
+    );
   }
 
   /// 搜索群组成员
   Future<ImValueCallback<GroupMemberInfoSearchResult>> searchGroupMembers({
     required ImGroupMemberSearchParam param,
   }) async {
-    // TODO: implement searchGroupMembers
-    throw UnimplementedError();
+    return _imCore.searchGroupMembers(param: param);
   }
 
   /// 禁言群组成员
@@ -149,8 +148,11 @@ class IMGroupManager with BaseMixin {
     required String userID,
     required int seconds,
   }) async {
-    // TODO: implement muteGroupMember
-    throw UnimplementedError();
+    return _imCore.muteGroupMember(
+      groupID: groupID,
+      userID: userID,
+      seconds: seconds,
+    );
   }
 
   /// 踢出群组成员
@@ -159,8 +161,11 @@ class IMGroupManager with BaseMixin {
     required List<String> memberList,
     String? reason,
   }) async {
-    // TODO: implement kickGroupMember
-    throw UnimplementedError();
+    return _imCore.kickGroupMember(
+      groupID: groupID,
+      memberList: memberList,
+      reason: reason,
+    );
   }
 
   /// 设置群组成员角色
@@ -169,8 +174,11 @@ class IMGroupManager with BaseMixin {
     required String userID,
     required GroupMemberRoleTypeEnum role,
   }) async {
-    // TODO: implement setGroupMemberRole
-    throw UnimplementedError();
+    return _imCore.setGroupMemberRole(
+      groupID: groupID,
+      userID: userID,
+      role: role,
+    );
   }
 
   /// 转让群主
@@ -178,8 +186,7 @@ class IMGroupManager with BaseMixin {
     required String groupID,
     required String userID,
   }) async {
-    // TODO: implement transferGroupOwner
-    throw UnimplementedError();
+    return _imCore.transferGroupOwner(groupID: groupID, userID: userID);
   }
 
   /// 邀请用户加入群组
@@ -188,15 +195,13 @@ class IMGroupManager with BaseMixin {
     required String groupID,
     required List<String> userList,
   }) async {
-    // TODO: implement inviteUserToGroup
-    throw UnimplementedError();
+    return _imCore.inviteUserToGroup(groupID: groupID, userList: userList);
   }
 
   /// 获取群组申请列表
   Future<ImValueCallback<ImGroupApplicationResult>>
   getGroupApplicationList() async {
-    // TODO: implement getGroupApplicationList
-    throw UnimplementedError();
+    return _imCore.getGroupApplicationList();
   }
 
   /// 同意群组申请
@@ -210,8 +215,15 @@ class IMGroupManager with BaseMixin {
         GroupApplicationTypeEnum.IM_GROUP_APPLICATION_GET_TYPE_INVITE,
     String? webMessageInstance,
   }) async {
-    // TODO: implement acceptGroupApplication
-    throw UnimplementedError();
+    return _imCore.acceptGroupApplication(
+      groupID: groupID,
+      reason: reason,
+      fromUser: fromUser,
+      toUser: toUser,
+      addTime: addTime,
+      type: type,
+      webMessageInstance: webMessageInstance,
+    );
   }
 
   /// 拒绝群组申请
@@ -224,20 +236,25 @@ class IMGroupManager with BaseMixin {
     required GroupApplicationTypeEnum type,
     String? webMessageInstance,
   }) async {
-    // TODO: implement refuseGroupApplication
-    throw UnimplementedError();
+    return _imCore.refuseGroupApplication(
+      groupID: groupID,
+      reason: reason,
+      fromUser: fromUser,
+      toUser: toUser,
+      addTime: addTime,
+      type: type,
+      webMessageInstance: webMessageInstance,
+    );
   }
 
   /// 设置群组申请已读
   Future<ImCallback> setGroupApplicationRead() async {
-    // TODO: implement setGroupApplicationRead
-    throw UnimplementedError();
+    return _imCore.setGroupApplicationRead();
   }
 
   /// 获取已加入的社区列表
   Future<ImValueCallback<List<ImGroupInfo>>> getJoinedCommunityList() async {
-    // TODO: implement getJoinedCommunityList
-    throw UnimplementedError();
+    return _imCore.getJoinedCommunityList();
   }
 
   /// 在社区中创建话题
@@ -245,8 +262,10 @@ class IMGroupManager with BaseMixin {
     required String groupID,
     required ImTopicInfo topicInfo,
   }) async {
-    // TODO: implement createTopicInCommunity
-    throw UnimplementedError();
+    return _imCore.createTopicInCommunity(
+      groupID: groupID,
+      topicInfo: topicInfo,
+    );
   }
 
   /// 从社区中删除话题
@@ -255,8 +274,10 @@ class IMGroupManager with BaseMixin {
     required String groupID,
     required List<String> topicIDList,
   }) async {
-    // TODO: implement deleteTopicFromCommunity
-    throw UnimplementedError();
+    return _imCore.deleteTopicFromCommunity(
+      groupID: groupID,
+      topicIDList: topicIDList,
+    );
   }
 
   /// 设置话题信息
@@ -264,8 +285,7 @@ class IMGroupManager with BaseMixin {
     required String groupID,
     required ImTopicInfo topicInfo,
   }) async {
-    // TODO: implement setTopicInfo
-    throw UnimplementedError();
+    return _imCore.setTopicInfo(groupID: groupID, topicInfo: topicInfo);
   }
 
   /// 获取话题信息列表
@@ -273,8 +293,7 @@ class IMGroupManager with BaseMixin {
     required String groupID,
     required List<String> topicIDList,
   }) async {
-    // TODO: implement getTopicInfoList
-    throw UnimplementedError();
+    return _imCore.getTopicInfoList(groupID: groupID, topicIDList: topicIDList);
   }
 
   /// 处理 Group 回调
