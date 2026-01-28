@@ -1,8 +1,6 @@
 import '../../im_sdk_plugin.dart';
-import '../../models/im_friend_check_result.dart';
 import '../../models/sync_response.dart';
 import '../../models/sync_request.dart';
-import '../../enums/friend_type_enum.dart';
 import 'api_client.dart';
 
 class FriendshipApi {

@@ -6,9 +6,7 @@ import '../im_sdk_plugin.dart';
 import '../listener/im_friendship_listener.dart';
 import '../enums/friend_application_type_enum.dart';
 import '../enums/friend_response_type_enum.dart';
-import '../enums/friend_type_enum.dart';
 import '../models/im_friend_application_result.dart';
-import '../models/im_friend_check_result.dart';
 import '../models/im_friend_group.dart';
 
 /// 关系链管理器
@@ -94,8 +92,7 @@ class IMFriendshipManager with BaseMixin {
     required List<String> userIDList,
     required FriendTypeEnum checkType,
   }) async {
-    // TODO: implement addFriendListener
-    throw UnimplementedError();
+    return _imCore.checkFriend(userIDList: userIDList, checkType: checkType);
   }
 
   /// 获取好友申请列表

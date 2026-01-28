@@ -1,6 +1,5 @@
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:flutter/material.dart';
-import 'package:im_sdk_plugin/enums/friend_type_enum.dart';
 import 'package:im_sdk_plugin/im_sdk_plugin.dart';
 import 'package:im_sdk_plugin_example/i18n/i18n_utils.dart';
 
